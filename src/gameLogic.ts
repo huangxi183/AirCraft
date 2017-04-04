@@ -174,7 +174,6 @@ module gameLogic {
     return board;
   }
 
-
   export function getInitialState(): IState {
     return {board: getInitialBoard(), delta: null};
   }

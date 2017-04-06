@@ -64,7 +64,7 @@ interface IGameService {
 
   // After the platform calls game.updateUI, you can call makeMove at most once,
   // and only if it's your player's turn (updateUI.yourPlayerIndex == updateUI.turnIndex).
-  makeMove(move: IMove): void;
+  makeMove(move: number): void;
 
   // After the platform calls game.communityUI, you can call communityMove at most once,
   // and only if it's your player's turn (updateUI.yourPlayerIndex == updateUI.turnIndex).

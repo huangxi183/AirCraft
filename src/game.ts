@@ -107,9 +107,17 @@ module game {
       log.info(["Cell has been explored:", row, col]);
       return;
     }
+
     // Move is legal, make it!
     makeMove(nextMove);
   }
+
+  // export function cellHover(row: number, col: number): void{
+  //   log.info("Hover on cell: ", row, col);
+  //   if(gameLogic.)
+  // }
+
+
 
   export function shouldShowImage(row: number, col: number): boolean {
     return state.board[row][col] <= -1;

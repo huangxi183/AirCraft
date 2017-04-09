@@ -196,7 +196,7 @@ module gameLogic {
    * Returns the move that should be performed when player
    * with index turnIndexBeforeMove makes a move in cell row X col.
    */
-  export function createMove(stateBeforeMove: IState, row: number, col: number, turnIndexBeforeMove: number): number {
+  export function createMove(stateBeforeMove: IState, row: number, col: number, turnIndexBeforeMove: number): IMove {
     if (!stateBeforeMove) {
       stateBeforeMove = getInitialState();
     }
@@ -220,7 +220,10 @@ module gameLogic {
     if (winner) turnIndex = -1;
     else turnIndex = 1 - turnIndex;
 
-    return turnIndex;
+    let delta: BoardDelta = {row: row, col: col};
+    let state: IState = {delta: delta, board: boardAfterMove};
+
+    return {turnIndex: turnIndex, state: state};
   }
   
   export function createInitialMove(): number {

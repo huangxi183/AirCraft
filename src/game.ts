@@ -75,7 +75,6 @@ module game {
 
   function animationEndedCallback() {
     log.info("Animation ended");
-    maybeSendComputerMove();
   }
 
   function clearAnimationTimeout() {
@@ -85,74 +84,22 @@ module game {
     }
   }
 
-  function maybeSendComputerMove() {
-    if (!isComputerTurn()) return;
-    let currentMove:IMove = {
-      endMatchScores: currentUpdateUI.endMatchScores,
-      state: currentUpdateUI.state,
-      turnIndex: currentUpdateUI.turnIndex,
-    }
-    let move = aiService.findComputerMove(currentMove);
-    log.info("Computer move: ", move);
-    makeMove(move);
-  }
-
-  function makeMove(move: number) {
+  function makeMove(move: IMove) {
     if (didMakeMove) { // Only one move per updateUI
       return;
     }
     didMakeMove = true;
     
-    if (!proposals) {
-      gameService.makeMove(move);
-    } /*else {
-
-      let delta = move.state.delta;
-      let myProposal:IProposal = {
-        data: delta,
-        chatDescription: '' + (delta.row + 1) + 'x' + (delta.col + 1),
-        playerInfo: yourPlayerInfo,
-      };
-      // Decide whether we make a move or not (if we have <currentCommunityUI.numberOfPlayersRequiredToMove-1> other proposals supporting the same thing).
-      if (proposals[delta.row][delta.col] < currentCommunityUI.numberOfPlayersRequiredToMove - 1) {
-        move = null;
-      }
-      gameService.communityMove(myProposal, move);
-    } */
+    gameService.makeMove(move);
   }
 
   function isFirstMove() {
     return !currentUpdateUI.state;
   }
 
-  function yourPlayerIndex() {
-    return currentUpdateUI.yourPlayerIndex;
-  }
-
-  function isComputer() {
-    let playerInfo = currentUpdateUI.playersInfo[currentUpdateUI.yourPlayerIndex];
-    // In community games, playersInfo is [].
-    return playerInfo && playerInfo.playerId === '';
-  }
-
-  function isComputerTurn() {
-    return isMyTurn() && isComputer();
-  }
-
-  function isHumanTurn() {
-    return isMyTurn() && !isComputer();
-  }
-
-  function isMyTurn() {
-    return !didMakeMove && // you can only make one move per updateUI.
-      currentUpdateUI.turnIndex >= 0 && // game is ongoing
-      currentUpdateUI.yourPlayerIndex === currentUpdateUI.turnIndex; // it's my turn
-  }
-
   export function cellClicked(row: number, col: number): void {
     log.info("Clicked on cell:", row, col);
-    if (!isHumanTurn()) return;
-    let nextMove: number;
+    let nextMove: IMove;
     try {
       nextMove = gameLogic.createMove(
           state, row, col, currentUpdateUI.turnIndex);
@@ -165,19 +112,7 @@ module game {
   }
 
   export function shouldShowImage(row: number, col: number): boolean {
-    return state.board[row][col] !== "" || isProposal(row, col);
-  }
-
-  function isPiece(row: number, col: number, turnIndex: number, pieceKind: string): boolean {
-    return state.board[row][col] === pieceKind || (isProposal(row, col) && currentUpdateUI.turnIndex == turnIndex);
-  }
-  
-  export function isPieceX(row: number, col: number): boolean {
-    return isPiece(row, col, 0, 'X');
-  }
-
-  export function isPieceO(row: number, col: number): boolean {
-    return isPiece(row, col, 1, 'O');
+    return state.board[row][col] <= -1;
   }
 
   export function shouldSlowlyAppear(row: number, col: number): boolean {

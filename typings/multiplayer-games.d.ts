@@ -2,7 +2,7 @@
 interface IGameService {
   setGame(game: IGame): void;
 
-  makeMove(move: number): void;
+  makeMove(move: IMove): void;
 }
 
 interface IGame {
@@ -11,6 +11,8 @@ interface IGame {
 
 interface IMove {
   turnIndex: number;
+
+  state: IState;
 }
 
 interface IPlayerInfo {

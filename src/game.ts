@@ -146,7 +146,7 @@ module game {
     let nextMove: IMove;
     try {
       nextMove = gameLogic.createMove(
-          state,  row,col, curreentUpdateUI.turnIndex);
+          state,  row,col, currentUpdateUI.turnIndex);
     } catch (e) {
       log.info(e);
       //log.info(["Cell has been explored:", row,col]);

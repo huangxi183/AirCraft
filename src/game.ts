@@ -17,6 +17,8 @@ module game {
   export let didMakeMove: boolean = false; // You can only make one move per updateUI
   export let animationEndedTimeout: ng.IPromise<any> = null;
   export let state: IState = null;
+  export let proposals: number[][] = null;
+  //export let yourPlayerInfo: IPlayerInfo = null;
 
   export function init($rootScope_: angular.IScope, $timeout_: angular.ITimeoutService) {
     $rootScope = $rootScope_;
@@ -49,8 +51,50 @@ module game {
     return {};
   }
 
+  export function communityUI(communityUI: ICommunityUI) {
+    currentCommunityUI = communityUI;
+    log.info("Game got communityUI:", communityUI);
+    // If only proposals changed, then do NOT call updateUI. Then update proposals.
+    let nextUpdateUI: IUpdateUI = {
+      playersInfo: [],
+      playMode: communityUI.yourPlayerIndex,
+      numberOfPlayers: communityUI.numberOfPlayers,
+      state: communityUI.state,
+      turnIndex: communityUI.turnIndex,
+      endMatchScores: communityUI.endMatchScores,
+      yourPlayerIndex: communityUI.yourPlayerIndex,
+    };
+    if (angular.equals(yourPlayerInfo, communityUI.yourPlayerInfo) &&
+        currentUpdateUI && angular.equals(currentUpdateUI, nextUpdateUI)) {
+      // We're not calling updateUI to avoid disrupting the player if he's in the middle of a move.
+    } else {
+      // Things changed, so call updateUI.
+      updateUI(nextUpdateUI);
+    }
+    // This must be after calling updateUI, because we nullify things there (like playerIdToProposal&proposals&etc)
+    yourPlayerInfo = communityUI.yourPlayerInfo;
+    let playerIdToProposal = communityUI.playerIdToProposal;
+    didMakeMove = !!playerIdToProposal[communityUI.yourPlayerInfo.playerId];
+    proposals = [];
+    for (let i = 0; i < gameLogic.ROWS; i++) {
+      proposals[i] = [];
+      for (let j = 0; j < gameLogic.COLS; j++) {
+        proposals[i][j] = 0;
+      }
+    }
+    for (let playerId in playerIdToProposal) {
+      let proposal = playerIdToProposal[playerId];
+      let delta = proposal.data;
+      proposals[delta.row][delta.col]++;
+    }
+  }
+
+  export function isProposal(row: number, col: number) {
+    return proposals && proposals[row][col] > 0;
+  }
+
   export function getCellStyle(row: number, col: number) {
-    let scale = 0.6;
+    let scale = 1.0;
     let opacity = 0.5;
     return {
       transform: `scale(${scale}, ${scale})`,
@@ -102,9 +146,10 @@ module game {
     let nextMove: IMove;
     try {
       nextMove = gameLogic.createMove(
-          state, row, col, currentUpdateUI.turnIndex);
+          state,  row,col, currentUpdateUI.turnIndex);
     } catch (e) {
-      log.info(["Cell has been explored:", row, col]);
+      log.info(e);
+      //log.info(["Cell has been explored:", row,col]);
       return;
     }
 
@@ -116,6 +161,50 @@ module game {
   //   log.info("Hover on cell: ", row, col);
   //   if(gameLogic.)
   // }
+
+  // function isPiece(row: number, col: number, turnIndex: number, pieceKind: string): boolean {
+  //   return state.board[row][col] === pieceKind || (isProposal(row, col) && currentUpdateUI.turnIndex == turnIndex);
+  // }
+
+  //<------ add game control two functions by:jam
+  export function isPieceHit(row: number, col: number): boolean{
+    let temp_pro: boolean;
+    let turnIndex: number;
+    turnIndex = currentUpdateUI.yourPlayerIndex;
+    temp_pro = (isProposal(row, col) && currentUpdateUI.turnIndex == turnIndex);
+    log.info(state.board);
+    if(state.board[row][col] < -1){
+      return true;
+    }
+    else
+      return false;
+  }
+
+  export function isPieceBlank(row: number, col:number): boolean{
+    let temp_pro: boolean;
+    let turnIndex: number;
+    turnIndex = currentUpdateUI.yourPlayerIndex;
+    temp_pro = (isProposal(row, col) && currentUpdateUI.turnIndex == turnIndex);
+    if(state.board[row][col] == -1){
+      return true;
+    }else
+      return false;
+  }
+
+  export function showCraft(row: number, col:number): boolean{
+    if(state.board[row][col] > 1 || state.board[row][col] < -1)
+      return true;
+    else
+      return false;
+  }
+  export function showBlank(row: number, col:number): boolean{
+    if(state.board[row][col] < 1 && state.board[row][col] >= -1)
+      return true;
+    else
+      return false;
+  }
+
+  //--------->
 
 
 

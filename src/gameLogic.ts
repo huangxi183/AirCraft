@@ -195,7 +195,7 @@ module gameLogic {
    * Returns the move that should be performed when player
    * with index turnIndexBeforeMove makes a move in cell row X col.
    */
-  export function createMove(stateBeforeMove: IState, row: number, col: number, turnIndexBeforeMove: number): IMove {
+  export function createMove(stateBeforeMove: IState,  row: number,col: number, turnIndexBeforeMove: number): IMove {
     if (!stateBeforeMove) {
       stateBeforeMove = getInitialState();
     }

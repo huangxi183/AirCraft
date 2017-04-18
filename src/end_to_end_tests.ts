@@ -135,8 +135,8 @@ describe('TicTacToe', function() {
   function expectBoard(board: Board) {
     // Careful: one can't use gameLogic.ROWS/COLS (instead of 3) because gameLogic is not defined
     // in end-to-end tests.
-    for (let row = 0; row < 3; row++) {
-      for (let col = 0; col < 3; col++) {
+    for (let row = 0; row < 6; row++) {
+      for (let col = 0; col < 6; col++) {
         expectPiece(row, col, board[row][col]);
       }
     }
@@ -167,7 +167,7 @@ describe('TicTacToe', function() {
   });
 
   it('should end game if X wins', function () {
-    for (let col = 0; col < 3; col++) {
+    for (let col = 0; col < 6; col++) {
       clickDivAndExpectPiece(1, col, "X");
       // After the game ends, player "O" click (in cell 2x2) will be ignored.
       clickDivAndExpectPiece(2, col, col === 2 ? "" : "O");

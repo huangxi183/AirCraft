@@ -60,14 +60,14 @@ module game {
     log.info("Game got communityUI:", communityUI);
     // If only proposals changed, then do NOT call updateUI. Then update proposals.
     let nextUpdateUI: IUpdateUI = {
-        playersInfo: [],
-        playMode: communityUI.yourPlayerIndex,
-        numberOfPlayers: communityUI.numberOfPlayers,
-        state: communityUI.state,
-        turnIndex: communityUI.turnIndex,
-        endMatchScores: communityUI.endMatchScores,
-        yourPlayerIndex: communityUI.yourPlayerIndex,
-      };
+      playersInfo: [],
+      playMode: communityUI.yourPlayerIndex,
+      numberOfPlayers: communityUI.numberOfPlayers,
+      state: communityUI.state,
+      turnIndex: communityUI.turnIndex,
+      endMatchScores: communityUI.endMatchScores,
+      yourPlayerIndex: communityUI.yourPlayerIndex,
+    };
     if (angular.equals(yourPlayerInfo, communityUI.yourPlayerInfo) &&
         currentUpdateUI && angular.equals(currentUpdateUI, nextUpdateUI)) {
       // We're not calling updateUI to avoid disrupting the player if he's in the middle of a move.
@@ -77,7 +77,7 @@ module game {
     }
     // This must be after calling updateUI, because we nullify things there (like playerIdToProposal&proposals&etc)
     yourPlayerInfo = communityUI.yourPlayerInfo;
-    let playerIdToProposal = communityUI.playerIdToProposal; 
+    let playerIdToProposal = communityUI.playerIdToProposal;
     didMakeMove = !!playerIdToProposal[communityUI.yourPlayerInfo.playerId];
     proposals = [];
     for (let i = 0; i < gameLogic.ROWS; i++) {
@@ -94,7 +94,7 @@ module game {
   }
   export function isProposal(row: number, col: number) {
     return proposals && proposals[row][col] > 0;
-  } 
+  }
   export function getCellStyle(row: number, col: number) {
     if (!isProposal(row, col)) return {};
     // proposals[row][col] is > 0
@@ -110,7 +110,7 @@ module game {
       opacity: "" + opacity,
     };
   }
-  
+
   export function updateUI(params: IUpdateUI): void {
     log.info("Sue got updateUI:", params);
     didMakeMove = false; // Only one move per updateUI
@@ -150,16 +150,15 @@ module game {
     makeMove(move);
   }
 
-  function makeMove(move: number) {
+  function makeMove(move: IMove) {
     if (didMakeMove) { // Only one move per updateUI
       return;
     }
     didMakeMove = true;
-    
+
     if (!proposals) {
       gameService.makeMove(move);
-    } /*else {
-
+    } else {
       let delta = move.state.delta;
       let myProposal:IProposal = {
         data: delta,
@@ -171,7 +170,7 @@ module game {
         move = null;
       }
       gameService.communityMove(myProposal, move);
-    } */
+    }
   }
 
   function isFirstMove() {
@@ -198,19 +197,19 @@ module game {
 
   function isMyTurn() {
     return !didMakeMove && // you can only make one move per updateUI.
-      currentUpdateUI.turnIndex >= 0 && // game is ongoing
-      currentUpdateUI.yourPlayerIndex === currentUpdateUI.turnIndex; // it's my turn
+        currentUpdateUI.turnIndex >= 0 && // game is ongoing
+        currentUpdateUI.yourPlayerIndex === currentUpdateUI.turnIndex; // it's my turn
   }
 
   export function cellClicked(row: number, col: number): void {
     log.info("Clicked on cell:", row, col);
     if (!isHumanTurn()) return;
-    let nextMove: number;
+    let nextMove: IMove = null;
     try {
       nextMove = gameLogic.createMove(
           state, row, col, currentUpdateUI.turnIndex);
     } catch (e) {
-      log.info(["Cell has been explored:", row, col]);
+      log.info(["Cell is already full in position:", row, col]);
       return;
     }
     // Move is legal, make it!
@@ -224,7 +223,7 @@ module game {
   function isPiece(row: number, col: number, turnIndex: number, pieceKind: string): boolean {
     return state.board[row][col] === pieceKind || (isProposal(row, col) && currentUpdateUI.turnIndex == turnIndex);
   }
-  
+
   export function isPieceX(row: number, col: number): boolean {
     return isPiece(row, col, 0, 'X');
   }
@@ -240,8 +239,8 @@ module game {
 }
 
 angular.module('myApp', ['gameServices'])
-  .run(['$rootScope', '$timeout',
-    function ($rootScope: angular.IScope, $timeout: angular.ITimeoutService) {
-      $rootScope['game'] = game;
-      game.init($rootScope, $timeout);
-    }]);
+    .run(['$rootScope', '$timeout',
+      function ($rootScope: angular.IScope, $timeout: angular.ITimeoutService) {
+        $rootScope['game'] = game;
+        game.init($rootScope, $timeout);
+      }]);

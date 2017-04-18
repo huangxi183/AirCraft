@@ -57,8 +57,12 @@ body {
   transform:scale(1.25);
 }
 
+.blank{
+  border: 2pt solid black;
+}
 .blank:hover
 {
+  border: 2pt solid black;
   cursor: pointer;
   font-size: 30px;
   line-height: 150%;

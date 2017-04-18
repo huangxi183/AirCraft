@@ -11,8 +11,10 @@ var game;
     game.didMakeMove = false; // You can only make one move per updateUI
     game.animationEndedTimeout = null;
     game.state = null;
+    // For community games.
+    game.currentCommunityUI = null;
     game.proposals = null;
-    //export let yourPlayerInfo: IPlayerInfo = null;
+    game.yourPlayerInfo = null;
     function init($rootScope_, $timeout_) {
         game.$rootScope = $rootScope_;
         game.$timeout = $timeout_;
@@ -22,6 +24,8 @@ var game;
         resizeGameAreaService.setWidthToHeight(1);
         gameService.setGame({
             updateUI: updateUI,
+            communityUI: communityUI,
+            getStateForOgImage: null,
         });
     }
     game.init = init;
@@ -85,8 +89,16 @@ var game;
     }
     game.isProposal = isProposal;
     function getCellStyle(row, col) {
-        var scale = 0.6;
-        var opacity = 0.5;
+        if (!isProposal(row, col))
+            return {};
+        // proposals[row][col] is > 0
+        var countZeroBased = game.proposals[row][col] - 1;
+        var maxCount = game.currentCommunityUI.numberOfPlayersRequiredToMove - 2;
+        var ratio = maxCount == 0 ? 1 : countZeroBased / maxCount; // a number between 0 and 1 (inclusive).
+        // scale will be between 0.6 and 0.8.
+        var scale = 0.6 + 0.2 * ratio;
+        // opacity between 0.5 and 0.7
+        var opacity = 0.5 + 0.2 * ratio;
         return {
             transform: "scale(" + scale + ", " + scale + ")",
             opacity: "" + opacity,
@@ -110,6 +122,7 @@ var game;
     game.updateUI = updateUI;
     function animationEndedCallback() {
         log.info("Animation ended");
+        maybeSendComputerMove();
     }
     function clearAnimationTimeout() {
         if (game.animationEndedTimeout) {
@@ -117,69 +130,93 @@ var game;
             game.animationEndedTimeout = null;
         }
     }
+    function maybeSendComputerMove() {
+        if (!isComputerTurn())
+            return;
+        var currentMove = {
+            endMatchScores: game.currentUpdateUI.endMatchScores,
+            state: game.currentUpdateUI.state,
+            turnIndex: game.currentUpdateUI.turnIndex,
+        };
+        var move = aiService.findComputerMove(currentMove);
+        log.info("Computer move: ", move);
+        makeMove(move);
+    }
     function makeMove(move) {
         if (game.didMakeMove) {
             return;
         }
         game.didMakeMove = true;
-        gameService.makeMove(move);
+        if (!game.proposals) {
+            gameService.makeMove(move);
+        }
+        else {
+            var delta = move.state.delta;
+            var myProposal = {
+                data: delta,
+                chatDescription: '' + (delta.row + 1) + 'x' + (delta.col + 1),
+                playerInfo: game.yourPlayerInfo,
+            };
+            // Decide whether we make a move or not (if we have <currentCommunityUI.numberOfPlayersRequiredToMove-1> other proposals supporting the same thing).
+            if (game.proposals[delta.row][delta.col] < game.currentCommunityUI.numberOfPlayersRequiredToMove - 1) {
+                move = null;
+            }
+            gameService.communityMove(myProposal, move);
+        }
     }
     function isFirstMove() {
         return !game.currentUpdateUI.state;
     }
+    function yourPlayerIndex() {
+        return game.currentUpdateUI.yourPlayerIndex;
+    }
+    function isComputer() {
+        var playerInfo = game.currentUpdateUI.playersInfo[game.currentUpdateUI.yourPlayerIndex];
+        // In community games, playersInfo is [].
+        return playerInfo && playerInfo.playerId === '';
+    }
+    function isComputerTurn() {
+        return isMyTurn() && isComputer();
+    }
+    function isHumanTurn() {
+        return isMyTurn() && !isComputer();
+    }
+    function isMyTurn() {
+        return !game.didMakeMove &&
+            game.currentUpdateUI.turnIndex >= 0 &&
+            game.currentUpdateUI.yourPlayerIndex === game.currentUpdateUI.turnIndex; // it's my turn
+    }
     function cellClicked(row, col) {
         log.info("Clicked on cell:", row, col);
-        var nextMove;
+        if (!isHumanTurn())
+            return;
+        var nextMove = null;
         try {
-            nextMove = gameLogic.createMove(game.state, row, col, curreentUpdateUI.turnIndex);
+            nextMove = gameLogic.createMove(game.state, row, col, game.currentUpdateUI.turnIndex);
         }
         catch (e) {
-            log.info(e);
-            //log.info(["Cell has been explored:", row,col]);
+            log.info(["Cell is already full in position:", row, col]);
             return;
         }
         // Move is legal, make it!
         makeMove(nextMove);
     }
     game.cellClicked = cellClicked;
-    // export function cellHover(row: number, col: number): void{
-    //   log.info("Hover on cell: ", row, col);
-    //   if(gameLogic.)
-    // }
-    // function isPiece(row: number, col: number, turnIndex: number, pieceKind: string): boolean {
-    //   return state.board[row][col] === pieceKind || (isProposal(row, col) && currentUpdateUI.turnIndex == turnIndex);
-    // }
-    //<------ add game control two functions by:jam
-    function isPieceHit(row, col) {
-        var temp_pro;
-        var turnIndex;
-        turnIndex = game.currentUpdateUI.yourPlayerIndex;
-        temp_pro = (isProposal(row, col) && game.currentUpdateUI.turnIndex == turnIndex);
-        log.info(game.state.board);
-        if (game.state.board[row][col] < -1) {
-            return true;
-        }
-        else
-            return false;
-    }
-    game.isPieceHit = isPieceHit;
-    function isPieceBlank(row, col) {
-        var temp_pro;
-        var turnIndex;
-        turnIndex = game.currentUpdateUI.yourPlayerIndex;
-        temp_pro = (isProposal(row, col) && game.currentUpdateUI.turnIndex == turnIndex);
-        if (game.state.board[row][col] == -1) {
-            return true;
-        }
-        else
-            return false;
-    }
-    game.isPieceBlank = isPieceBlank;
-    //--------->
     function shouldShowImage(row, col) {
-        return game.state.board[row][col] <= -1;
+        return game.state.board[row][col] !== "" || isProposal(row, col);
     }
     game.shouldShowImage = shouldShowImage;
+    function isPiece(row, col, turnIndex, pieceKind) {
+        return game.state.board[row][col] === pieceKind || (isProposal(row, col) && game.currentUpdateUI.turnIndex == turnIndex);
+    }
+    function isPieceX(row, col) {
+        return isPiece(row, col, 0, 'X');
+    }
+    game.isPieceX = isPieceX;
+    function isPieceO(row, col) {
+        return isPiece(row, col, 1, 'O');
+    }
+    game.isPieceO = isPieceO;
     function shouldSlowlyAppear(row, col) {
         return game.state.delta &&
             game.state.delta.row === row && game.state.delta.col === col;
@@ -192,4 +229,4 @@ angular.module('myApp', ['gameServices'])
         $rootScope['game'] = game;
         game.init($rootScope, $timeout);
     }]);
-//# sourceMappingURL=game.js.map
+//# sourceMappingURL=game_ori.js.map

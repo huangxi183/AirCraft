@@ -6,16 +6,151 @@ var log = gamingPlatform.log;
 var dragAndDropService = gamingPlatform.dragAndDropService;
 var gameLogic;
 (function (gameLogic) {
-    gameLogic.ROWS = 3;
-    gameLogic.COLS = 3;
-    /** Returns the initial TicTacToe board, which is a ROWSxCOLS matrix containing ''. */
+    gameLogic.ROWS = 6;
+    gameLogic.COLS = 6;
+    var points_to_win = 10;
+    var head = { index: Math.floor(Math.random() * 20) + 1, x: 0, y: 0, direct: 0 };
+    /** Returns the initial AirCraft board, which is a ROWSxCOLS matrix containing ''. */
     function getInitialBoard() {
         var board = [];
+        // generate random craft head
+        //head.index = Math.floor(Math.random() * 20) + 1;
+        //choose a direction based on the head position
+        if (head.index >= 17 && head.index <= 20) {
+            var rand = Math.floor(Math.random() * 2) + 1;
+            switch (head.index) {
+                case 17:
+                    if (rand == 1) {
+                        head.direct = 1;
+                    }
+                    else {
+                        head.direct = 2;
+                    }
+                    head.x = 2;
+                    head.y = 2;
+                    break;
+                case 18:
+                    if (rand == 1) {
+                        head.direct = 1;
+                    }
+                    else {
+                        head.direct = 3;
+                    }
+                    head.x = 3;
+                    head.y = 2;
+                    break;
+                case 19:
+                    if (rand == 1) {
+                        head.direct = 2;
+                    }
+                    else {
+                        head.direct = 4;
+                    }
+                    head.x = 2;
+                    head.y = 3;
+                    break;
+                case 20:
+                    if (rand == 1) {
+                        head.direct = 3;
+                    }
+                    else {
+                        head.direct = 4;
+                    }
+                    head.x = 3;
+                    head.y = 3;
+                    break;
+            }
+        }
+        else if (head.index >= 1 && head.index <= 4) {
+            head.direct = 1;
+            head.x = (head.index === 1 || head.index == 3) ? 2 : 3;
+            head.y = (head.index === 1 || head.index == 2) ? 0 : 1;
+        }
+        else if (head.index >= 5 && head.index <= 8) {
+            head.direct = 2;
+            head.x = (head.index === 5 || head.index == 7) ? 0 : 1;
+            head.y = (head.index === 5 || head.index == 6) ? 2 : 3;
+        }
+        else if (head.index >= 9 && head.index <= 12) {
+            head.direct = 3;
+            head.x = (head.index === 9 || head.index == 11) ? 4 : 5;
+            head.y = (head.index === 9 || head.index == 10) ? 2 : 3;
+        }
+        else if (head.index >= 13 && head.index <= 16) {
+            head.direct = 4;
+            head.x = (head.index === 13 || head.index == 15) ? 2 : 3;
+            head.y = (head.index === 13 || head.index == 14) ? 4 : 5;
+        }
         for (var i = 0; i < gameLogic.ROWS; i++) {
             board[i] = [];
             for (var j = 0; j < gameLogic.COLS; j++) {
-                board[i][j] = '';
+                board[i][j] = 0;
             }
+        }
+        var x = head.x;
+        var y = head.y;
+        //initial aircraft in board
+        switch (head.direct) {
+            case 1:
+                board[x][y] = 10;
+                //body
+                board[x][y + 1] = 5;
+                board[x][y + 2] = 5;
+                //wing
+                board[x - 2][y + 1] = 2;
+                board[x - 1][y + 1] = 2;
+                board[x + 1][y + 1] = 2;
+                board[x + 2][y + 1] = 2;
+                //tail
+                board[x - 1][y + 3] = 3;
+                board[x][y + 3] = 3;
+                board[x + 1][y + 3] = 3;
+                break;
+            case 2:
+                board[x][y] = 10;
+                //body
+                board[x + 1][y] = 5;
+                board[x + 2][y] = 5;
+                //wing
+                board[x + 1][y - 2] = 2;
+                board[x + 1][y - 1] = 2;
+                board[x + 1][y + 1] = 2;
+                board[x + 1][y + 2] = 2;
+                //tail
+                board[x + 3][y - 1] = 3;
+                board[x + 3][y + 1] = 3;
+                board[x + 3][y] = 3;
+                break;
+            case 3:
+                board[x][y] = 10;
+                //body
+                board[x - 1][y] = 5;
+                board[x - 2][y] = 5;
+                //wing
+                board[x - 1][y - 2] = 2;
+                board[x - 1][y - 1] = 2;
+                board[x - 1][y + 1] = 2;
+                board[x - 1][y + 2] = 2;
+                //tail
+                board[x - 3][y - 1] = 3;
+                board[x - 3][y + 1] = 3;
+                board[x - 3][y] = 3;
+                break;
+            case 4:
+                board[x][y] = 10;
+                //body
+                board[x][y - 1] = 5;
+                board[x][y - 2] = 5;
+                //wing
+                board[x - 2][y - 1] = 2;
+                board[x - 1][y - 1] = 2;
+                board[x + 1][y - 1] = 2;
+                board[x + 2][y - 1] = 2;
+                //tail
+                board[x - 1][y - 3] = 3;
+                board[x][y - 3] = 3;
+                board[x + 1][y - 3] = 3;
+                break;
         }
         return board;
     }
@@ -25,25 +160,6 @@ var gameLogic;
     }
     gameLogic.getInitialState = getInitialState;
     /**
-     * Returns true if the game ended in a tie because there are no empty cells.
-     * E.g., isTie returns true for the following board:
-     *     [['X', 'O', 'X'],
-     *      ['X', 'O', 'O'],
-     *      ['O', 'X', 'X']]
-     */
-    function isTie(board) {
-        for (var i = 0; i < gameLogic.ROWS; i++) {
-            for (var j = 0; j < gameLogic.COLS; j++) {
-                if (board[i][j] === '') {
-                    // If there is an empty cell then we do not have a tie.
-                    return false;
-                }
-            }
-        }
-        // No empty cells, so we have a tie!
-        return true;
-    }
-    /**
      * Return the winner (either 'X' or 'O') or '' if there is no winner.
      * The board is a matrix of size 3x3 containing either 'X', 'O', or ''.
      * E.g., getWinner returns 'X' for the following board:
@@ -51,36 +167,11 @@ var gameLogic;
      *      ['X', 'O', ''],
      *      ['X', '', '']]
      */
-    function getWinner(board) {
-        var boardString = '';
-        for (var i = 0; i < gameLogic.ROWS; i++) {
-            for (var j = 0; j < gameLogic.COLS; j++) {
-                var cell = board[i][j];
-                boardString += cell === '' ? ' ' : cell;
-            }
-        }
-        var win_patterns = [
-            'XXX......',
-            '...XXX...',
-            '......XXX',
-            'X..X..X..',
-            '.X..X..X.',
-            '..X..X..X',
-            'X...X...X',
-            '..X.X.X..'
-        ];
-        for (var _i = 0, win_patterns_1 = win_patterns; _i < win_patterns_1.length; _i++) {
-            var win_pattern = win_patterns_1[_i];
-            var x_regexp = new RegExp(win_pattern);
-            var o_regexp = new RegExp(win_pattern.replace(/X/g, 'O'));
-            if (x_regexp.test(boardString)) {
-                return 'X';
-            }
-            if (o_regexp.test(boardString)) {
-                return 'O';
-            }
-        }
-        return '';
+    function winOrNot() {
+        if (points_to_win <= 0)
+            return true;
+        else
+            return false;
     }
     /**
      * Returns the move that should be performed when player
@@ -91,35 +182,33 @@ var gameLogic;
             stateBeforeMove = getInitialState();
         }
         var board = stateBeforeMove.board;
-        if (board[row][col] !== '') {
+        if (board[row][col] < 0) {
             throw new Error("One can only make a move in an empty position!");
         }
-        if (getWinner(board) !== '' || isTie(board)) {
+        if (winOrNot()) {
             throw new Error("Can only make a move if the game is not over!");
         }
         var boardAfterMove = angular.copy(board);
-        boardAfterMove[row][col] = turnIndexBeforeMove === 0 ? 'X' : 'O';
-        var winner = getWinner(boardAfterMove);
-        var endMatchScores;
-        var turnIndex;
-        if (winner !== '' || isTie(boardAfterMove)) {
-            // Game over.
-            turnIndex = -1;
-            endMatchScores = winner === 'X' ? [1, 0] : winner === 'O' ? [0, 1] : [0, 0];
+        if (boardAfterMove[row][col] > 0) {
+            points_to_win -= boardAfterMove[row][col];
+            boardAfterMove[row][col] = -boardAfterMove[row][col];
         }
         else {
-            // Game continues. Now it's the opponent's turn (the turn switches from 0 to 1 and 1 to 0).
-            turnIndex = 1 - turnIndexBeforeMove;
-            endMatchScores = null;
+            boardAfterMove[row][col] = -1;
         }
+        var winner = winOrNot();
+        var turnIndex = turnIndexBeforeMove;
+        if (winner)
+            turnIndex = -1;
+        else
+            turnIndex = 1 - turnIndex;
         var delta = { row: row, col: col };
         var state = { delta: delta, board: boardAfterMove };
-        return { endMatchScores: endMatchScores, turnIndex: turnIndex, state: state };
+        return { turnIndex: turnIndex, state: state };
     }
     gameLogic.createMove = createMove;
     function createInitialMove() {
-        return { endMatchScores: null, turnIndex: 0,
-            state: getInitialState() };
+        return 0;
     }
     gameLogic.createInitialMove = createInitialMove;
     function forSimpleTestHtml() {

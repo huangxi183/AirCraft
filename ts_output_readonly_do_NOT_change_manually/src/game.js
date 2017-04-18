@@ -86,7 +86,7 @@ var game;
     }
     game.isProposal = isProposal;
     function getCellStyle(row, col) {
-        var scale = 0.6;
+        var scale = 1.0;
         var opacity = 0.5;
         return {
             transform: "scale(" + scale + ", " + scale + ")",
@@ -176,6 +176,20 @@ var game;
             return false;
     }
     game.isPieceBlank = isPieceBlank;
+    function showCraft(row, col) {
+        if (game.state.board[row][col] > 1 || game.state.board[row][col] < -1)
+            return true;
+        else
+            return false;
+    }
+    game.showCraft = showCraft;
+    function showBlank(row, col) {
+        if (game.state.board[row][col] < 1 && game.state.board[row][col] >= -1)
+            return true;
+        else
+            return false;
+    }
+    game.showBlank = showBlank;
     //--------->
     function shouldShowImage(row, col) {
         return game.state.board[row][col] <= -1;

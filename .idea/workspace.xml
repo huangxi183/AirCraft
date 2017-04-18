@@ -4,15 +4,14 @@
     <list default="true" id="e6e3e349-cb79-49e2-93e7-0fa4419ef6aa" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/index.min.appcache" afterPath="$PROJECT_DIR$/dist/index.min.appcache" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/js/everything.js" afterPath="$PROJECT_DIR$/dist/js/everything.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/js/everything.min.js" afterPath="$PROJECT_DIR$/dist/js/everything.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/js/everything.min.js.map" afterPath="$PROJECT_DIR$/dist/js/everything.min.js.map" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/service-worker.js" afterPath="$PROJECT_DIR$/dist/service-worker.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index_1.html" afterPath="$PROJECT_DIR$/index_1.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/game.ts" afterPath="$PROJECT_DIR$/src/game.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/game_ori.ts" afterPath="$PROJECT_DIR$/src/game_ori.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ts_output_readonly_do_NOT_change_manually/src/aiService.js" afterPath="$PROJECT_DIR$/ts_output_readonly_do_NOT_change_manually/src/aiService.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ts_output_readonly_do_NOT_change_manually/src/aiService.js.map" afterPath="$PROJECT_DIR$/ts_output_readonly_do_NOT_change_manually/src/aiService.js.map" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ts_output_readonly_do_NOT_change_manually/src/game.js" afterPath="$PROJECT_DIR$/ts_output_readonly_do_NOT_change_manually/src/game.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ts_output_readonly_do_NOT_change_manually/src/game.js.map" afterPath="$PROJECT_DIR$/ts_output_readonly_do_NOT_change_manually/src/game.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ts_output_readonly_do_NOT_change_manually/src/game_ori.js" afterPath="$PROJECT_DIR$/ts_output_readonly_do_NOT_change_manually/src/game_ori.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ts_output_readonly_do_NOT_change_manually/src/game_ori.js.map" afterPath="$PROJECT_DIR$/ts_output_readonly_do_NOT_change_manually/src/game_ori.js.map" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -32,14 +31,14 @@
     <favorites_list name="AirCraft" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.31963086">
+    <splitter split-orientation="horizontal" split-proportion="0.4001678">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="index_1.html" pinned="false" current-in-tab="false">
+          <file leaf-file-name="index_1.html" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/index_1.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="81">
-                  <caret line="24" column="0" lean-forward="false" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+                <state relative-caret-position="363">
+                  <caret line="66" column="41" lean-forward="false" selection-start-line="66" selection-start-column="41" selection-end-line="66" selection-end-column="41" />
                   <folding>
                     <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                     <element signature="n#style#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -54,7 +53,7 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="game_ori.ts" pinned="false" current-in-tab="true">
+          <file leaf-file-name="game_ori.ts" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/game_ori.ts">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="255">
@@ -124,10 +123,10 @@
           <file leaf-file-name="game.ts" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/game.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-537">
-                  <caret line="139" column="26" lean-forward="false" selection-start-line="139" selection-start-column="26" selection-end-line="139" selection-end-column="26" />
+                <state relative-caret-position="396">
+                  <caret line="200" column="35" lean-forward="false" selection-start-line="200" selection-start-column="35" selection-end-line="200" selection-end-column="35" />
                   <folding>
-                    <marker date="1492550252000" expanded="true" signature="1106:1138" ph="{&quot;updateUI&quot;: updateUI...}" />
+                    <marker date="1492552403000" expanded="true" signature="1106:1138" ph="{&quot;updateUI&quot;: updateUI...}" />
                   </folding>
                 </state>
               </provider>
@@ -205,9 +204,9 @@
       <find>cellClik</find>
       <find>turnIndexAfterMove</find>
       <find>Can only make a move if the game is</find>
-      <find>currentUpdateUI</find>
       <find>didMakeMove</find>
       <find>curreentUpdateUI</find>
+      <find>currentUpdateUI</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -220,10 +219,10 @@
         <option value="$PROJECT_DIR$/css/game.css" />
         <option value="$PROJECT_DIR$/src/end_to_end_tests.ts" />
         <option value="$PROJECT_DIR$/ts_output_readonly_do_NOT_change_manually/src/game.js" />
-        <option value="$PROJECT_DIR$/index_1.html" />
         <option value="$PROJECT_DIR$/dist/js/everything.js" />
         <option value="$PROJECT_DIR$/src/gameLogic.ts" />
         <option value="$PROJECT_DIR$/src/game_ori.ts" />
+        <option value="$PROJECT_DIR$/index_1.html" />
         <option value="$PROJECT_DIR$/src/game.ts" />
       </list>
     </option>
@@ -456,12 +455,12 @@
       <workItem from="1491150223566" duration="638000" />
       <workItem from="1491523521543" duration="632000" />
       <workItem from="1491762918172" duration="12072000" />
-      <workItem from="1492464255396" duration="10110000" />
+      <workItem from="1492464255396" duration="10884000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="24684000" />
+    <option name="totallyTimeSpent" value="25458000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -983,16 +982,16 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1492551197000" expanded="true" signature="37:2213" ph="{...}" />
-            <marker date="1492551197000" expanded="true" signature="597:1037" ph="{...}" />
-            <marker date="1492551197000" expanded="true" signature="680:1001" ph="{...}" />
-            <marker date="1492551197000" expanded="true" signature="735:991" ph="{...}" />
-            <marker date="1492551197000" expanded="true" signature="899:977" ph="{...}" />
-            <marker date="1492551197000" expanded="true" signature="1093:1401" ph="/** Returns the move that the computer player should do for the given state. ...*/" />
-            <marker date="1492551197000" expanded="true" signature="1457:1681" ph="{...}" />
-            <marker date="1492551197000" expanded="true" signature="1792:2099" ph="{...}" />
-            <marker date="1492551197000" expanded="true" signature="1872:2075" ph="{...}" />
-            <marker date="1492551197000" expanded="true" signature="2146:2211" ph="{...}" />
+            <marker date="1492551974000" expanded="true" signature="37:2213" ph="{...}" />
+            <marker date="1492551974000" expanded="true" signature="597:1037" ph="{...}" />
+            <marker date="1492551974000" expanded="true" signature="680:1001" ph="{...}" />
+            <marker date="1492551974000" expanded="true" signature="735:991" ph="{...}" />
+            <marker date="1492551974000" expanded="true" signature="899:977" ph="{...}" />
+            <marker date="1492551974000" expanded="true" signature="1093:1401" ph="/** Returns the move that the computer player should do for the given state. ...*/" />
+            <marker date="1492551974000" expanded="true" signature="1457:1681" ph="{...}" />
+            <marker date="1492551974000" expanded="true" signature="1792:2099" ph="{...}" />
+            <marker date="1492551974000" expanded="true" signature="1872:2075" ph="{...}" />
+            <marker date="1492551974000" expanded="true" signature="2146:2211" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -1078,27 +1077,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/index_1.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="81">
-          <caret line="24" column="0" lean-forward="false" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/typings/multiplayer-games.d.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
           <caret line="4" column="6" lean-forward="false" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ts_output_readonly_do_NOT_change_manually/src/game.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-285">
+          <caret line="94" column="34" lean-forward="true" selection-start-line="94" selection-start-column="34" selection-end-line="94" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/gameLogic.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="185" column="23" lean-forward="false" selection-start-line="185" selection-start-column="23" selection-end-line="185" selection-end-column="23" />
           <folding />
         </state>
       </provider>
@@ -1164,28 +1162,29 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ts_output_readonly_do_NOT_change_manually/src/game.js">
+    <entry file="file://$PROJECT_DIR$/index_1.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-285">
-          <caret line="94" column="34" lean-forward="true" selection-start-line="94" selection-start-column="34" selection-end-line="94" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/gameLogic.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="185" column="23" lean-forward="false" selection-start-line="185" selection-start-column="23" selection-end-line="185" selection-end-column="23" />
-          <folding />
+        <state relative-caret-position="363">
+          <caret line="66" column="41" lean-forward="false" selection-start-line="66" selection-start-column="41" selection-end-line="66" selection-end-column="41" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/game.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-537">
-          <caret line="139" column="26" lean-forward="false" selection-start-line="139" selection-start-column="26" selection-end-line="139" selection-end-column="26" />
+        <state relative-caret-position="396">
+          <caret line="200" column="35" lean-forward="false" selection-start-line="200" selection-start-column="35" selection-end-line="200" selection-end-column="35" />
           <folding>
-            <marker date="1492550252000" expanded="true" signature="1106:1138" ph="{&quot;updateUI&quot;: updateUI...}" />
+            <marker date="1492552403000" expanded="true" signature="1106:1138" ph="{&quot;updateUI&quot;: updateUI...}" />
           </folding>
         </state>
       </provider>

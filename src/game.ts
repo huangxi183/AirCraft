@@ -94,7 +94,7 @@ module game {
   }
 
   export function getCellStyle(row: number, col: number) {
-    let scale = 0.6;
+    let scale = 1.0;
     let opacity = 0.5;
     return {
       transform: `scale(${scale}, ${scale})`,
@@ -191,6 +191,18 @@ module game {
       return false;
   }
 
+  export function showCraft(row: number, col:number): boolean{
+    if(state.board[row][col] > 1 || state.board[row][col] < -1)
+      return true;
+    else
+      return false;
+  }
+  export function showBlank(row: number, col:number): boolean{
+    if(state.board[row][col] < 1 && state.board[row][col] >= -1)
+      return true;
+    else
+      return false;
+  }
 
   //--------->
 

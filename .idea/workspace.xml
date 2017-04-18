@@ -3,25 +3,16 @@
   <component name="ChangeListManager">
     <list default="true" id="e6e3e349-cb79-49e2-93e7-0fa4419ef6aa" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/css/everything.min.css" afterPath="$PROJECT_DIR$/dist/css/everything.min.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/css/maps/everything.min.css.map" afterPath="$PROJECT_DIR$/dist/css/maps/everything.min.css.map" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/index.min.appcache" afterPath="$PROJECT_DIR$/dist/index.min.appcache" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/index.min.html" afterPath="$PROJECT_DIR$/dist/index.min.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/js/everything.js" afterPath="$PROJECT_DIR$/dist/js/everything.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/js/everything.min.js" afterPath="$PROJECT_DIR$/dist/js/everything.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/js/everything.min.js.map" afterPath="$PROJECT_DIR$/dist/js/everything.min.js.map" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/service-worker.js" afterPath="$PROJECT_DIR$/dist/service-worker.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index_1.html" afterPath="$PROJECT_DIR$/index_1.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/end_to_end_tests.ts" afterPath="$PROJECT_DIR$/src/end_to_end_tests.ts" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/game.ts" afterPath="$PROJECT_DIR$/src/game.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gameLogic.ts" afterPath="$PROJECT_DIR$/src/gameLogic.ts" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/game_ori.ts" afterPath="$PROJECT_DIR$/src/game_ori.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ts_output_readonly_do_NOT_change_manually/src/end_to_end_tests.js" afterPath="$PROJECT_DIR$/ts_output_readonly_do_NOT_change_manually/src/end_to_end_tests.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ts_output_readonly_do_NOT_change_manually/src/aiService.js" afterPath="$PROJECT_DIR$/ts_output_readonly_do_NOT_change_manually/src/aiService.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ts_output_readonly_do_NOT_change_manually/src/aiService.js.map" afterPath="$PROJECT_DIR$/ts_output_readonly_do_NOT_change_manually/src/aiService.js.map" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ts_output_readonly_do_NOT_change_manually/src/game.js" afterPath="$PROJECT_DIR$/ts_output_readonly_do_NOT_change_manually/src/game.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ts_output_readonly_do_NOT_change_manually/src/game.js.map" afterPath="$PROJECT_DIR$/ts_output_readonly_do_NOT_change_manually/src/game.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ts_output_readonly_do_NOT_change_manually/src/gameLogic.js" afterPath="$PROJECT_DIR$/ts_output_readonly_do_NOT_change_manually/src/gameLogic.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ts_output_readonly_do_NOT_change_manually/src/gameLogic.js.map" afterPath="$PROJECT_DIR$/ts_output_readonly_do_NOT_change_manually/src/gameLogic.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tsconfig.json" afterPath="$PROJECT_DIR$/tsconfig.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ts_output_readonly_do_NOT_change_manually/src/game_ori.js" afterPath="$PROJECT_DIR$/ts_output_readonly_do_NOT_change_manually/src/game_ori.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ts_output_readonly_do_NOT_change_manually/src/game_ori.js.map" afterPath="$PROJECT_DIR$/ts_output_readonly_do_NOT_change_manually/src/game_ori.js.map" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -48,7 +39,7 @@
             <entry file="file://$PROJECT_DIR$/index_1.html">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="81">
-                  <caret line="24" column="0" lean-forward="true" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+                  <caret line="24" column="0" lean-forward="false" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
                   <folding>
                     <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                     <element signature="n#style#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -66,9 +57,62 @@
           <file leaf-file-name="game_ori.ts" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/game_ori.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="330">
-                  <caret line="175" column="26" lean-forward="false" selection-start-line="175" selection-start-column="26" selection-end-line="175" selection-end-column="26" />
-                  <folding />
+                <state relative-caret-position="255">
+                  <caret line="170" column="10" lean-forward="false" selection-start-line="170" selection-start-column="10" selection-end-line="170" selection-end-column="10" />
+                  <folding>
+                    <marker date="1492550230000" expanded="true" signature="32:154" ph="..." />
+                    <marker date="1492550230000" expanded="true" signature="174:8948" ph="..." />
+                    <marker date="1492550230000" expanded="true" signature="293:494" ph="//..." />
+                    <marker date="1492550230000" expanded="true" signature="1015:1395" ph="{...}" />
+                    <marker date="1492550230000" expanded="true" signature="1277:1386" ph="{&quot;updateUI&quot;: updateUI...}" />
+                    <marker date="1492550230000" expanded="true" signature="1437:2166" ph="{...}" />
+                    <marker date="1492550230000" expanded="true" signature="1446:1691" ph="//..." />
+                    <marker date="1492550230000" expanded="true" signature="1761:2159" ph="{...}" />
+                    <marker date="1492550230000" expanded="true" signature="1936:2045" ph="{...}" />
+                    <marker date="1492550230000" expanded="true" signature="2072:2148" ph="{...}" />
+                    <marker date="1492550230000" expanded="true" signature="2216:2242" ph="{...}" />
+                    <marker date="1492550230000" expanded="true" signature="2306:3933" ph="{...}" />
+                    <marker date="1492550230000" expanded="true" signature="2528:2853" ph="{&quot;playMode&quot;: communityUI.yourPlayerIndex...}" />
+                    <marker date="1492550230000" expanded="true" signature="3005:3118" ph="{...}" />
+                    <marker date="1492550230000" expanded="true" signature="3124:3213" ph="{...}" />
+                    <marker date="1492550230000" expanded="true" signature="3600:3733" ph="{...}" />
+                    <marker date="1492550230000" expanded="true" signature="3680:3724" ph="{...}" />
+                    <marker date="1492550230000" expanded="true" signature="3782:3926" ph="{...}" />
+                    <marker date="1492550230000" expanded="true" signature="3992:4052" ph="{...}" />
+                    <marker date="1492550230000" expanded="true" signature="4113:4707" ph="{...}" />
+                    <marker date="1492550230000" expanded="true" signature="4392:4477" ph="//..." />
+                    <marker date="1492550230000" expanded="true" signature="4608:4699" ph="{&quot;transform&quot;: `scale(${scale}, ${scale})`...}" />
+                    <marker date="1492550230000" expanded="true" signature="4766:5313" ph="{...}" />
+                    <marker date="1492550230000" expanded="true" signature="4992:5048" ph="{...}" />
+                    <marker date="1492550230000" expanded="true" signature="5056:5236" ph="//..." />
+                    <marker date="1492550230000" expanded="true" signature="5356:5432" ph="{...}" />
+                    <marker date="1492550230000" expanded="true" signature="5474:5615" ph="{...}" />
+                    <marker date="1492550230000" expanded="true" signature="5510:5608" ph="{...}" />
+                    <marker date="1492550230000" expanded="true" signature="5657:6012" ph="{...}" />
+                    <marker date="1492550230000" expanded="true" signature="5728:5881" ph="{&quot;endMatchScores&quot;: currentUpdateUI.endMatchScores...}" />
+                    <marker date="1492550230000" expanded="true" signature="6052:6835" ph="{...}" />
+                    <marker date="1492550230000" expanded="true" signature="6078:6135" ph="{...}" />
+                    <marker date="1492550230000" expanded="true" signature="6189:6236" ph="{...}" />
+                    <marker date="1492550230000" expanded="true" signature="6242:6828" ph="{...}" />
+                    <marker date="1492550230000" expanded="true" signature="6319:6468" ph="{&quot;data&quot;: delta...}" />
+                    <marker date="1492550230000" expanded="true" signature="6729:6765" ph="{...}" />
+                    <marker date="1492550230000" expanded="true" signature="6867:6913" ph="{...}" />
+                    <marker date="1492550230000" expanded="true" signature="6949:7004" ph="{...}" />
+                    <marker date="1492550230000" expanded="true" signature="7035:7234" ph="{...}" />
+                    <marker date="1492550230000" expanded="true" signature="7269:7319" ph="{...}" />
+                    <marker date="1492550230000" expanded="true" signature="7351:7402" ph="{...}" />
+                    <marker date="1492550230000" expanded="true" signature="7431:7667" ph="{...}" />
+                    <marker date="1492550230000" expanded="true" signature="7736:8150" ph="{...}" />
+                    <marker date="1492550230000" expanded="true" signature="7866:7976" ph="{...}" />
+                    <marker date="1492550230000" expanded="true" signature="7987:8082" ph="{...}" />
+                    <marker date="1492550230000" expanded="true" signature="8226:8302" ph="{...}" />
+                    <marker date="1492550230000" expanded="true" signature="8401:8528" ph="{...}" />
+                    <marker date="1492550230000" expanded="true" signature="8597:8646" ph="{...}" />
+                    <marker date="1492550230000" expanded="true" signature="8715:8764" ph="{...}" />
+                    <marker date="1492550230000" expanded="true" signature="8843:8943" ph="{...}" />
+                    <marker date="1492550230000" expanded="true" signature="9009:9213" ph="[...]" />
+                    <marker date="1492550230000" expanded="true" signature="9118:9212" ph="{...}" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -77,23 +121,23 @@
       </split-first>
       <split-second>
         <leaf>
-          <file leaf-file-name="game.ts" pinned="false" current-in-tab="false">
+          <file leaf-file-name="game.ts" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/game.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="246">
-                  <caret line="147" column="32" lean-forward="true" selection-start-line="147" selection-start-column="32" selection-end-line="147" selection-end-column="32" />
+                <state relative-caret-position="-537">
+                  <caret line="139" column="26" lean-forward="false" selection-start-line="139" selection-start-column="26" selection-end-line="139" selection-end-column="26" />
                   <folding>
-                    <marker date="1492549827000" expanded="true" signature="1106:1138" ph="{&quot;updateUI&quot;: updateUI...}" />
+                    <marker date="1492550252000" expanded="true" signature="1106:1138" ph="{&quot;updateUI&quot;: updateUI...}" />
                   </folding>
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="gameLogic.ts" pinned="false" current-in-tab="true">
+          <file leaf-file-name="gameLogic.ts" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/gameLogic.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="360">
-                  <caret line="220" column="35" lean-forward="true" selection-start-line="220" selection-start-column="35" selection-end-line="220" selection-end-column="35" />
+                <state relative-caret-position="405">
+                  <caret line="185" column="23" lean-forward="false" selection-start-line="185" selection-start-column="23" selection-end-line="185" selection-end-column="23" />
                   <folding />
                 </state>
               </provider>
@@ -163,6 +207,7 @@
       <find>Can only make a move if the game is</find>
       <find>currentUpdateUI</find>
       <find>didMakeMove</find>
+      <find>curreentUpdateUI</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -178,8 +223,8 @@
         <option value="$PROJECT_DIR$/index_1.html" />
         <option value="$PROJECT_DIR$/dist/js/everything.js" />
         <option value="$PROJECT_DIR$/src/gameLogic.ts" />
-        <option value="$PROJECT_DIR$/src/game.ts" />
         <option value="$PROJECT_DIR$/src/game_ori.ts" />
+        <option value="$PROJECT_DIR$/src/game.ts" />
       </list>
     </option>
   </component>
@@ -223,6 +268,24 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="AirCraft" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AirCraft" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AirCraft" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ts_output_readonly_do_NOT_change_manually" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -393,12 +456,12 @@
       <workItem from="1491150223566" duration="638000" />
       <workItem from="1491523521543" duration="632000" />
       <workItem from="1491762918172" duration="12072000" />
-      <workItem from="1492464255396" duration="9604000" />
+      <workItem from="1492464255396" duration="10110000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="24178000" />
+    <option name="totallyTimeSpent" value="24684000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -446,7 +509,9 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <option name="time" value="1" />
+    </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
@@ -918,16 +983,16 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1492549828000" expanded="true" signature="37:2154" ph="{...}" />
-            <marker date="1492549828000" expanded="true" signature="597:978" ph="{...}" />
-            <marker date="1492549828000" expanded="true" signature="680:942" ph="{...}" />
-            <marker date="1492549828000" expanded="true" signature="735:932" ph="{...}" />
-            <marker date="1492549828000" expanded="true" signature="899:918" ph="{...}" />
-            <marker date="1492549828000" expanded="true" signature="1034:1342" ph="/** Returns the move that the computer player should do for the given state. ...*/" />
-            <marker date="1492549828000" expanded="true" signature="1398:1622" ph="{...}" />
-            <marker date="1492549828000" expanded="true" signature="1733:2040" ph="{...}" />
-            <marker date="1492549828000" expanded="true" signature="1813:2016" ph="{...}" />
-            <marker date="1492549828000" expanded="true" signature="2087:2152" ph="{...}" />
+            <marker date="1492551197000" expanded="true" signature="37:2213" ph="{...}" />
+            <marker date="1492551197000" expanded="true" signature="597:1037" ph="{...}" />
+            <marker date="1492551197000" expanded="true" signature="680:1001" ph="{...}" />
+            <marker date="1492551197000" expanded="true" signature="735:991" ph="{...}" />
+            <marker date="1492551197000" expanded="true" signature="899:977" ph="{...}" />
+            <marker date="1492551197000" expanded="true" signature="1093:1401" ph="/** Returns the move that the computer player should do for the given state. ...*/" />
+            <marker date="1492551197000" expanded="true" signature="1457:1681" ph="{...}" />
+            <marker date="1492551197000" expanded="true" signature="1792:2099" ph="{...}" />
+            <marker date="1492551197000" expanded="true" signature="1872:2075" ph="{...}" />
+            <marker date="1492551197000" expanded="true" signature="2146:2211" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -959,14 +1024,6 @@
           <folding>
             <element signature="n#!!doc" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ts_output_readonly_do_NOT_change_manually/src/game.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="94" column="34" lean-forward="true" selection-start-line="94" selection-start-column="34" selection-end-line="94" selection-end-column="34" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1002,14 +1059,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/typings/multiplayer-games.d.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="6" lean-forward="false" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/turnBasedServices.4.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="226">
@@ -1032,7 +1081,7 @@
     <entry file="file://$PROJECT_DIR$/index_1.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="81">
-          <caret line="24" column="0" lean-forward="true" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+          <caret line="24" column="0" lean-forward="false" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
           <folding>
             <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -1046,29 +1095,98 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/game.ts">
+    <entry file="file://$PROJECT_DIR$/typings/multiplayer-games.d.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="246">
-          <caret line="147" column="32" lean-forward="true" selection-start-line="147" selection-start-column="32" selection-end-line="147" selection-end-column="32" />
-          <folding>
-            <marker date="1492549827000" expanded="true" signature="1106:1138" ph="{&quot;updateUI&quot;: updateUI...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/gameLogic.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="220" column="35" lean-forward="true" selection-start-line="220" selection-start-column="35" selection-end-line="220" selection-end-column="35" />
+        <state relative-caret-position="60">
+          <caret line="4" column="6" lean-forward="false" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/game_ori.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="175" column="26" lean-forward="false" selection-start-line="175" selection-start-column="26" selection-end-line="175" selection-end-column="26" />
+        <state relative-caret-position="255">
+          <caret line="170" column="10" lean-forward="false" selection-start-line="170" selection-start-column="10" selection-end-line="170" selection-end-column="10" />
+          <folding>
+            <marker date="1492550230000" expanded="true" signature="32:154" ph="..." />
+            <marker date="1492550230000" expanded="true" signature="174:8948" ph="..." />
+            <marker date="1492550230000" expanded="true" signature="293:494" ph="//..." />
+            <marker date="1492550230000" expanded="true" signature="1015:1395" ph="{...}" />
+            <marker date="1492550230000" expanded="true" signature="1277:1386" ph="{&quot;updateUI&quot;: updateUI...}" />
+            <marker date="1492550230000" expanded="true" signature="1437:2166" ph="{...}" />
+            <marker date="1492550230000" expanded="true" signature="1446:1691" ph="//..." />
+            <marker date="1492550230000" expanded="true" signature="1761:2159" ph="{...}" />
+            <marker date="1492550230000" expanded="true" signature="1936:2045" ph="{...}" />
+            <marker date="1492550230000" expanded="true" signature="2072:2148" ph="{...}" />
+            <marker date="1492550230000" expanded="true" signature="2216:2242" ph="{...}" />
+            <marker date="1492550230000" expanded="true" signature="2306:3933" ph="{...}" />
+            <marker date="1492550230000" expanded="true" signature="2528:2853" ph="{&quot;playMode&quot;: communityUI.yourPlayerIndex...}" />
+            <marker date="1492550230000" expanded="true" signature="3005:3118" ph="{...}" />
+            <marker date="1492550230000" expanded="true" signature="3124:3213" ph="{...}" />
+            <marker date="1492550230000" expanded="true" signature="3600:3733" ph="{...}" />
+            <marker date="1492550230000" expanded="true" signature="3680:3724" ph="{...}" />
+            <marker date="1492550230000" expanded="true" signature="3782:3926" ph="{...}" />
+            <marker date="1492550230000" expanded="true" signature="3992:4052" ph="{...}" />
+            <marker date="1492550230000" expanded="true" signature="4113:4707" ph="{...}" />
+            <marker date="1492550230000" expanded="true" signature="4392:4477" ph="//..." />
+            <marker date="1492550230000" expanded="true" signature="4608:4699" ph="{&quot;transform&quot;: `scale(${scale}, ${scale})`...}" />
+            <marker date="1492550230000" expanded="true" signature="4766:5313" ph="{...}" />
+            <marker date="1492550230000" expanded="true" signature="4992:5048" ph="{...}" />
+            <marker date="1492550230000" expanded="true" signature="5056:5236" ph="//..." />
+            <marker date="1492550230000" expanded="true" signature="5356:5432" ph="{...}" />
+            <marker date="1492550230000" expanded="true" signature="5474:5615" ph="{...}" />
+            <marker date="1492550230000" expanded="true" signature="5510:5608" ph="{...}" />
+            <marker date="1492550230000" expanded="true" signature="5657:6012" ph="{...}" />
+            <marker date="1492550230000" expanded="true" signature="5728:5881" ph="{&quot;endMatchScores&quot;: currentUpdateUI.endMatchScores...}" />
+            <marker date="1492550230000" expanded="true" signature="6052:6835" ph="{...}" />
+            <marker date="1492550230000" expanded="true" signature="6078:6135" ph="{...}" />
+            <marker date="1492550230000" expanded="true" signature="6189:6236" ph="{...}" />
+            <marker date="1492550230000" expanded="true" signature="6242:6828" ph="{...}" />
+            <marker date="1492550230000" expanded="true" signature="6319:6468" ph="{&quot;data&quot;: delta...}" />
+            <marker date="1492550230000" expanded="true" signature="6729:6765" ph="{...}" />
+            <marker date="1492550230000" expanded="true" signature="6867:6913" ph="{...}" />
+            <marker date="1492550230000" expanded="true" signature="6949:7004" ph="{...}" />
+            <marker date="1492550230000" expanded="true" signature="7035:7234" ph="{...}" />
+            <marker date="1492550230000" expanded="true" signature="7269:7319" ph="{...}" />
+            <marker date="1492550230000" expanded="true" signature="7351:7402" ph="{...}" />
+            <marker date="1492550230000" expanded="true" signature="7431:7667" ph="{...}" />
+            <marker date="1492550230000" expanded="true" signature="7736:8150" ph="{...}" />
+            <marker date="1492550230000" expanded="true" signature="7866:7976" ph="{...}" />
+            <marker date="1492550230000" expanded="true" signature="7987:8082" ph="{...}" />
+            <marker date="1492550230000" expanded="true" signature="8226:8302" ph="{...}" />
+            <marker date="1492550230000" expanded="true" signature="8401:8528" ph="{...}" />
+            <marker date="1492550230000" expanded="true" signature="8597:8646" ph="{...}" />
+            <marker date="1492550230000" expanded="true" signature="8715:8764" ph="{...}" />
+            <marker date="1492550230000" expanded="true" signature="8843:8943" ph="{...}" />
+            <marker date="1492550230000" expanded="true" signature="9009:9213" ph="[...]" />
+            <marker date="1492550230000" expanded="true" signature="9118:9212" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ts_output_readonly_do_NOT_change_manually/src/game.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-285">
+          <caret line="94" column="34" lean-forward="true" selection-start-line="94" selection-start-column="34" selection-end-line="94" selection-end-column="34" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/gameLogic.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="185" column="23" lean-forward="false" selection-start-line="185" selection-start-column="23" selection-end-line="185" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/game.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-537">
+          <caret line="139" column="26" lean-forward="false" selection-start-line="139" selection-start-column="26" selection-end-line="139" selection-end-column="26" />
+          <folding>
+            <marker date="1492550252000" expanded="true" signature="1106:1138" ph="{&quot;updateUI&quot;: updateUI...}" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -43,7 +43,7 @@ var game;
         return {};
     }
     function communityUI(communityUI) {
-        game.currentCommunityUI = communityUI;
+        currentCommunityUI = communityUI;
         log.info("Game got communityUI:", communityUI);
         // If only proposals changed, then do NOT call updateUI. Then update proposals.
         var nextUpdateUI = {
@@ -55,15 +55,16 @@ var game;
             endMatchScores: communityUI.endMatchScores,
             yourPlayerIndex: communityUI.yourPlayerIndex,
         };
-        if (angular.equals(game.yourPlayerInfo, communityUI.yourPlayerInfo) &&
+        if (angular.equals(yourPlayerInfo, communityUI.yourPlayerInfo) &&
             game.currentUpdateUI && angular.equals(game.currentUpdateUI, nextUpdateUI)) {
+            // We're not calling updateUI to avoid disrupting the player if he's in the middle of a move.
         }
         else {
             // Things changed, so call updateUI.
             updateUI(nextUpdateUI);
         }
         // This must be after calling updateUI, because we nullify things there (like playerIdToProposal&proposals&etc)
-        game.yourPlayerInfo = communityUI.yourPlayerInfo;
+        yourPlayerInfo = communityUI.yourPlayerInfo;
         var playerIdToProposal = communityUI.playerIdToProposal;
         game.didMakeMove = !!playerIdToProposal[communityUI.yourPlayerInfo.playerId];
         game.proposals = [];
@@ -131,7 +132,7 @@ var game;
         log.info("Clicked on cell:", row, col);
         var nextMove;
         try {
-            nextMove = gameLogic.createMove(game.state, row, col, curreentUpdateUI.turnIndex);
+            nextMove = gameLogic.createMove(game.state, row, col, game.currentUpdateUI.turnIndex);
         }
         catch (e) {
             log.info(e);

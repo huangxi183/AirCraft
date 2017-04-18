@@ -1,232 +1,247 @@
-;
-var game;
-(function (game) {
-    game.$rootScope = null;
-    game.$timeout = null;
-    // Global variables are cleared when getting updateUI.
-    // I export all variables to make it easy to debug in the browser by
-    // simply typing in the console, e.g.,
-    // game.currentUpdateUI
-    game.currentUpdateUI = null;
-    game.didMakeMove = false; // You can only make one move per updateUI
-    game.animationEndedTimeout = null;
-    game.state = null;
-    // For community games.
-    game.currentCommunityUI = null;
-    game.proposals = null;
-    game.yourPlayerInfo = null;
-    function init($rootScope_, $timeout_) {
-        game.$rootScope = $rootScope_;
-        game.$timeout = $timeout_;
-        registerServiceWorker();
-        translate.setTranslations(getTranslations());
-        translate.setLanguage('en');
-        resizeGameAreaService.setWidthToHeight(1);
-        gameService.setGame({
-            updateUI: updateUI,
-            communityUI: communityUI,
-            getStateForOgImage: null,
-        });
-    }
-    game.init = init;
-    function registerServiceWorker() {
-        // I prefer to use appCache over serviceWorker
-        // (because iOS doesn't support serviceWorker, so we have to use appCache)
-        // I've added this code for a future where all browsers support serviceWorker (so we can deprecate appCache!)
-        if (!window.applicationCache && 'serviceWorker' in navigator) {
-            var n = navigator;
-            log.log('Calling serviceWorker.register');
-            n.serviceWorker.register('service-worker.js').then(function (registration) {
-                log.log('ServiceWorker registration successful with scope: ', registration.scope);
-            }).catch(function (err) {
-                log.log('ServiceWorker registration failed: ', err);
-            });
-        }
-    }
-    function getTranslations() {
-        return {};
-    }
-    function communityUI(communityUI) {
-        game.currentCommunityUI = communityUI;
-        log.info("Game got communityUI:", communityUI);
-        // If only proposals changed, then do NOT call updateUI. Then update proposals.
-        var nextUpdateUI = {
-            playersInfo: [],
-            playMode: communityUI.yourPlayerIndex,
-            numberOfPlayers: communityUI.numberOfPlayers,
-            state: communityUI.state,
-            turnIndex: communityUI.turnIndex,
-            endMatchScores: communityUI.endMatchScores,
-            yourPlayerIndex: communityUI.yourPlayerIndex,
-        };
-        if (angular.equals(game.yourPlayerInfo, communityUI.yourPlayerInfo) &&
-            game.currentUpdateUI && angular.equals(game.currentUpdateUI, nextUpdateUI)) {
-        }
-        else {
-            // Things changed, so call updateUI.
-            updateUI(nextUpdateUI);
-        }
-        // This must be after calling updateUI, because we nullify things there (like playerIdToProposal&proposals&etc)
-        game.yourPlayerInfo = communityUI.yourPlayerInfo;
-        var playerIdToProposal = communityUI.playerIdToProposal;
-        game.didMakeMove = !!playerIdToProposal[communityUI.yourPlayerInfo.playerId];
-        game.proposals = [];
-        for (var i = 0; i < gameLogic.ROWS; i++) {
-            game.proposals[i] = [];
-            for (var j = 0; j < gameLogic.COLS; j++) {
-                game.proposals[i][j] = 0;
-            }
-        }
-        for (var playerId in playerIdToProposal) {
-            var proposal = playerIdToProposal[playerId];
-            var delta = proposal.data;
-            game.proposals[delta.row][delta.col]++;
-        }
-    }
-    game.communityUI = communityUI;
-    function isProposal(row, col) {
-        return game.proposals && game.proposals[row][col] > 0;
-    }
-    game.isProposal = isProposal;
-    function getCellStyle(row, col) {
-        if (!isProposal(row, col))
-            return {};
-        // proposals[row][col] is > 0
-        var countZeroBased = game.proposals[row][col] - 1;
-        var maxCount = game.currentCommunityUI.numberOfPlayersRequiredToMove - 2;
-        var ratio = maxCount == 0 ? 1 : countZeroBased / maxCount; // a number between 0 and 1 (inclusive).
-        // scale will be between 0.6 and 0.8.
-        var scale = 0.6 + 0.2 * ratio;
-        // opacity between 0.5 and 0.7
-        var opacity = 0.5 + 0.2 * ratio;
-        return {
-            transform: "scale(" + scale + ", " + scale + ")",
-            opacity: "" + opacity,
-        };
-    }
-    game.getCellStyle = getCellStyle;
-    function updateUI(params) {
-        log.info("Sue got updateUI:", params);
-        game.didMakeMove = false; // Only one move per updateUI
-        game.currentUpdateUI = params;
-        clearAnimationTimeout();
-        game.state = params.state;
-        if (isFirstMove()) {
-            game.state = gameLogic.getInitialState();
-        }
-        // We calculate the AI move only after the animation finishes,
-        // because if we call aiService now
-        // then the animation will be paused until the javascript finishes.
-        game.animationEndedTimeout = game.$timeout(animationEndedCallback, 500);
-    }
-    game.updateUI = updateUI;
-    function animationEndedCallback() {
-        log.info("Animation ended");
-        maybeSendComputerMove();
-    }
-    function clearAnimationTimeout() {
-        if (game.animationEndedTimeout) {
-            game.$timeout.cancel(game.animationEndedTimeout);
-            game.animationEndedTimeout = null;
-        }
-    }
-    function maybeSendComputerMove() {
-        if (!isComputerTurn())
-            return;
-        var currentMove = {
-            endMatchScores: game.currentUpdateUI.endMatchScores,
-            state: game.currentUpdateUI.state,
-            turnIndex: game.currentUpdateUI.turnIndex,
-        };
-        var move = aiService.findComputerMove(currentMove);
-        log.info("Computer move: ", move);
-        makeMove(move);
-    }
-    function makeMove(move) {
-        if (game.didMakeMove) {
-            return;
-        }
-        game.didMakeMove = true;
-        if (!game.proposals) {
-            gameService.makeMove(move);
-        }
-        else {
-            var delta = move.state.delta;
-            var myProposal = {
-                data: delta,
-                chatDescription: '' + (delta.row + 1) + 'x' + (delta.col + 1),
-                playerInfo: game.yourPlayerInfo,
-            };
-            // Decide whether we make a move or not (if we have <currentCommunityUI.numberOfPlayersRequiredToMove-1> other proposals supporting the same thing).
-            if (game.proposals[delta.row][delta.col] < game.currentCommunityUI.numberOfPlayersRequiredToMove - 1) {
-                move = null;
-            }
-            gameService.communityMove(myProposal, move);
-        }
-    }
-    function isFirstMove() {
-        return !game.currentUpdateUI.state;
-    }
-    function yourPlayerIndex() {
-        return game.currentUpdateUI.yourPlayerIndex;
-    }
-    function isComputer() {
-        var playerInfo = game.currentUpdateUI.playersInfo[game.currentUpdateUI.yourPlayerIndex];
-        // In community games, playersInfo is [].
-        return playerInfo && playerInfo.playerId === '';
-    }
-    function isComputerTurn() {
-        return isMyTurn() && isComputer();
-    }
-    function isHumanTurn() {
-        return isMyTurn() && !isComputer();
-    }
-    function isMyTurn() {
-        return !game.didMakeMove &&
-            game.currentUpdateUI.turnIndex >= 0 &&
-            game.currentUpdateUI.yourPlayerIndex === game.currentUpdateUI.turnIndex; // it's my turn
-    }
-    function cellClicked(row, col) {
-        log.info("Clicked on cell:", row, col);
-        if (!isHumanTurn())
-            return;
-        var nextMove = null;
-        try {
-            nextMove = gameLogic.createMove(game.state, row, col, game.currentUpdateUI.turnIndex);
-        }
-        catch (e) {
-            log.info(["Cell is already full in position:", row, col]);
-            return;
-        }
-        // Move is legal, make it!
-        makeMove(nextMove);
-    }
-    game.cellClicked = cellClicked;
-    function shouldShowImage(row, col) {
-        return game.state.board[row][col] !== "" || isProposal(row, col);
-    }
-    game.shouldShowImage = shouldShowImage;
-    function isPiece(row, col, turnIndex, pieceKind) {
-        return game.state.board[row][col] === pieceKind || (isProposal(row, col) && game.currentUpdateUI.turnIndex == turnIndex);
-    }
-    function isPieceX(row, col) {
-        return isPiece(row, col, 0, 'X');
-    }
-    game.isPieceX = isPieceX;
-    function isPieceO(row, col) {
-        return isPiece(row, col, 1, 'O');
-    }
-    game.isPieceO = isPieceO;
-    function shouldSlowlyAppear(row, col) {
-        return game.state.delta &&
-            game.state.delta.row === row && game.state.delta.col === col;
-    }
-    game.shouldSlowlyAppear = shouldSlowlyAppear;
-})(game || (game = {}));
-angular.module('myApp', ['gameServices'])
-    .run(['$rootScope', '$timeout',
-    function ($rootScope, $timeout) {
-        $rootScope['game'] = game;
-        game.init($rootScope, $timeout);
-    }]);
+// interface SupportedLanguages {
+//   en: string, iw: string,
+//   pt: string, zh: string,
+//   el: string, fr: string,
+//   hi: string, es: string,
+// };
+//
+// module game {
+//   export let $rootScope: angular.IScope = null;
+//   export let $timeout: angular.ITimeoutService = null;
+//
+//   // Global variables are cleared when getting updateUI.
+//   // I export all variables to make it easy to debug in the browser by
+//   // simply typing in the console, e.g.,
+//   // game.currentUpdateUI
+//   export let currentUpdateUI: IUpdateUI = null;
+//   export let didMakeMove: boolean = false; // You can only make one move per updateUI
+//   export let animationEndedTimeout: ng.IPromise<any> = null;
+//   export let state: IState = null;
+//   // For community games.
+//   export let currentCommunityUI: ICommunityUI = null;
+//   export let proposals: number[][] = null;
+//   export let yourPlayerInfo: IPlayerInfo = null;
+//
+//   export function init($rootScope_: angular.IScope, $timeout_: angular.ITimeoutService) {
+//     $rootScope = $rootScope_;
+//     $timeout = $timeout_;
+//     registerServiceWorker();
+//     translate.setTranslations(getTranslations());
+//     translate.setLanguage('en');
+//     resizeGameAreaService.setWidthToHeight(1);
+//     gameService.setGame({
+//       updateUI: updateUI,
+//       communityUI: communityUI,
+//       getStateForOgImage: null,
+//     });
+//   }
+//
+//   function registerServiceWorker() {
+//     // I prefer to use appCache over serviceWorker
+//     // (because iOS doesn't support serviceWorker, so we have to use appCache)
+//     // I've added this code for a future where all browsers support serviceWorker (so we can deprecate appCache!)
+//     if (!window.applicationCache && 'serviceWorker' in navigator) {
+//       let n: any = navigator;
+//       log.log('Calling serviceWorker.register');
+//       n.serviceWorker.register('service-worker.js').then(function(registration: any) {
+//         log.log('ServiceWorker registration successful with scope: ',    registration.scope);
+//       }).catch(function(err: any) {
+//         log.log('ServiceWorker registration failed: ', err);
+//       });
+//     }
+//   }
+//
+//   function getTranslations(): Translations {
+//     return {};
+//   }
+//
+//   export function communityUI(communityUI: ICommunityUI) {
+//     currentCommunityUI = communityUI;
+//     log.info("Game got communityUI:", communityUI);
+//     // If only proposals changed, then do NOT call updateUI. Then update proposals.
+//     let nextUpdateUI: IUpdateUI = {
+//       playersInfo: [],
+//       playMode: communityUI.yourPlayerIndex,
+//       numberOfPlayers: communityUI.numberOfPlayers,
+//       state: communityUI.state,
+//       turnIndex: communityUI.turnIndex,
+//       endMatchScores: communityUI.endMatchScores,
+//       yourPlayerIndex: communityUI.yourPlayerIndex,
+//     };
+//     if (angular.equals(yourPlayerInfo, communityUI.yourPlayerInfo) &&
+//         currentUpdateUI && angular.equals(currentUpdateUI, nextUpdateUI)) {
+//       // We're not calling updateUI to avoid disrupting the player if he's in the middle of a move.
+//     } else {
+//       // Things changed, so call updateUI.
+//       updateUI(nextUpdateUI);
+//     }
+//     // This must be after calling updateUI, because we nullify things there (like playerIdToProposal&proposals&etc)
+//     yourPlayerInfo = communityUI.yourPlayerInfo;
+//     let playerIdToProposal = communityUI.playerIdToProposal;
+//     didMakeMove = !!playerIdToProposal[communityUI.yourPlayerInfo.playerId];
+//     proposals = [];
+//     for (let i = 0; i < gameLogic.ROWS; i++) {
+//       proposals[i] = [];
+//       for (let j = 0; j < gameLogic.COLS; j++) {
+//         proposals[i][j] = 0;
+//       }
+//     }
+//     for (let playerId in playerIdToProposal) {
+//       let proposal = playerIdToProposal[playerId];
+//       let delta = proposal.data;
+//       proposals[delta.row][delta.col]++;
+//     }
+//   }
+//   export function isProposal(row: number, col: number) {
+//     return proposals && proposals[row][col] > 0;
+//   }
+//   export function getCellStyle(row: number, col: number) {
+//     if (!isProposal(row, col)) return {};
+//     // proposals[row][col] is > 0
+//     let countZeroBased = proposals[row][col] - 1;
+//     let maxCount = currentCommunityUI.numberOfPlayersRequiredToMove - 2;
+//     let ratio = maxCount == 0 ? 1 : countZeroBased / maxCount; // a number between 0 and 1 (inclusive).
+//     // scale will be between 0.6 and 0.8.
+//     let scale = 0.6 + 0.2 * ratio;
+//     // opacity between 0.5 and 0.7
+//     let opacity = 0.5 + 0.2 * ratio;
+//     return {
+//       transform: `scale(${scale}, ${scale})`,
+//       opacity: "" + opacity,
+//     };
+//   }
+//
+//   export function updateUI(params: IUpdateUI): void {
+//     log.info("Sue got updateUI:", params);
+//     didMakeMove = false; // Only one move per updateUI
+//     currentUpdateUI = params;
+//     clearAnimationTimeout();
+//     state = params.state;
+//     if (isFirstMove()) {
+//       state = gameLogic.getInitialState();
+//     }
+//     // We calculate the AI move only after the animation finishes,
+//     // because if we call aiService now
+//     // then the animation will be paused until the javascript finishes.
+//     animationEndedTimeout = $timeout(animationEndedCallback, 500);
+//   }
+//
+//   function animationEndedCallback() {
+//     log.info("Animation ended");
+//     maybeSendComputerMove();
+//   }
+//
+//   function clearAnimationTimeout() {
+//     if (animationEndedTimeout) {
+//       $timeout.cancel(animationEndedTimeout);
+//       animationEndedTimeout = null;
+//     }
+//   }
+//
+//   function maybeSendComputerMove() {
+//     if (!isComputerTurn()) return;
+//     let currentMove:IMove = {
+//       endMatchScores: currentUpdateUI.endMatchScores,
+//       state: currentUpdateUI.state,
+//       turnIndex: currentUpdateUI.turnIndex,
+//     }
+//     let move = aiService.findComputerMove(currentMove);
+//     log.info("Computer move: ", move);
+//     makeMove(move);
+//   }
+//
+//   function makeMove(move: IMove) {
+//     if (didMakeMove) { // Only one move per updateUI
+//       return;
+//     }
+//     didMakeMove = true;
+//
+//     if (!proposals) {
+//       gameService.makeMove(move);
+//     } else {
+//       let delta = move.state.delta;
+//       let myProposal:IProposal = {
+//         data: delta,
+//         chatDescription: '' + (delta.row + 1) + 'x' + (delta.col + 1),
+//         playerInfo: yourPlayerInfo,
+//       };
+//       // Decide whether we make a move or not (if we have <currentCommunityUI.numberOfPlayersRequiredToMove-1> other proposals supporting the same thing).
+//       if (proposals[delta.row][delta.col] < currentCommunityUI.numberOfPlayersRequiredToMove - 1) {
+//         move = null;
+//       }
+//       gameService.communityMove(myProposal, move);
+//     }
+//   }
+//
+//   function isFirstMove() {
+//     return !currentUpdateUI.state;
+//   }
+//
+//   function yourPlayerIndex() {
+//     return currentUpdateUI.yourPlayerIndex;
+//   }
+//
+//   function isComputer() {
+//     let playerInfo = currentUpdateUI.playersInfo[currentUpdateUI.yourPlayerIndex];
+//     // In community games, playersInfo is [].
+//     return playerInfo && playerInfo.playerId === '';
+//   }
+//
+//   function isComputerTurn() {
+//     return isMyTurn() && isComputer();
+//   }
+//
+//   function isHumanTurn() {
+//     return isMyTurn() && !isComputer();
+//   }
+//
+//   function isMyTurn() {
+//     return !didMakeMove && // you can only make one move per updateUI.
+//         currentUpdateUI.turnIndex >= 0 && // game is ongoing
+//         currentUpdateUI.yourPlayerIndex === currentUpdateUI.turnIndex; // it's my turn
+//   }
+//
+//   export function cellClicked(row: number, col: number): void {
+//     log.info("Clicked on cell:", row, col);
+//     if (!isHumanTurn()) return;
+//     let nextMove: IMove = null;
+//     try {
+//       nextMove = gameLogic.createMove(
+//           state, row, col, currentUpdateUI.turnIndex);
+//     } catch (e) {
+//       log.info(["Cell is already full in position:", row, col]);
+//       return;
+//     }
+//     // Move is legal, make it!
+//     makeMove(nextMove);
+//   }
+//
+//   export function shouldShowImage(row: number, col: number): boolean {
+//     return state.board[row][col] !== "" || isProposal(row, col);
+//   }
+//
+//   function isPiece(row: number, col: number, turnIndex: number, pieceKind: string): boolean {
+//     return state.board[row][col] === pieceKind || (isProposal(row, col) && currentUpdateUI.turnIndex == turnIndex);
+//   }
+//
+//   export function isPieceX(row: number, col: number): boolean {
+//     return isPiece(row, col, 0, 'X');
+//   }
+//
+//   export function isPieceO(row: number, col: number): boolean {
+//     return isPiece(row, col, 1, 'O');
+//   }
+//
+//   export function shouldSlowlyAppear(row: number, col: number): boolean {
+//     return state.delta &&
+//         state.delta.row === row && state.delta.col === col;
+//   }
+// }
+//
+// angular.module('myApp', ['gameServices'])
+//     .run(['$rootScope', '$timeout',
+//       function ($rootScope: angular.IScope, $timeout: angular.ITimeoutService) {
+//         $rootScope['game'] = game;
+//         game.init($rootScope, $timeout);
+//       }]); 
 //# sourceMappingURL=game_ori.js.map

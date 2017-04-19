@@ -30992,7 +30992,6 @@ var gamingPlatform;
 })(gamingPlatform || (gamingPlatform = {}));
 //# sourceMappingURL=log.js.map
 ;
-
 var gamingPlatform;
 (function (gamingPlatform) {
     var messageService;
@@ -31635,8 +31634,6 @@ var gamingPlatform;
 })(gamingPlatform || (gamingPlatform = {}));
 //# sourceMappingURL=alphaBetaService.js.map
 ;
-
-
 var gamingPlatform;
 (function (gamingPlatform) {
     var resizeGameAreaService;
@@ -31646,13 +31643,11 @@ var gamingPlatform;
         var oldSizes = null;
         var doc = window.document;
         var gameArea;
-        var gameArea_1;
         function setWidthToHeight(_widthToHeight, _dimensionsChanged) {
             gamingPlatform.log.info("setWidthToHeight to ", _widthToHeight);
             widthToHeight = _widthToHeight;
             dimensionsChanged = _dimensionsChanged;
             gameArea = doc.getElementById('gameArea');
-            gameArea_1 = doc.getElementById('gameArea_1');
             if (!gameArea) {
                 throw new Error("You forgot to add to your <body> this div: <div id='gameArea'>...</div>");
             }
@@ -31674,7 +31669,7 @@ var gamingPlatform;
             if (widthToHeight === null) {
                 return;
             }
-            var originalWindowWidth = window.innerWidth / 2; // doc.body.clientWidth
+            var originalWindowWidth = window.innerWidth; // doc.body.clientWidth
             var originalWindowHeight = window.innerHeight; // I saw cases where doc.body.clientHeight was 0.
             var windowWidth = originalWindowWidth;
             var windowHeight = originalWindowHeight;
@@ -31691,11 +31686,9 @@ var gamingPlatform;
             if (windowWidth === 0 || windowHeight === 0) {
                 gamingPlatform.log.info("Window width/height is 0 so hiding gameArea div.");
                 gameArea.style.display = "none";
-                gameArea_1.style.display = "none";
                 return;
             }
             gameArea.style.display = "block";
-            gameArea_1.style.display = "block";
             gamingPlatform.$rootScope.$apply(function () {
                 var newWidthToHeight = windowWidth / windowHeight;
                 if (newWidthToHeight > widthToHeight) {
@@ -31712,15 +31705,10 @@ var gamingPlatform;
                 windowWidth *= keepMargin;
                 windowHeight *= keepMargin;
                 gameArea.style.width = windowWidth + 'px';
-                gameArea_1.style.width = windowWidth + 'px';
                 gameArea.style.height = windowHeight + 'px';
-                gameArea_1.style.height = windowHeight + 'px';
-                gameArea_1.style.position = "absolute";
                 gameArea.style.position = "absolute";
-                //hx change size
-                //gameArea.style.left = 0 + 'px';
+                gameArea.style.left = ((originalWindowWidth - windowWidth) / 2) + 'px';
                 gameArea.style.top = ((originalWindowHeight - windowHeight) / 2) + 'px';
-                gameArea_1.style.top = ((originalWindowHeight - windowHeight) / 2) + 'px';
                 if (dimensionsChanged)
                     dimensionsChanged(windowWidth, windowHeight);
                 setTimeout(rescale, 10); // sometimes it takes a tiny bit for innerWidth&height to update.
@@ -31736,7 +31724,6 @@ var gamingPlatform;
 })(gamingPlatform || (gamingPlatform = {}));
 //# sourceMappingURL=resizeGameAreaService.js.map
 ;
-
 var gamingPlatform;
 (function (gamingPlatform) {
     // This can't be a module, because we use it like:  translate(...) and not like translate.foobar(...)
@@ -31927,99 +31914,6 @@ var gamingPlatform;
     });
 })(gamingPlatform || (gamingPlatform = {}));
 //# sourceMappingURL=angularExceptionHandler.js.map
-
-
-// var gamingPlatform;
-// (function (gamingPlatform) {
-//     var resizeGameAreaService;
-//     (function (resizeGameAreaService) {
-//         var widthToHeight = null;
-//         var dimensionsChanged = null;
-//         var oldSizes = null;
-//         var doc = window.document;
-//         var gameArea;
-//         function setWidthToHeight(_widthToHeight, _dimensionsChanged) {
-//             gamingPlatform.log.info("setWidthToHeight to ", _widthToHeight);
-//             widthToHeight = _widthToHeight;
-//             dimensionsChanged = _dimensionsChanged;
-//             gameArea = doc.getElementById('gameArea_1');
-//             if (!gameArea) {
-//                 throw new Error("You forgot to add to your <body> this div: <div id='gameArea'>...</div>");
-//             }
-//             oldSizes = null;
-//             rescale();
-//             // on iOS there was a bug, if you clicked on a ycheckers notification (when app was killed)
-//             // then you would miss the animation (because width&height are initially 0, so it took a second to be shown).
-//             // So I added these timeouts.
-//             // we usually call setWidthToHeight and gameService.setGame (which sends gameReady) together,
-//             // so the iframe will be visilble very soon...
-//             setTimeout(rescale, 10);
-//             setTimeout(rescale, 100);
-//         }
-//         resizeGameAreaService.setWidthToHeight = setWidthToHeight;
-//         function round2(num) {
-//             return Math.round(num * 100) / 100;
-//         }
-//         function rescale() {
-//             if (widthToHeight === null) {
-//                 return;
-//             }
-//             var originalWindowWidth = window.innerWidth / 2; // doc.body.clientWidth
-//             var originalWindowHeight = window.innerHeight; // I saw cases where doc.body.clientHeight was 0.
-//             var windowWidth = originalWindowWidth;
-//             var windowHeight = originalWindowHeight;
-//             if (oldSizes !== null) {
-//                 if (oldSizes.windowWidth === windowWidth &&
-//                     oldSizes.windowHeight === windowHeight) {
-//                     return; // nothing changed, so no need to change the transformations.
-//                 }
-//             }
-//             oldSizes = {
-//                 windowWidth: windowWidth,
-//                 windowHeight: windowHeight
-//             };
-//             if (windowWidth === 0 || windowHeight === 0) {
-//                 gamingPlatform.log.info("Window width/height is 0 so hiding gameArea div.");
-//                 gameArea.style.display = "none";
-//                 return;
-//             }
-//             gameArea.style.display = "block";
-//             gamingPlatform.$rootScope.$apply(function () {
-//                 var newWidthToHeight = windowWidth / windowHeight;
-//                 if (newWidthToHeight > widthToHeight) {
-//                     windowWidth = round2(windowHeight * widthToHeight);
-//                 }
-//                 else {
-//                     windowHeight = round2(windowWidth / widthToHeight);
-//                 }
-//                 gamingPlatform.log.info("Window size is " + oldSizes.windowWidth + "x" + oldSizes.windowHeight +
-//                     " so setting gameArea size to " + windowWidth + "x" + windowHeight +
-//                     " because widthToHeight=" + widthToHeight);
-//                 // Take 5% margin (so the game won't touch the end of the screen)
-//                 var keepMargin = 0.95;
-//                 windowWidth *= keepMargin;
-//                 windowHeight *= keepMargin;
-//                 gameArea.style.width = windowWidth + 'px';
-//                 gameArea.style.height = windowHeight + 'px';
-//                 gameArea.style.position = "absolute";
-//                 //hx change size
-//                 //gameArea.style.left = 0 + 'px';
-//                 gameArea.style.top = ((originalWindowHeight - windowHeight) / 2) + 'px';
-//                 if (dimensionsChanged)
-//                     dimensionsChanged(windowWidth, windowHeight);
-//                 setTimeout(rescale, 10); // sometimes it takes a tiny bit for innerWidth&height to update.
-//             });
-//         }
-//         doc.addEventListener("onresize", rescale);
-//         doc.addEventListener("orientationchange", rescale);
-//         if (window.matchMedia)
-//             window.matchMedia('(orientation: portrait)').addListener(rescale);
-//         setInterval(rescale, 300);
-//     })(resizeGameAreaService = gamingPlatform.resizeGameAreaService || (gamingPlatform.resizeGameAreaService = {}));
-//     var typeCheck_resizeGameAreaService = resizeGameAreaService;
-// })(gamingPlatform || (gamingPlatform = {}));
-// //# sourceMappingURL=resizeGameAreaService.js.map
-// ;
 ;
 var gameService = gamingPlatform.gameService;
 var alphaBetaService = gamingPlatform.alphaBetaService;
@@ -32031,7 +31925,7 @@ var gameLogic;
 (function (gameLogic) {
     gameLogic.ROWS = 6;
     gameLogic.COLS = 6;
-    var points_to_win = 10;
+    var points_to_win = [10, 10];
     var head = { index: Math.floor(Math.random() * 20) + 1, x: 0, y: 0, direct: 0 };
     /** Returns the initial AirCraft board, which is a ROWSxCOLS matrix containing ''. */
     function getInitialBoard() {
@@ -32179,7 +32073,7 @@ var gameLogic;
     }
     gameLogic.getInitialBoard = getInitialBoard;
     function getInitialState() {
-        return { board: getInitialBoard(), delta: null };
+        return { board: [getInitialBoard(), getInitialBoard()], delta: null };
     }
     gameLogic.getInitialState = getInitialState;
     /**
@@ -32190,8 +32084,8 @@ var gameLogic;
      *      ['X', 'O', ''],
      *      ['X', '', '']]
      */
-    function winOrNot() {
-        if (points_to_win <= 0)
+    function winOrNot(turnIndexBeforeMove) {
+        if (points_to_win[turnIndexBeforeMove] <= 0)
             return true;
         else
             return false;
@@ -32204,30 +32098,41 @@ var gameLogic;
         if (!stateBeforeMove) {
             stateBeforeMove = getInitialState();
         }
-        var board = stateBeforeMove.board;
+        //same index = move board; otherwise show board
+        var board = stateBeforeMove.board[turnIndexBeforeMove];
         if (board[row][col] < 0) {
             throw new Error("One can only make a move in an empty position!");
         }
-        if (winOrNot()) {
+        if (winOrNot(turnIndexBeforeMove)) {
             throw new Error("Can only make a move if the game is not over!");
         }
         var boardAfterMove = angular.copy(board);
         if (boardAfterMove[row][col] > 0) {
-            points_to_win -= boardAfterMove[row][col];
+            points_to_win[turnIndexBeforeMove] -= boardAfterMove[row][col];
             boardAfterMove[row][col] = -boardAfterMove[row][col];
         }
         else {
             boardAfterMove[row][col] = -1;
         }
-        var winner = winOrNot();
+        var finalboard;
+        finalboard[turnIndexBeforeMove] = boardAfterMove;
+        finalboard[1 - turnIndexBeforeMove] = stateBeforeMove.board[1 - turnIndexBeforeMove];
+        var winner = winOrNot(turnIndexBeforeMove);
         var turnIndex = turnIndexBeforeMove;
-        if (winner)
+        var temp_score = [0, 0];
+        if (winner) {
             turnIndex = -1;
-        else
+            temp_score[turnIndexBeforeMove] = 10 - points_to_win[turnIndexBeforeMove];
+            temp_score[1 - turnIndexBeforeMove] = 10 - points_to_win[1 - turnIndexBeforeMove];
+        }
+        else {
             turnIndex = 1 - turnIndex;
+            temp_score = null;
+        }
         var delta = { row: row, col: col };
-        var state = { delta: delta, board: boardAfterMove };
-        return { turnIndex: turnIndex, state: state };
+        var state = { delta: delta, board: finalboard };
+        //endMatchScores: number[];
+        return { turnIndex: turnIndex, state: state, endMatchScores: temp_score };
     }
     gameLogic.createMove = createMove;
     function createInitialMove() {
@@ -32263,9 +32168,11 @@ var game;
         registerServiceWorker();
         translate.setTranslations(getTranslations());
         translate.setLanguage('en');
-        resizeGameAreaService.setWidthToHeight(1);
+        resizeGameAreaService.setWidthToHeight(2);
         gameService.setGame({
             updateUI: updateUI,
+            communityUI: null,
+            getStateForOgImage: null,
         });
     }
     game.init = init;
@@ -32346,6 +32253,12 @@ var game;
         game.state = params.state;
         if (isFirstMove()) {
             game.state = gameLogic.getInitialState();
+            var move = {
+                turnIndex: -2,
+                state: game.state,
+                endMatchScores: null,
+            };
+            makeMove(move);
         }
         // We calculate the AI move only after the animation finishes,
         // because if we call aiService now
@@ -32400,8 +32313,8 @@ var game;
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
         temp_pro = (isProposal(row, col) && game.currentUpdateUI.turnIndex == turnIndex);
-        log.info(game.state.board);
-        if (game.state.board[row][col] < -1) {
+        log.info(game.state.board[turnIndex]);
+        if (game.state.board[turnIndex][row][col] < -1) {
             return true;
         }
         else
@@ -32413,7 +32326,7 @@ var game;
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
         temp_pro = (isProposal(row, col) && game.currentUpdateUI.turnIndex == turnIndex);
-        if (game.state.board[row][col] == -1) {
+        if (game.state.board[turnIndex][row][col] == -1) {
             return true;
         }
         else
@@ -32421,14 +32334,18 @@ var game;
     }
     game.isPieceBlank = isPieceBlank;
     function showCraft(row, col) {
-        if (game.state.board[row][col] > 1 || game.state.board[row][col] < -1)
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (game.state.board[1 - turnIndex][row][col] > 1 || game.state.board[1 - turnIndex][row][col] < -1)
             return true;
         else
             return false;
     }
     game.showCraft = showCraft;
     function showBlank(row, col) {
-        if (game.state.board[row][col] < 1 && game.state.board[row][col] >= -1)
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (game.state.board[1 - turnIndex][row][col] < 1 && game.state.board[1 - turnIndex][row][col] >= -1)
             return true;
         else
             return false;
@@ -32436,7 +32353,9 @@ var game;
     game.showBlank = showBlank;
     //--------->
     function shouldShowImage(row, col) {
-        return game.state.board[row][col] <= -1;
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        return game.state.board[turnIndex][row][col] <= -1;
     }
     game.shouldShowImage = shouldShowImage;
     function shouldSlowlyAppear(row, col) {

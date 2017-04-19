@@ -19,9 +19,11 @@ var game;
         registerServiceWorker();
         translate.setTranslations(getTranslations());
         translate.setLanguage('en');
-        resizeGameAreaService.setWidthToHeight(1);
+        resizeGameAreaService.setWidthToHeight(2);
         gameService.setGame({
             updateUI: updateUI,
+            communityUI: communityUI,
+            getStateForOgImage: null,
         });
     }
     game.init = init;
@@ -101,6 +103,12 @@ var game;
         game.state = params.state;
         if (isFirstMove()) {
             game.state = gameLogic.getInitialState();
+            log.info(game.currentUpdateUI);
+            var move = {
+                turnIndex: 0,
+                state: game.state,
+                endMatchScores: null,
+            };
         }
         // We calculate the AI move only after the animation finishes,
         // because if we call aiService now
@@ -134,8 +142,8 @@ var game;
             nextMove = gameLogic.createMove(game.state, row, col, game.currentUpdateUI.turnIndex);
         }
         catch (e) {
-            log.info(e);
-            //log.info(["Cell has been explored:", row,col]);
+            //log.info(e);
+            log.info(["Cell has been explored:", row, col]);
             return;
         }
         // Move is legal, make it!
@@ -155,8 +163,8 @@ var game;
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
         temp_pro = (isProposal(row, col) && game.currentUpdateUI.turnIndex == turnIndex);
-        log.info(game.state.board);
-        if (game.state.board[row][col] < -1) {
+        log.info(game.state.board[turnIndex]);
+        if (game.state.board[turnIndex][row][col] < -1) {
             return true;
         }
         else
@@ -168,7 +176,7 @@ var game;
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
         temp_pro = (isProposal(row, col) && game.currentUpdateUI.turnIndex == turnIndex);
-        if (game.state.board[row][col] == -1) {
+        if (game.state.board[turnIndex][row][col] == -1) {
             return true;
         }
         else
@@ -176,14 +184,18 @@ var game;
     }
     game.isPieceBlank = isPieceBlank;
     function showCraft(row, col) {
-        if (game.state.board[row][col] > 1 || game.state.board[row][col] < -1)
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (game.state.board[1 - turnIndex][row][col] > 1 || game.state.board[1 - turnIndex][row][col] < -1)
             return true;
         else
             return false;
     }
     game.showCraft = showCraft;
     function showBlank(row, col) {
-        if (game.state.board[row][col] < 1 && game.state.board[row][col] >= -1)
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (game.state.board[1 - turnIndex][row][col] < 1 && game.state.board[1 - turnIndex][row][col] >= -1)
             return true;
         else
             return false;
@@ -191,7 +203,9 @@ var game;
     game.showBlank = showBlank;
     //--------->
     function shouldShowImage(row, col) {
-        return game.state.board[row][col] <= -1;
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        return game.state.board[turnIndex][row][col] <= -1;
     }
     game.shouldShowImage = shouldShowImage;
     function shouldSlowlyAppear(row, col) {

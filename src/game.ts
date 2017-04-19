@@ -26,9 +26,11 @@ module game {
     registerServiceWorker();
     translate.setTranslations(getTranslations());
     translate.setLanguage('en');
-    resizeGameAreaService.setWidthToHeight(1);
+    resizeGameAreaService.setWidthToHeight(2);
     gameService.setGame({
       updateUI: updateUI,
+      communityUI: communityUI,
+      getStateForOgImage: null,
     });
   }
 
@@ -110,6 +112,13 @@ module game {
     state = params.state;
     if (isFirstMove()) {
       state = gameLogic.getInitialState();
+      log.info(currentUpdateUI);
+      let move:IMove = {
+        turnIndex: 0,
+        state: state,
+        endMatchScores:null,
+      };
+      //makeMove(move);
     }
     // We calculate the AI move only after the animation finishes,
     // because if we call aiService now
@@ -148,8 +157,8 @@ module game {
       nextMove = gameLogic.createMove(
           state,  row,col, currentUpdateUI.turnIndex);
     } catch (e) {
-      log.info(e);
-      //log.info(["Cell has been explored:", row,col]);
+      //log.info(e);
+      log.info(["Cell has been explored:", row,col]);
       return;
     }
 
@@ -172,8 +181,8 @@ module game {
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
     temp_pro = (isProposal(row, col) && currentUpdateUI.turnIndex == turnIndex);
-    log.info(state.board);
-    if(state.board[row][col] < -1){
+    log.info(state.board[turnIndex]);
+    if(state.board[turnIndex][row][col] < -1){
       return true;
     }
     else
@@ -185,20 +194,24 @@ module game {
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
     temp_pro = (isProposal(row, col) && currentUpdateUI.turnIndex == turnIndex);
-    if(state.board[row][col] == -1){
+    if(state.board[turnIndex][row][col] == -1){
       return true;
     }else
       return false;
   }
 
   export function showCraft(row: number, col:number): boolean{
-    if(state.board[row][col] > 1 || state.board[row][col] < -1)
+    let turnIndex: number;
+    turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(state.board[1-turnIndex][row][col] > 1 || state.board[1-turnIndex][row][col] < -1)
       return true;
     else
       return false;
   }
   export function showBlank(row: number, col:number): boolean{
-    if(state.board[row][col] < 1 && state.board[row][col] >= -1)
+    let turnIndex: number;
+    turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(state.board[1-turnIndex][row][col] < 1 && state.board[1-turnIndex][row][col] >= -1)
       return true;
     else
       return false;
@@ -209,7 +222,9 @@ module game {
 
 
   export function shouldShowImage(row: number, col: number): boolean {
-    return state.board[row][col] <= -1;
+    let turnIndex: number;
+    turnIndex = currentUpdateUI.yourPlayerIndex;
+    return state.board[turnIndex][row][col] <= -1;
   }
 
   export function shouldSlowlyAppear(row: number, col: number): boolean {

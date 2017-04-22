@@ -203,7 +203,8 @@ module game {
   export function showCraft(row: number, col:number): boolean{
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
-    if(state.board[1-turnIndex][row][col] > 1 || state.board[1-turnIndex][row][col] < -1)
+    //if(state.board[1-turnIndex][row][col] > 1 || state.board[1-turnIndex][row][col] < -1)
+    if(state.board[1-turnIndex][row][col] >= 1)
       return true;
     else
       return false;
@@ -212,6 +213,14 @@ module game {
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
     if(state.board[1-turnIndex][row][col] < 1 && state.board[1-turnIndex][row][col] >= -1)
+      return true;
+    else
+      return false;
+  }
+  export function showDamagedCraft(row:number, col:number): boolean{
+    let turnIndex: number;
+    turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(state.board[1-turnIndex][row][col] < -1)
       return true;
     else
       return false;

@@ -65,15 +65,19 @@
                      ng-class="{slowlyAppear: game.shouldSlowlyAppear(row, col)}"
                      ng-style="game.getCellStyle(row, col)">
                     <svg ng-if="game.showCraft(row, col)"
-                         id="{{'e2e_test_pieceO_1' + row + 'x' + col}}"
+                         id="{{'e2e_test_pieceC_1' + row + 'x' + col}}"
                          ng-class="{blue:1}"
                          width="100%" height="100%">
                     </svg>
+                    <svg ng-if="game.showDamagedCraft(row, col)"
+                         id="{{'e2e_test_pieceD_1' + row + 'x' + col}}"
+                         ng-class="{red:1}"
+                         width="100%" height="100%">
+                    </svg>
                     <svg ng-if="game.showBlank(row, col)"
-                         id="{{'e2e_test_pieceX_1' + row + 'x' + col}}"
+                         id="{{'e2e_test_pieceB_1' + row + 'x' + col}}"
                          ng-class="{grey:1}"
                          width="100%" height="100%">
-
                     </svg>
                 </div>
             </div>

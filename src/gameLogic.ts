@@ -182,6 +182,9 @@ module gameLogic {
     return board;
   }
 
+  export function getPTW(turnIndex: number){
+    return points_to_win[turnIndex];
+  }
 
   export function getInitialState(): IState {
     let temp_board_0 : Board = getInitialBoard(0);

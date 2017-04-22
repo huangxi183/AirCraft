@@ -8,7 +8,6 @@ interface SupportedLanguages {
 module game {
   export let $rootScope: angular.IScope = null;
   export let $timeout: angular.ITimeoutService = null;
-
   // Global variables are cleared when getting updateUI.
   // I export all variables to make it easy to debug in the browser by
   // simply typing in the console, e.g.,
@@ -18,6 +17,7 @@ module game {
   export let animationEndedTimeout: ng.IPromise<any> = null;
   export let state: IState = null;
   export let proposals: number[][] = null;
+  export let remain_score : number[] = [10,10];
   //export let yourPlayerInfo: IPlayerInfo = null;
 
   export function init($rootScope_: angular.IScope, $timeout_: angular.ITimeoutService) {
@@ -141,8 +141,10 @@ module game {
     if (didMakeMove) { // Only one move per updateUI
       return;
     }
+    let turnIndex: number;
+    turnIndex = currentUpdateUI.yourPlayerIndex;
     didMakeMove = true;
-    
+    remain_score[turnIndex] = gameLogic.getPTW();
     gameService.makeMove(move);
   }
 
@@ -239,3 +241,8 @@ angular.module('myApp', ['gameServices'])
       $rootScope['game'] = game;
       game.init($rootScope, $timeout);
     }]);
+
+// var myapp = angular.module('myHp',[]);
+// myapp.controller('myCtrl_2',function ($scope) {
+//   $scope.score =game.remain_score[game.currentUpdateUI.yourPlayerIndex];
+// });

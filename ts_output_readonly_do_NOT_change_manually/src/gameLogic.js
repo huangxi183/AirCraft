@@ -163,6 +163,10 @@ var gameLogic;
         return board;
     }
     gameLogic.getInitialBoard = getInitialBoard;
+    function getPTW(turnIndex) {
+        return points_to_win[turnIndex];
+    }
+    gameLogic.getPTW = getPTW;
     function getInitialState() {
         var temp_board_0 = getInitialBoard(0);
         var temp_board_1 = getInitialBoard(1);

@@ -12,6 +12,7 @@ var game;
     game.animationEndedTimeout = null;
     game.state = null;
     game.proposals = null;
+    game.remain_score = [10, 10];
     //export let yourPlayerInfo: IPlayerInfo = null;
     function init($rootScope_, $timeout_) {
         game.$rootScope = $rootScope_;
@@ -129,7 +130,10 @@ var game;
         if (game.didMakeMove) {
             return;
         }
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
         game.didMakeMove = true;
+        game.remain_score[turnIndex] = gameLogic.getPTW();
         gameService.makeMove(move);
     }
     function isFirstMove() {
@@ -220,4 +224,8 @@ angular.module('myApp', ['gameServices'])
         $rootScope['game'] = game;
         game.init($rootScope, $timeout);
     }]);
+// var myapp = angular.module('myHp',[]);
+// myapp.controller('myCtrl_2',function ($scope) {
+//   $scope.score =game.remain_score[game.currentUpdateUI.yourPlayerIndex];
+// });
 //# sourceMappingURL=game.js.map

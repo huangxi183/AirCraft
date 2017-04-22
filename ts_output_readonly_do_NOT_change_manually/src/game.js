@@ -133,7 +133,7 @@ var game;
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
         game.didMakeMove = true;
-        game.remain_score[turnIndex] = gameLogic.getPTW();
+        game.remain_score[turnIndex] = gameLogic.getPTW(turnIndex);
         gameService.makeMove(move);
     }
     function isFirstMove() {
@@ -142,6 +142,8 @@ var game;
     function cellClicked(row, col) {
         log.info("Clicked on cell:", row, col);
         var nextMove;
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
         try {
             nextMove = gameLogic.createMove(game.state, row, col, game.currentUpdateUI.turnIndex);
         }
@@ -242,6 +244,11 @@ angular.module('myApp', ['gameServices'])
     function ($rootScope, $timeout) {
         $rootScope['game'] = game;
         game.init($rootScope, $timeout);
+    }])
+    .controller('GreetingController', ['$scope', function ($rootscope) {
+        //$rootscope.greeting = 'Hola!';
+        //$rootscope.hp = game.remain_score[game.currentUpdateUI.turnIndex]
+        $rootscope.hp = gameLogic.points_to_win[game.currentUpdateUI.turnIndex];
     }]);
 // var myapp = angular.module('myHp',[]);
 // myapp.controller('myCtrl_2',function ($scope) {

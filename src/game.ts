@@ -144,7 +144,7 @@ module game {
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
     didMakeMove = true;
-    remain_score[turnIndex] = gameLogic.getPTW();
+    remain_score[turnIndex] = gameLogic.getPTW(turnIndex);
     gameService.makeMove(move);
   }
 
@@ -155,9 +155,12 @@ module game {
   export function cellClicked(row: number, col: number): void {
     log.info("Clicked on cell:", row, col);
     let nextMove: IMove;
+    let turnIndex: number;
+    turnIndex = currentUpdateUI.yourPlayerIndex;
     try {
       nextMove = gameLogic.createMove(
           state,  row,col, currentUpdateUI.turnIndex);
+      //remain_score[turnIndex] += nextMove.state.board[turnIndex][row][col];
     } catch (e) {
       //log.info(e);
       log.info(["Cell has been explored:", row,col]);
@@ -257,7 +260,12 @@ angular.module('myApp', ['gameServices'])
     function ($rootScope: angular.IScope, $timeout: angular.ITimeoutService) {
       $rootScope['game'] = game;
       game.init($rootScope, $timeout);
-    }]);
+    }])
+  .controller('GreetingController', ['$scope', function($rootscope: angular.IScope) {
+  //$rootscope.greeting = 'Hola!';
+  //$rootscope.hp = game.remain_score[game.currentUpdateUI.turnIndex]
+  $rootscope.hp = gameLogic.points_to_win[game.currentUpdateUI.turnIndex]
+}]);
 
 // var myapp = angular.module('myHp',[]);
 // myapp.controller('myCtrl_2',function ($scope) {

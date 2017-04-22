@@ -31,7 +31,7 @@ import dragAndDropService = gamingPlatform.dragAndDropService;
 module gameLogic {
   export const ROWS = 6;
   export const COLS = 6;
-  let points_to_win = [10,10];
+  export let points_to_win = [10,10];
   let head : HeadPosi[] = [];
   head[0] = getInitialHP();
   head[1] = getInitialHP();
@@ -201,7 +201,10 @@ module gameLogic {
    *      ['X', '', '']]
    */
   function winOrNot(turnIndexBeforeMove: number): boolean {
-    if (points_to_win[turnIndexBeforeMove] <= 0) return true;
+    if (points_to_win[turnIndexBeforeMove] <= 0) {
+      alert("Game Over!")
+      return true;
+    }
     else return false;
   }
 

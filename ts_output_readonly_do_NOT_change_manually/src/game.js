@@ -200,7 +200,7 @@ var game;
     function showBlank(row, col) {
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
-        if (game.state.board[1 - turnIndex][row][col] < 1 && game.state.board[1 - turnIndex][row][col] >= -1)
+        if (game.state.board[1 - turnIndex][row][col] == 0)
             return true;
         else
             return false;
@@ -215,6 +215,15 @@ var game;
             return false;
     }
     game.showDamagedCraft = showDamagedCraft;
+    function showDamagedBlank(row, col) {
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (game.state.board[1 - turnIndex][row][col] == -1)
+            return true;
+        else
+            return false;
+    }
+    game.showDamagedBlank = showDamagedBlank;
     //--------->
     function shouldShowImage(row, col) {
         var turnIndex;

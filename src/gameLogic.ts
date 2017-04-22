@@ -29,81 +29,25 @@ import log = gamingPlatform.log;
 import dragAndDropService = gamingPlatform.dragAndDropService;
 
 module gameLogic {
-  export const ROWS = 6;
-  export const COLS = 6;
+  export const ROWS = 12;
+  export const COLS = 12;
   export let points_to_win = [10,10];
-  let head : HeadPosi[] = [];
-  head[0] = getInitialHP();
-  head[1] = getInitialHP();
+  let head : HeadPosi[][] = [];
+  head[0] = [];
+  head[1] = [];
+  head[0][0] = getInitialHP()
+  head[0][1] = getInitialHP();
+  head[1][0] = getInitialHP();
+  head[1][1] = getInitialHP();
   export function getInitialHP(){
     let temp :HeadPosi = {index : Math.floor(Math.random() * 20) + 1, x :0, y :0, direct :0};
     return temp;
   }
-    //  HeadPosi = {index : Math.floor(Math.random() * 20) + 1, x :0, y :0, direct :0};
-  /** Returns the initial AirCraft board, which is a ROWSxCOLS matrix containing ''. */
+  
   export function getInitialBoard(i:number): Board {
     let board: Board = [];
     // generate random craft head
     //head.index = Math.floor(Math.random() * 20) + 1;
-
-    //choose a direction based on the head position
-    if(head[i].index >=17 && head[i].index <=20){
-      let rand: number = Math.floor(Math.random() * 2) +1;
-      switch (head[i].index){
-        case 17:
-          if(rand == 1){
-            head[i].direct = 1;
-          }else{
-            head[i].direct =2;
-          }
-          head[i].x = 2;
-          head[i].y = 2;
-          break;
-        case 18:
-          if(rand == 1){
-            head[i].direct = 1;
-          }else{
-            head[i].direct =3;
-          }
-          head[i].x = 3;
-          head[i].y = 2;
-          break;
-        case 19:
-          if(rand == 1){
-            head[i].direct = 2;
-          }else{
-            head[i].direct =4;
-          }
-          head[i].x = 2;
-          head[i].y = 3;
-          break;
-        case 20:
-          if(rand == 1){
-            head[i].direct = 3;
-          }else{
-            head[i].direct = 4;
-          }
-          head[i].x = 3;
-          head[i].y = 3;
-          break;
-      }
-    }else if(head[i].index >=1 && head[i].index <=4){
-      head[i].direct = 1;
-      head[i].x = (head[i].index ===1 ||head[i].index == 3)?2:3;
-      head[i].y = (head[i].index ===1 ||head[i].index == 2)?0:1;
-    }else if(head[i].index >= 5 && head[i].index <=8){
-      head[i].direct = 2;
-      head[i].x = (head[i].index ===5 ||head[i].index == 7)?0:1;
-      head[i].y = (head[i].index ===5 ||head[i].index == 6)?2:3;
-    }else if(head[i].index >=9 && head[i].index <= 12){
-      head[i].direct = 3;
-      head[i].x = (head[i].index ===9 ||head[i].index == 11)?4:5;
-      head[i].y = (head[i].index ===9 ||head[i].index == 10)?2:3;
-    }else if(head[i].index >= 13 && head[i].index <=16){
-      head[i].direct =4;
-      head[i].x = (head[i].index ===13 ||head[i].index == 15)?2:3;
-      head[i].y = (head[i].index ===13 ||head[i].index == 14)?4:5;
-    }
 
     for (let i = 0; i < ROWS; i++) {
       board[i] = [];
@@ -111,76 +55,308 @@ module gameLogic {
         board[i][j] = 0;
       }
     }
-    let x = head[i].x;
-    let y = head[i].y;
+    
+//-------1st aircraft---------------
+
+    let first_aircraft_panel :number = Math.floor(Math.random() * 4) + 1;
+
+    //choose a direction based on the head position
+    if(head[i][0].index >=17 && head[i][0].index <=20){
+      let rand: number = Math.floor(Math.random() * 2) +1;
+      switch (head[i][0].index){
+        case 17:
+          if(rand == 1){
+            head[i][0].direct = 1;
+          }else{
+            head[i][0].direct =2;
+          }
+          head[i][0].x = 2;
+          head[i][0].y = 2;
+          break;
+        case 18:
+          if(rand == 1){
+            head[i][0].direct = 1;
+          }else{
+            head[i][0].direct =3;
+          }
+          head[i][0].x = 3;
+          head[i][0].y = 2;
+          break;
+        case 19:
+          if(rand == 1){
+            head[i][0].direct = 2;
+          }else{
+            head[i][0].direct =4;
+          }
+          head[i][0].x = 2;
+          head[i][0].y = 3;
+          break;
+        case 20:
+          if(rand == 1){
+            head[i][0].direct = 3;
+          }else{
+            head[i][0].direct = 4;
+          }
+          head[i][0].x = 3;
+          head[i][0].y = 3;
+          break;
+      }
+    }else if(head[i][0].index >=1 && head[i][0].index <=4){
+      head[i][0].direct = 1;
+      head[i][0].x = (head[i][0].index ===1 ||head[i][0].index == 3)?2:3;
+      head[i][0].y = (head[i][0].index ===1 ||head[i][0].index == 2)?0:1;
+    }else if(head[i][0].index >= 5 && head[i][0].index <=8){
+      head[i][0].direct = 2;
+      head[i][0].x = (head[i][0].index ===5 ||head[i][0].index == 7)?0:1;
+      head[i][0].y = (head[i][0].index ===5 ||head[i][0].index == 6)?2:3;
+    }else if(head[i][0].index >=9 && head[i][0].index <= 12){
+      head[i][0].direct = 3;
+      head[i][0].x = (head[i][0].index ===9 ||head[i][0].index == 11)?4:5;
+      head[i][0].y = (head[i][0].index ===9 ||head[i][0].index == 10)?2:3;
+    }else if(head[i][0].index >= 13 && head[i][0].index <=16){
+      head[i][0].direct =4;
+      head[i][0].x = (head[i][0].index ===13 ||head[i][0].index == 15)?2:3;
+      head[i][0].y = (head[i][0].index ===13 ||head[i][0].index == 14)?4:5;
+    }
+
+    let x1 = 0;
+    let y1 = 0;
+    
+    if (first_aircraft_panel === 1) {
+      x1 = head[i][0].x;
+      y1 = head[i][0].y;
+    }
+    else if (first_aircraft_panel === 2) {
+      x1 = head[i][0].x + 6;
+      y1 = head[i][0].y;
+    }
+    else if (first_aircraft_panel === 3) {
+      x1 = head[i][0].x;
+      y1 = head[i][0].y + 6;
+    }
+    else if (first_aircraft_panel === 4) {
+      x1 = head[i][0].x + 6;
+      y1 = head[i][0].y + 6;
+    }
 
     //initial aircraft in board
-    switch (head[i].direct){
+    switch (head[i][0].direct){
       case 1:
-        board[x][y] = 10;
+        board[x1][y1] = 10;
         //body
-        board[x][y+1] = 5;
-        board[x][y+2] = 5;
+        board[x1][y1+1] = 5;
+        board[x1][y1+2] = 5;
         //wing
-        board[x-2][y+1] = 2;
-        board[x-1][y+1] = 2;
-        board[x+1][y+1] = 2;
-        board[x+2][y+1] = 2;
+        board[x1-2][y1+1] = 2;
+        board[x1-1][y1+1] = 2;
+        board[x1+1][y1+1] = 2;
+        board[x1+2][y1+1] = 2;
         //tail
-        board[x-1][y+3] = 3;
-        board[x][y+3] = 3;
-        board[x+1][y+3] = 3;
+        board[x1-1][y1+3] = 3;
+        board[x1][y1+3] = 3;
+        board[x1+1][y1+3] = 3;
         break;
       case 2:
-        board[x][y] = 10;
+        board[x1][y1] = 10;
         //body
-        board[x+1][y] = 5;
-        board[x+2][y] = 5;
+        board[x1+1][y1] = 5;
+        board[x1+2][y1] = 5;
         //wing
-        board[x+1][y-2] = 2;
-        board[x+1][y-1] = 2;
-        board[x+1][y+1] = 2;
-        board[x+1][y+2] = 2;
+        board[x1+1][y1-2] = 2;
+        board[x1+1][y1-1] = 2;
+        board[x1+1][y1+1] = 2;
+        board[x1+1][y1+2] = 2;
         //tail
-        board[x+3][y-1] = 3;
-        board[x+3][y+1] = 3;
-        board[x+3][y] = 3;
+        board[x1+3][y1-1] = 3;
+        board[x1+3][y1+1] = 3;
+        board[x1+3][y1] = 3;
         break;
       case 3:
-        board[x][y] = 10;
+        board[x1][y1] = 10;
         //body
-        board[x-1][y] = 5;
-        board[x-2][y] = 5;
+        board[x1-1][y1] = 5;
+        board[x1-2][y1] = 5;
         //wing
-        board[x-1][y-2] = 2;
-        board[x-1][y-1] = 2;
-        board[x-1][y+1] = 2;
-        board[x-1][y+2] = 2;
+        board[x1-1][y1-2] = 2;
+        board[x1-1][y1-1] = 2;
+        board[x1-1][y1+1] = 2;
+        board[x1-1][y1+2] = 2;
         //tail
-        board[x-3][y-1] = 3;
-        board[x-3][y+1] = 3;
-        board[x-3][y] = 3;
+        board[x1-3][y1-1] = 3;
+        board[x1-3][y1+1] = 3;
+        board[x1-3][y1] = 3;
         break;
       case 4:
-        board[x][y] = 10;
+        board[x1][y1] = 10;
         //body
-        board[x][y-1] = 5;
-        board[x][y-2] = 5;
+        board[x1][y1-1] = 5;
+        board[x1][y1-2] = 5;
         //wing
-        board[x-2][y-1] = 2;
-        board[x-1][y-1] = 2;
-        board[x+1][y-1] = 2;
-        board[x+2][y-1] = 2;
+        board[x1-2][y1-1] = 2;
+        board[x1-1][y1-1] = 2;
+        board[x1+1][y1-1] = 2;
+        board[x1+2][y1-1] = 2;
         //tail
-        board[x-1][y-3] = 3;
-        board[x][y-3] = 3;
-        board[x+1][y-3] = 3;
+        board[x1-1][y1-3] = 3;
+        board[x1][y1-3] = 3;
+        board[x1+1][y1-3] = 3;
         break;
     }
 
+//-------1st aircraft---------------
 
+
+//-------2nd aircraft----------------
+    let second_aircraft_panel :number = (first_aircraft_panel + Math.floor(Math.random() * 3) + 1) % 4;
+    if (second_aircraft_panel === 0) second_aircraft_panel = 4
+
+
+    if(head[i][1].index >=17 && head[i][1].index <=20){
+      let rand: number = Math.floor(Math.random() * 2) +1;
+      switch (head[i][1].index){
+        case 17:
+          if(rand == 1){
+            head[i][1].direct = 1;
+          }else{
+            head[i][1].direct =2;
+          }
+          head[i][1].x = 2;
+          head[i][1].y = 2;
+          break;
+        case 18:
+          if(rand == 1){
+            head[i][1].direct = 1;
+          }else{
+            head[i][1].direct =3;
+          }
+          head[i][1].x = 3;
+          head[i][1].y = 2;
+          break;
+        case 19:
+          if(rand == 1){
+            head[i][1].direct = 2;
+          }else{
+            head[i][1].direct =4;
+          }
+          head[i][1].x = 2;
+          head[i][1].y = 3;
+          break;
+        case 20:
+          if(rand == 1){
+            head[i][1].direct = 3;
+          }else{
+            head[i][1].direct = 4;
+          }
+          head[i][1].x = 3;
+          head[i][1].y = 3;
+          break;
+      }
+    }else if(head[i][1].index >=1 && head[i][1].index <=4){
+      head[i][1].direct = 1;
+      head[i][1].x = (head[i][1].index ===1 ||head[i][1].index == 3)?2:3;
+      head[i][1].y = (head[i][1].index ===1 ||head[i][1].index == 2)?0:1;
+    }else if(head[i][1].index >= 5 && head[i][1].index <=8){
+      head[i][1].direct = 2;
+      head[i][1].x = (head[i][1].index ===5 ||head[i][1].index == 7)?0:1;
+      head[i][1].y = (head[i][1].index ===5 ||head[i][1].index == 6)?2:3;
+    }else if(head[i][1].index >=9 && head[i][1].index <= 12){
+      head[i][1].direct = 3;
+      head[i][1].x = (head[i][1].index ===9 ||head[i][1].index == 11)?4:5;
+      head[i][1].y = (head[i][1].index ===9 ||head[i][1].index == 10)?2:3;
+    }else if(head[i][1].index >= 13 && head[i][1].index <=16){
+      head[i][1].direct =4;
+      head[i][1].x = (head[i][1].index ===13 ||head[i][1].index == 15)?2:3;
+      head[i][1].y = (head[i][1].index ===13 ||head[i][1].index == 14)?4:5;
+    }
+
+    let x2 = 0;
+    let y2 = 0;
+
+    if (second_aircraft_panel === 1) {
+      x2 = head[i][1].x;
+      y2 = head[i][1].y;
+    }
+    else if (second_aircraft_panel === 2) {
+      x2 = head[i][1].x + 6;
+      y2 = head[i][1].y;
+    }
+    else if (second_aircraft_panel === 3) {
+      x2 = head[i][1].x;
+      y2 = head[i][1].y + 6;
+    }
+    else if (second_aircraft_panel === 4) {
+      x2 = head[i][1].x + 6;
+      y2 = head[i][1].y + 6;
+    }
+
+    //initial aircraft in board
+    switch (head[i][1].direct){
+      case 1:
+        board[x2][y2] = 10;
+        //body
+        board[x2][y2+1] = 5;
+        board[x2][y2+2] = 5;
+        //wing
+        board[x2-2][y2+1] = 2;
+        board[x2-1][y2+1] = 2;
+        board[x2+1][y2+1] = 2;
+        board[x2+2][y2+1] = 2;
+        //tail
+        board[x2-1][y2+3] = 3;
+        board[x2][y2+3] = 3;
+        board[x2+1][y2+3] = 3;
+        break;
+      case 2:
+        board[x2][y2] = 10;
+        //body
+        board[x2+1][y2] = 5;
+        board[x2+2][y2] = 5;
+        //wing
+        board[x2+1][y2-2] = 2;
+        board[x2+1][y2-1] = 2;
+        board[x2+1][y2+1] = 2;
+        board[x2+1][y2+2] = 2;
+        //tail
+        board[x2+3][y2-1] = 3;
+        board[x2+3][y2+1] = 3;
+        board[x2+3][y2] = 3;
+        break;
+      case 3:
+        board[x2][y2] = 10;
+        //body
+        board[x2-1][y2] = 5;
+        board[x2-2][y2] = 5;
+        //wing
+        board[x2-1][y2-2] = 2;
+        board[x2-1][y2-1] = 2;
+        board[x2-1][y2+1] = 2;
+        board[x2-1][y2+2] = 2;
+        //tail
+        board[x2-3][y2-1] = 3;
+        board[x2-3][y2+1] = 3;
+        board[x2-3][y2] = 3;
+        break;
+      case 4:
+        board[x2][y2] = 10;
+        //body
+        board[x2][y2-1] = 5;
+        board[x2][y2-2] = 5;
+        //wing
+        board[x2-2][y2-1] = 2;
+        board[x2-1][y2-1] = 2;
+        board[x2+1][y2-1] = 2;
+        board[x2+2][y2-1] = 2;
+        //tail
+        board[x2-1][y2-3] = 3;
+        board[x2][y2-3] = 3;
+        board[x2+1][y2-3] = 3;
+        break;
+    }
+
+  //-------2nd aircraft----------------
     return board;
   }
+  
 
   export function getPTW(turnIndex: number){
     return points_to_win[turnIndex];
@@ -192,14 +368,6 @@ module gameLogic {
     return {board: [temp_board_0, temp_board_1], delta: null};
   }
 
-  /**
-   * Return the winner (either 'X' or 'O') or '' if there is no winner.
-   * The board is a matrix of size 3x3 containing either 'X', 'O', or ''.
-   * E.g., getWinner returns 'X' for the following board:
-   *     [['X', 'O', ''],
-   *      ['X', 'O', ''],
-   *      ['X', '', '']]
-   */
   function winOrNot(turnIndexBeforeMove: number): boolean {
     if (points_to_win[turnIndexBeforeMove] <= 0) {
       alert("Game Over!")
@@ -208,10 +376,6 @@ module gameLogic {
     else return false;
   }
 
-  /**
-   * Returns the move that should be performed when player
-   * with index turnIndexBeforeMove makes a move in cell row X col.
-   */
   export function createMove(stateBeforeMove: IState,  row: number,col: number, turnIndexBeforeMove: number): IMove {
     if (!stateBeforeMove) {
       stateBeforeMove = getInitialState();

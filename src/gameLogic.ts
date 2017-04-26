@@ -1,4 +1,4 @@
-type Board = number[][];
+type Board = number[][]; 
 //>=0:blank
 // == -1:grey
 //<-1:red
@@ -31,7 +31,7 @@ import dragAndDropService = gamingPlatform.dragAndDropService;
 module gameLogic {
   export const ROWS = 6;
   export const COLS = 6;
-  let points_to_win = [10,10];
+  export let points_to_win = [10,10];
   let head : HeadPosi[] = [];
   head[0] = getInitialHP();
   head[1] = getInitialHP();
@@ -182,7 +182,7 @@ module gameLogic {
     return board;
   }
 
-  export function getPTW(turnIndex: number){
+  export function getPTW(turnIndex: number): number {
     return points_to_win[turnIndex];
   }
 

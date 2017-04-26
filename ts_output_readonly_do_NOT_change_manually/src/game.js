@@ -23,7 +23,6 @@ var game;
         resizeGameAreaService.setWidthToHeight(2);
         gameService.setGame({
             updateUI: updateUI,
-            communityUI: communityUI,
             getStateForOgImage: null,
         });
     }
@@ -45,48 +44,6 @@ var game;
     function getTranslations() {
         return {};
     }
-    function communityUI(communityUI) {
-        currentCommunityUI = communityUI;
-        log.info("Game got communityUI:", communityUI);
-        // If only proposals changed, then do NOT call updateUI. Then update proposals.
-        var nextUpdateUI = {
-            playersInfo: [],
-            playMode: communityUI.yourPlayerIndex,
-            numberOfPlayers: communityUI.numberOfPlayers,
-            state: communityUI.state,
-            turnIndex: communityUI.turnIndex,
-            endMatchScores: communityUI.endMatchScores,
-            yourPlayerIndex: communityUI.yourPlayerIndex,
-        };
-        if (angular.equals(yourPlayerInfo, communityUI.yourPlayerInfo) &&
-            game.currentUpdateUI && angular.equals(game.currentUpdateUI, nextUpdateUI)) {
-        }
-        else {
-            // Things changed, so call updateUI.
-            updateUI(nextUpdateUI);
-        }
-        // This must be after calling updateUI, because we nullify things there (like playerIdToProposal&proposals&etc)
-        yourPlayerInfo = communityUI.yourPlayerInfo;
-        var playerIdToProposal = communityUI.playerIdToProposal;
-        game.didMakeMove = !!playerIdToProposal[communityUI.yourPlayerInfo.playerId];
-        game.proposals = [];
-        for (var i = 0; i < gameLogic.ROWS; i++) {
-            game.proposals[i] = [];
-            for (var j = 0; j < gameLogic.COLS; j++) {
-                game.proposals[i][j] = 0;
-            }
-        }
-        for (var playerId in playerIdToProposal) {
-            var proposal = playerIdToProposal[playerId];
-            var delta = proposal.data;
-            game.proposals[delta.row][delta.col]++;
-        }
-    }
-    game.communityUI = communityUI;
-    function isProposal(row, col) {
-        return game.proposals && game.proposals[row][col] > 0;
-    }
-    game.isProposal = isProposal;
     function getCellStyle(row, col) {
         var scale = 1.0;
         var opacity = 0.5;
@@ -130,11 +87,15 @@ var game;
         if (game.didMakeMove) {
             return;
         }
-        var turnIndex;
-        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        /*
+        let turnIndex: number;
+        turnIndex = currentUpdateUI.yourPlayerIndex;
+        didMakeMove = true;
+        remain_score[turnIndex] = gameLogic.getPTW(turnIndex);
+        */
         game.didMakeMove = true;
-        game.remain_score[turnIndex] = gameLogic.getPTW(turnIndex);
-        gameService.makeMove(move);
+        game.remain_score[game.currentUpdateUI.yourPlayerIndex] = gameLogic.getPTW(game.currentUpdateUI.yourPlayerIndex);
+        gameService.makeMove(move, null, "TODO");
     }
     function isFirstMove() {
         return !game.currentUpdateUI.state;
@@ -142,10 +103,12 @@ var game;
     function cellClicked(row, col) {
         log.info("Clicked on cell:", row, col);
         var nextMove;
-        var turnIndex;
-        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        /*
+        let turnIndex: number;
+        turnIndex = currentUpdateUI.yourPlayerIndex;
+        */
         try {
-            nextMove = gameLogic.createMove(game.state, row, col, game.currentUpdateUI.turnIndex);
+            nextMove = gameLogic.createMove(game.state, row, col, game.currentUpdateUI.yourPlayerIndex);
         }
         catch (e) {
             //log.info(e);
@@ -166,11 +129,16 @@ var game;
     //<------ add game control two functions by:jam
     function isPieceHit(row, col) {
         var temp_pro;
-        var turnIndex;
-        turnIndex = game.currentUpdateUI.yourPlayerIndex;
-        temp_pro = (isProposal(row, col) && game.currentUpdateUI.turnIndex == turnIndex);
-        log.info(game.state.board[turnIndex]);
-        if (game.state.board[turnIndex][row][col] < -1) {
+        /*
+        let turnIndex: number;
+        turnIndex = currentUpdateUI.yourPlayerIndex;
+        log.info(state.board[turnIndex]);
+        if(state.board[turnIndex][row][col] < -1){
+          return true;
+        }
+        */
+        log.info(game.state.board[game.currentUpdateUI.yourPlayerIndex]);
+        if (game.state.board[game.currentUpdateUI.yourPlayerIndex][row][col] < -1) {
             return true;
         }
         else
@@ -179,10 +147,11 @@ var game;
     game.isPieceHit = isPieceHit;
     function isPieceBlank(row, col) {
         var temp_pro;
-        var turnIndex;
-        turnIndex = game.currentUpdateUI.yourPlayerIndex;
-        temp_pro = (isProposal(row, col) && game.currentUpdateUI.turnIndex == turnIndex);
-        if (game.state.board[turnIndex][row][col] == -1) {
+        /*
+        let turnIndex: number;
+        turnIndex = currentUpdateUI.yourPlayerIndex;
+        */
+        if (game.state.board[game.currentUpdateUI.yourPlayerIndex][row][col] == -1) {
             return true;
         }
         else
@@ -190,37 +159,45 @@ var game;
     }
     game.isPieceBlank = isPieceBlank;
     function showCraft(row, col) {
-        var turnIndex;
-        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        /*
+        let turnIndex: number;
+        turnIndex = currentUpdateUI.yourPlayerIndex;
+        */
         //if(state.board[1-turnIndex][row][col] > 1 || state.board[1-turnIndex][row][col] < -1)
-        if (game.state.board[1 - turnIndex][row][col] >= 1)
+        if (game.state.board[1 - game.currentUpdateUI.yourPlayerIndex][row][col] >= 1)
             return true;
         else
             return false;
     }
     game.showCraft = showCraft;
     function showBlank(row, col) {
-        var turnIndex;
-        turnIndex = game.currentUpdateUI.yourPlayerIndex;
-        if (game.state.board[1 - turnIndex][row][col] == 0)
+        /*
+        let turnIndex: number;
+        turnIndex = 1 - currentUpdateUI.yourPlayerIndex;
+        */
+        if (game.state.board[1 - game.currentUpdateUI.yourPlayerIndex][row][col] == 0)
             return true;
         else
             return false;
     }
     game.showBlank = showBlank;
     function showDamagedCraft(row, col) {
-        var turnIndex;
-        turnIndex = game.currentUpdateUI.yourPlayerIndex;
-        if (game.state.board[1 - turnIndex][row][col] < -1)
+        /*
+        let turnIndex: number;
+        turnIndex = currentUpdateUI.yourPlayerIndex;
+        */
+        if (game.state.board[1 - game.currentUpdateUI.yourPlayerIndex][row][col] < -1)
             return true;
         else
             return false;
     }
     game.showDamagedCraft = showDamagedCraft;
     function showDamagedBlank(row, col) {
-        var turnIndex;
-        turnIndex = game.currentUpdateUI.yourPlayerIndex;
-        if (game.state.board[1 - turnIndex][row][col] == -1)
+        /*
+        let turnIndex: number;
+        turnIndex = currentUpdateUI.yourPlayerIndex;
+        */
+        if (game.state.board[1 - game.currentUpdateUI.yourPlayerIndex][row][col] == -1)
             return true;
         else
             return false;
@@ -228,9 +205,11 @@ var game;
     game.showDamagedBlank = showDamagedBlank;
     //--------->
     function shouldShowImage(row, col) {
-        var turnIndex;
-        turnIndex = game.currentUpdateUI.yourPlayerIndex;
-        return game.state.board[turnIndex][row][col] <= -1;
+        /*
+        let turnIndex: number;
+        turnIndex = currentUpdateUI.yourPlayerIndex;
+        */
+        return game.state.board[game.currentUpdateUI.yourPlayerIndex][row][col] <= -1;
     }
     game.shouldShowImage = shouldShowImage;
     function shouldSlowlyAppear(row, col) {
@@ -243,13 +222,24 @@ angular.module('myApp', ['gameServices'])
     .run(['$rootScope', '$timeout',
     function ($rootScope, $timeout) {
         $rootScope['game'] = game;
+        //$rootScope['hp'] = ()=>game.remain_score[game.currentUpdateUI.turnIndex];
+        $rootScope['hp'] = function () { return game.remain_score[game.currentUpdateUI.yourPlayerIndex]; };
         game.init($rootScope, $timeout);
-    }])
-    .controller('GreetingController', ['$scope', function ($rootscope) {
-        //$rootscope.greeting = 'Hola!';
-        //$rootscope.hp = game.remain_score[game.currentUpdateUI.turnIndex]
-        $rootscope.hp = gameLogic.points_to_win[game.currentUpdateUI.turnIndex];
     }]);
+/*
+angular.module('myApp', ['gameServices'])
+  .run(['$rootScope', '$timeout',
+    function ($rootScope: angular.IScope, $timeout: angular.ITimeoutService) {
+      $rootScope['game'] = game;
+      game.init($rootScope, $timeout);
+    }])
+  .controller('GreetingController', ['$scope', function($rootscope: angular.IScope) {
+  //$rootscope.greeting = 'Hola!';
+  //$rootscope.hp = game.remain_score[game.currentUpdateUI.turnIndex]
+  //$rootscope.hp = gameLogic.points_to_win[game.currentUpdateUI.turnIndex]
+  $rootscope.hp = gameLogic.points_to_win[game.currentUpdateUI.turnIndex]
+}]);
+*/
 // var myapp = angular.module('myHp',[]);
 // myapp.controller('myCtrl_2',function ($scope) {
 //   $scope.score =game.remain_score[game.currentUpdateUI.yourPlayerIndex];

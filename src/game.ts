@@ -29,7 +29,6 @@ module game {
     resizeGameAreaService.setWidthToHeight(2);
     gameService.setGame({
       updateUI: updateUI,
-      communityUI: communityUI,
       getStateForOgImage: null,
     });
   }
@@ -51,48 +50,6 @@ module game {
 
   function getTranslations(): Translations {
     return {};
-  }
-
-  export function communityUI(communityUI: ICommunityUI) {
-    currentCommunityUI = communityUI;
-    log.info("Game got communityUI:", communityUI);
-    // If only proposals changed, then do NOT call updateUI. Then update proposals.
-    let nextUpdateUI: IUpdateUI = {
-      playersInfo: [],
-      playMode: communityUI.yourPlayerIndex,
-      numberOfPlayers: communityUI.numberOfPlayers,
-      state: communityUI.state,
-      turnIndex: communityUI.turnIndex,
-      endMatchScores: communityUI.endMatchScores,
-      yourPlayerIndex: communityUI.yourPlayerIndex,
-    };
-    if (angular.equals(yourPlayerInfo, communityUI.yourPlayerInfo) &&
-        currentUpdateUI && angular.equals(currentUpdateUI, nextUpdateUI)) {
-      // We're not calling updateUI to avoid disrupting the player if he's in the middle of a move.
-    } else {
-      // Things changed, so call updateUI.
-      updateUI(nextUpdateUI);
-    }
-    // This must be after calling updateUI, because we nullify things there (like playerIdToProposal&proposals&etc)
-    yourPlayerInfo = communityUI.yourPlayerInfo;
-    let playerIdToProposal = communityUI.playerIdToProposal;
-    didMakeMove = !!playerIdToProposal[communityUI.yourPlayerInfo.playerId];
-    proposals = [];
-    for (let i = 0; i < gameLogic.ROWS; i++) {
-      proposals[i] = [];
-      for (let j = 0; j < gameLogic.COLS; j++) {
-        proposals[i][j] = 0;
-      }
-    }
-    for (let playerId in playerIdToProposal) {
-      let proposal = playerIdToProposal[playerId];
-      let delta = proposal.data;
-      proposals[delta.row][delta.col]++;
-    }
-  }
-
-  export function isProposal(row: number, col: number) {
-    return proposals && proposals[row][col] > 0;
   }
 
   export function getCellStyle(row: number, col: number) {
@@ -141,11 +98,15 @@ module game {
     if (didMakeMove) { // Only one move per updateUI
       return;
     }
+    /*
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
     didMakeMove = true;
     remain_score[turnIndex] = gameLogic.getPTW(turnIndex);
-    gameService.makeMove(move);
+    */
+    didMakeMove = true;
+    remain_score[currentUpdateUI.yourPlayerIndex] = gameLogic.getPTW(currentUpdateUI.yourPlayerIndex);
+    gameService.makeMove(move, null, "TODO");
   }
 
   function isFirstMove() {
@@ -155,11 +116,13 @@ module game {
   export function cellClicked(row: number, col: number): void {
     log.info("Clicked on cell:", row, col);
     let nextMove: IMove;
+    /*
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    */
     try {
       nextMove = gameLogic.createMove(
-          state,  row,col, currentUpdateUI.turnIndex);
+          state,  row,col, currentUpdateUI.yourPlayerIndex);
       //remain_score[turnIndex] += nextMove.state.board[turnIndex][row][col];
     } catch (e) {
       //log.info(e);
@@ -183,11 +146,16 @@ module game {
   //<------ add game control two functions by:jam
   export function isPieceHit(row: number, col: number): boolean{
     let temp_pro: boolean;
+    /*
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
-    temp_pro = (isProposal(row, col) && currentUpdateUI.turnIndex == turnIndex);
     log.info(state.board[turnIndex]);
     if(state.board[turnIndex][row][col] < -1){
+      return true;
+    }
+    */
+    log.info(state.board[currentUpdateUI.yourPlayerIndex]);
+    if(state.board[currentUpdateUI.yourPlayerIndex][row][col] < -1){
       return true;
     }
     else
@@ -196,44 +164,53 @@ module game {
 
   export function isPieceBlank(row: number, col:number): boolean{
     let temp_pro: boolean;
+    /*
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
-    temp_pro = (isProposal(row, col) && currentUpdateUI.turnIndex == turnIndex);
-    if(state.board[turnIndex][row][col] == -1){
+    */
+    if(state.board[currentUpdateUI.yourPlayerIndex][row][col] == -1){
       return true;
     }else
       return false;
   }
 
   export function showCraft(row: number, col:number): boolean{
+    /*
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    */
     //if(state.board[1-turnIndex][row][col] > 1 || state.board[1-turnIndex][row][col] < -1)
-    if(state.board[1-turnIndex][row][col] >= 1)
+    if(state.board[1-currentUpdateUI.yourPlayerIndex][row][col] >= 1)
       return true;
     else
       return false;
   }
   export function showBlank(row: number, col:number): boolean{
+    /*
     let turnIndex: number;
-    turnIndex = currentUpdateUI.yourPlayerIndex;
-    if(state.board[1-turnIndex][row][col] == 0)
+    turnIndex = 1 - currentUpdateUI.yourPlayerIndex;
+    */
+    if(state.board[1-currentUpdateUI.yourPlayerIndex][row][col] == 0)
       return true;
     else
       return false;
   }
   export function showDamagedCraft(row:number, col:number): boolean{
+    /*
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
-    if(state.board[1-turnIndex][row][col] < -1)
+    */
+    if(state.board[1-currentUpdateUI.yourPlayerIndex][row][col] < -1)
       return true;
     else
       return false;
   }
   export function showDamagedBlank(row:number, col:number): boolean{
+    /*
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
-    if(state.board[1-turnIndex][row][col] == -1)
+    */
+    if(state.board[1-currentUpdateUI.yourPlayerIndex][row][col] == -1)
       return true;
     else
       return false;
@@ -244,9 +221,11 @@ module game {
 
 
   export function shouldShowImage(row: number, col: number): boolean {
+    /*
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
-    return state.board[turnIndex][row][col] <= -1;
+    */
+    return state.board[currentUpdateUI.yourPlayerIndex][row][col] <= -1;
   }
 
   export function shouldSlowlyAppear(row: number, col: number): boolean {
@@ -254,7 +233,16 @@ module game {
         state.delta.row === row && state.delta.col === col;
   }
 }
+angular.module('myApp', ['gameServices'])
+  .run(['$rootScope', '$timeout',
+    function ($rootScope: angular.IScope, $timeout: angular.ITimeoutService) {
+      $rootScope['game'] = game;
+      //$rootScope['hp'] = ()=>game.remain_score[game.currentUpdateUI.turnIndex];
+      $rootScope['hp'] = ()=>game.remain_score[game.currentUpdateUI.yourPlayerIndex];
+      game.init($rootScope, $timeout);
+    }]);
 
+/*
 angular.module('myApp', ['gameServices'])
   .run(['$rootScope', '$timeout',
     function ($rootScope: angular.IScope, $timeout: angular.ITimeoutService) {
@@ -264,8 +252,10 @@ angular.module('myApp', ['gameServices'])
   .controller('GreetingController', ['$scope', function($rootscope: angular.IScope) {
   //$rootscope.greeting = 'Hola!';
   //$rootscope.hp = game.remain_score[game.currentUpdateUI.turnIndex]
+  //$rootscope.hp = gameLogic.points_to_win[game.currentUpdateUI.turnIndex]
   $rootscope.hp = gameLogic.points_to_win[game.currentUpdateUI.turnIndex]
 }]);
+*/
 
 // var myapp = angular.module('myHp',[]);
 // myapp.controller('myCtrl_2',function ($scope) {

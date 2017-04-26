@@ -31926,88 +31926,96 @@ var gameLogic;
     gameLogic.ROWS = 6;
     gameLogic.COLS = 6;
     var points_to_win = [10, 10];
-    var head = { index: Math.floor(Math.random() * 20) + 1, x: 0, y: 0, direct: 0 };
+    var head = [];
+    head[0] = getInitialHP();
+    head[1] = getInitialHP();
+    function getInitialHP() {
+        var temp = { index: Math.floor(Math.random() * 20) + 1, x: 0, y: 0, direct: 0 };
+        return temp;
+    }
+    gameLogic.getInitialHP = getInitialHP;
+    //  HeadPosi = {index : Math.floor(Math.random() * 20) + 1, x :0, y :0, direct :0};
     /** Returns the initial AirCraft board, which is a ROWSxCOLS matrix containing ''. */
-    function getInitialBoard() {
+    function getInitialBoard(i) {
         var board = [];
         // generate random craft head
         //head.index = Math.floor(Math.random() * 20) + 1;
         //choose a direction based on the head position
-        if (head.index >= 17 && head.index <= 20) {
+        if (head[i].index >= 17 && head[i].index <= 20) {
             var rand = Math.floor(Math.random() * 2) + 1;
-            switch (head.index) {
+            switch (head[i].index) {
                 case 17:
                     if (rand == 1) {
-                        head.direct = 1;
+                        head[i].direct = 1;
                     }
                     else {
-                        head.direct = 2;
+                        head[i].direct = 2;
                     }
-                    head.x = 2;
-                    head.y = 2;
+                    head[i].x = 2;
+                    head[i].y = 2;
                     break;
                 case 18:
                     if (rand == 1) {
-                        head.direct = 1;
+                        head[i].direct = 1;
                     }
                     else {
-                        head.direct = 3;
+                        head[i].direct = 3;
                     }
-                    head.x = 3;
-                    head.y = 2;
+                    head[i].x = 3;
+                    head[i].y = 2;
                     break;
                 case 19:
                     if (rand == 1) {
-                        head.direct = 2;
+                        head[i].direct = 2;
                     }
                     else {
-                        head.direct = 4;
+                        head[i].direct = 4;
                     }
-                    head.x = 2;
-                    head.y = 3;
+                    head[i].x = 2;
+                    head[i].y = 3;
                     break;
                 case 20:
                     if (rand == 1) {
-                        head.direct = 3;
+                        head[i].direct = 3;
                     }
                     else {
-                        head.direct = 4;
+                        head[i].direct = 4;
                     }
-                    head.x = 3;
-                    head.y = 3;
+                    head[i].x = 3;
+                    head[i].y = 3;
                     break;
             }
         }
-        else if (head.index >= 1 && head.index <= 4) {
-            head.direct = 1;
-            head.x = (head.index === 1 || head.index == 3) ? 2 : 3;
-            head.y = (head.index === 1 || head.index == 2) ? 0 : 1;
+        else if (head[i].index >= 1 && head[i].index <= 4) {
+            head[i].direct = 1;
+            head[i].x = (head[i].index === 1 || head[i].index == 3) ? 2 : 3;
+            head[i].y = (head[i].index === 1 || head[i].index == 2) ? 0 : 1;
         }
-        else if (head.index >= 5 && head.index <= 8) {
-            head.direct = 2;
-            head.x = (head.index === 5 || head.index == 7) ? 0 : 1;
-            head.y = (head.index === 5 || head.index == 6) ? 2 : 3;
+        else if (head[i].index >= 5 && head[i].index <= 8) {
+            head[i].direct = 2;
+            head[i].x = (head[i].index === 5 || head[i].index == 7) ? 0 : 1;
+            head[i].y = (head[i].index === 5 || head[i].index == 6) ? 2 : 3;
         }
-        else if (head.index >= 9 && head.index <= 12) {
-            head.direct = 3;
-            head.x = (head.index === 9 || head.index == 11) ? 4 : 5;
-            head.y = (head.index === 9 || head.index == 10) ? 2 : 3;
+        else if (head[i].index >= 9 && head[i].index <= 12) {
+            head[i].direct = 3;
+            head[i].x = (head[i].index === 9 || head[i].index == 11) ? 4 : 5;
+            head[i].y = (head[i].index === 9 || head[i].index == 10) ? 2 : 3;
         }
-        else if (head.index >= 13 && head.index <= 16) {
-            head.direct = 4;
-            head.x = (head.index === 13 || head.index == 15) ? 2 : 3;
-            head.y = (head.index === 13 || head.index == 14) ? 4 : 5;
+        else if (head[i].index >= 13 && head[i].index <= 16) {
+            head[i].direct = 4;
+            head[i].x = (head[i].index === 13 || head[i].index == 15) ? 2 : 3;
+            head[i].y = (head[i].index === 13 || head[i].index == 14) ? 4 : 5;
         }
-        for (var i = 0; i < gameLogic.ROWS; i++) {
-            board[i] = [];
+        for (var i_1 = 0; i_1 < gameLogic.ROWS; i_1++) {
+            board[i_1] = [];
             for (var j = 0; j < gameLogic.COLS; j++) {
-                board[i][j] = 0;
+                board[i_1][j] = 0;
             }
         }
-        var x = head.x;
-        var y = head.y;
+        var x = head[i].x;
+        var y = head[i].y;
         //initial aircraft in board
-        switch (head.direct) {
+        switch (head[i].direct) {
             case 1:
                 board[x][y] = 10;
                 //body
@@ -32073,7 +32081,9 @@ var gameLogic;
     }
     gameLogic.getInitialBoard = getInitialBoard;
     function getInitialState() {
-        return { board: [getInitialBoard(), getInitialBoard()], delta: null };
+        var temp_board_0 = getInitialBoard(0);
+        var temp_board_1 = getInitialBoard(1);
+        return { board: [temp_board_0, temp_board_1], delta: null };
     }
     gameLogic.getInitialState = getInitialState;
     /**
@@ -32114,7 +32124,7 @@ var gameLogic;
         else {
             boardAfterMove[row][col] = -1;
         }
-        var finalboard;
+        var finalboard = [];
         finalboard[turnIndexBeforeMove] = boardAfterMove;
         finalboard[1 - turnIndexBeforeMove] = stateBeforeMove.board[1 - turnIndexBeforeMove];
         var winner = winOrNot(turnIndexBeforeMove);
@@ -32171,7 +32181,7 @@ var game;
         resizeGameAreaService.setWidthToHeight(2);
         gameService.setGame({
             updateUI: updateUI,
-            communityUI: null,
+            communityUI: communityUI,
             getStateForOgImage: null,
         });
     }
@@ -32253,12 +32263,13 @@ var game;
         game.state = params.state;
         if (isFirstMove()) {
             game.state = gameLogic.getInitialState();
+            log.info(game.currentUpdateUI);
             var move = {
-                turnIndex: -2,
+                turnIndex: 0,
                 state: game.state,
                 endMatchScores: null,
             };
-            makeMove(move);
+            //makeMove(move);
         }
         // We calculate the AI move only after the animation finishes,
         // because if we call aiService now
@@ -32292,8 +32303,8 @@ var game;
             nextMove = gameLogic.createMove(game.state, row, col, game.currentUpdateUI.turnIndex);
         }
         catch (e) {
-            log.info(e);
-            //log.info(["Cell has been explored:", row,col]);
+            //log.info(e);
+            log.info(["Cell has been explored:", row, col]);
             return;
         }
         // Move is legal, make it!

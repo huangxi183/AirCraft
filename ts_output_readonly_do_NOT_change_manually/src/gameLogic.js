@@ -8,7 +8,7 @@ var gameLogic;
 (function (gameLogic) {
     gameLogic.ROWS = 6;
     gameLogic.COLS = 6;
-    var points_to_win = [10, 10];
+    gameLogic.points_to_win = [10, 10];
     var head = [];
     head[0] = getInitialHP();
     head[1] = getInitialHP();
@@ -163,6 +163,10 @@ var gameLogic;
         return board;
     }
     gameLogic.getInitialBoard = getInitialBoard;
+    function getPTW(turnIndex) {
+        return gameLogic.points_to_win[turnIndex];
+    }
+    gameLogic.getPTW = getPTW;
     function getInitialState() {
         var temp_board_0 = getInitialBoard(0);
         var temp_board_1 = getInitialBoard(1);
@@ -178,7 +182,7 @@ var gameLogic;
      *      ['X', '', '']]
      */
     function winOrNot(turnIndexBeforeMove) {
-        if (points_to_win[turnIndexBeforeMove] <= 0)
+        if (gameLogic.points_to_win[turnIndexBeforeMove] <= 0)
             return true;
         else
             return false;
@@ -201,7 +205,7 @@ var gameLogic;
         }
         var boardAfterMove = angular.copy(board);
         if (boardAfterMove[row][col] > 0) {
-            points_to_win[turnIndexBeforeMove] -= boardAfterMove[row][col];
+            gameLogic.points_to_win[turnIndexBeforeMove] -= boardAfterMove[row][col];
             boardAfterMove[row][col] = -boardAfterMove[row][col];
         }
         else {
@@ -215,8 +219,8 @@ var gameLogic;
         var temp_score = [0, 0];
         if (winner) {
             turnIndex = -1;
-            temp_score[turnIndexBeforeMove] = 10 - points_to_win[turnIndexBeforeMove];
-            temp_score[1 - turnIndexBeforeMove] = 10 - points_to_win[1 - turnIndexBeforeMove];
+            temp_score[turnIndexBeforeMove] = 10 - gameLogic.points_to_win[turnIndexBeforeMove];
+            temp_score[1 - turnIndexBeforeMove] = 10 - gameLogic.points_to_win[1 - turnIndexBeforeMove];
         }
         else {
             turnIndex = 1 - turnIndex;

@@ -8,7 +8,6 @@ interface SupportedLanguages {
 module game {
   export let $rootScope: angular.IScope = null;
   export let $timeout: angular.ITimeoutService = null;
-
   // Global variables are cleared when getting updateUI.
   // I export all variables to make it easy to debug in the browser by
   // simply typing in the console, e.g.,
@@ -18,6 +17,7 @@ module game {
   export let animationEndedTimeout: ng.IPromise<any> = null;
   export let state: IState = null;
   export let proposals: number[][] = null;
+  export let remain_score : number[] = [10,10];
   //export let yourPlayerInfo: IPlayerInfo = null;
 
   export function init($rootScope_: angular.IScope, $timeout_: angular.ITimeoutService) {
@@ -29,7 +29,6 @@ module game {
     resizeGameAreaService.setWidthToHeight(2);
     gameService.setGame({
       updateUI: updateUI,
-      communityUI: communityUI,
       getStateForOgImage: null,
     });
   }
@@ -53,47 +52,6 @@ module game {
     return {};
   }
 
-  export function communityUI(communityUI: ICommunityUI) {
-    currentCommunityUI = communityUI;
-    log.info("Game got communityUI:", communityUI);
-    // If only proposals changed, then do NOT call updateUI. Then update proposals.
-    let nextUpdateUI: IUpdateUI = {
-      playersInfo: [],
-      playMode: communityUI.yourPlayerIndex,
-      numberOfPlayers: communityUI.numberOfPlayers,
-      state: communityUI.state,
-      turnIndex: communityUI.turnIndex,
-      endMatchScores: communityUI.endMatchScores,
-      yourPlayerIndex: communityUI.yourPlayerIndex,
-    };
-    if (angular.equals(yourPlayerInfo, communityUI.yourPlayerInfo) &&
-        currentUpdateUI && angular.equals(currentUpdateUI, nextUpdateUI)) {
-      // We're not calling updateUI to avoid disrupting the player if he's in the middle of a move.
-    } else {
-      // Things changed, so call updateUI.
-      updateUI(nextUpdateUI);
-    }
-    // This must be after calling updateUI, because we nullify things there (like playerIdToProposal&proposals&etc)
-    yourPlayerInfo = communityUI.yourPlayerInfo;
-    let playerIdToProposal = communityUI.playerIdToProposal;
-    didMakeMove = !!playerIdToProposal[communityUI.yourPlayerInfo.playerId];
-    proposals = [];
-    for (let i = 0; i < gameLogic.ROWS; i++) {
-      proposals[i] = [];
-      for (let j = 0; j < gameLogic.COLS; j++) {
-        proposals[i][j] = 0;
-      }
-    }
-    for (let playerId in playerIdToProposal) {
-      let proposal = playerIdToProposal[playerId];
-      let delta = proposal.data;
-      proposals[delta.row][delta.col]++;
-    }
-  }
-
-  export function isProposal(row: number, col: number) {
-    return proposals && proposals[row][col] > 0;
-  }
 
   export function getCellStyle(row: number, col: number) {
     let scale = 1.0;
@@ -141,9 +99,13 @@ module game {
     if (didMakeMove) { // Only one move per updateUI
       return;
     }
+    let turnIndex: number;
+    turnIndex = currentUpdateUI.yourPlayerIndex;
     didMakeMove = true;
-    
-    gameService.makeMove(move);
+    remain_score[turnIndex] = gameLogic.getPTW(turnIndex);
+    log.info(["let go",gameLogic.getPTW(turnIndex)]);
+    log.info(["lets go",remain_score[turnIndex]]);
+    gameService.makeMove(move,null,"TODO");
   }
 
   function isFirstMove() {
@@ -180,7 +142,6 @@ module game {
     let temp_pro: boolean;
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
-    temp_pro = (isProposal(row, col) && currentUpdateUI.turnIndex == turnIndex);
     log.info(state.board[turnIndex]);
     if(state.board[turnIndex][row][col] < -1){
       return true;
@@ -193,7 +154,6 @@ module game {
     let temp_pro: boolean;
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
-    temp_pro = (isProposal(row, col) && currentUpdateUI.turnIndex == turnIndex);
     if(state.board[turnIndex][row][col] == -1){
       return true;
     }else
@@ -203,7 +163,8 @@ module game {
   export function showCraft(row: number, col:number): boolean{
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
-    if(state.board[1-turnIndex][row][col] > 1 || state.board[1-turnIndex][row][col] < -1)
+    //if(state.board[1-turnIndex][row][col] > 1 || state.board[1-turnIndex][row][col] < -1)
+    if(state.board[1-turnIndex][row][col] >= 1)
       return true;
     else
       return false;
@@ -211,12 +172,31 @@ module game {
   export function showBlank(row: number, col:number): boolean{
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
-    if(state.board[1-turnIndex][row][col] < 1 && state.board[1-turnIndex][row][col] >= -1)
+    if(state.board[1-turnIndex][row][col] == 0)
+      return true;
+    else
+      return false;
+  }
+  export function showDamagedCraft(row:number, col:number): boolean{
+    let turnIndex: number;
+    turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(state.board[1-turnIndex][row][col] < -1)
+      return true;
+    else
+      return false;
+  }
+  export function showDamagedBlank(row:number, col:number): boolean{
+    let turnIndex: number;
+    turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(state.board[1-turnIndex][row][col] == -1)
       return true;
     else
       return false;
   }
 
+  export function showHp(i : number){
+    return gameLogic.getPTW(1 - i);
+  }
   //--------->
 
 
@@ -237,5 +217,11 @@ angular.module('myApp', ['gameServices'])
   .run(['$rootScope', '$timeout',
     function ($rootScope: angular.IScope, $timeout: angular.ITimeoutService) {
       $rootScope['game'] = game;
+      $rootScope['hp'] = ()=>game.remain_score[game.currentUpdateUI.yourPlayerIndex];
       game.init($rootScope, $timeout);
     }]);
+    
+    // var myapp = angular.module('myHp',[]);
+// myapp.controller('myCtrl_2',function ($scope) {
+//   $scope.score =game.remain_score[game.currentUpdateUI.yourPlayerIndex];
+// });

@@ -71,6 +71,8 @@ module game {
     if (isFirstMove()) {
       state = gameLogic.getInitialState();
       log.info(currentUpdateUI);
+      remain_score[0] = 10;
+      remain_score[1] = 10;
       let move:IMove = {
         turnIndex: 0,
         state: state,
@@ -161,6 +163,9 @@ module game {
   }
 
   export function showCraft(row: number, col:number): boolean{
+    if(isFirstMove()){
+      return false;
+    }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
     //if(state.board[1-turnIndex][row][col] > 1 || state.board[1-turnIndex][row][col] < -1)
@@ -170,6 +175,9 @@ module game {
       return false;
   }
   export function showBlank(row: number, col:number): boolean{
+    if(isFirstMove()){
+      return true;
+    }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
     if(state.board[1-turnIndex][row][col] == 0)
@@ -178,6 +186,9 @@ module game {
       return false;
   }
   export function showDamagedCraft(row:number, col:number): boolean{
+    if(isFirstMove()){
+      return false;
+    }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
     if(state.board[1-turnIndex][row][col] < -1)

@@ -243,10 +243,12 @@ module gameLogic {
       turnIndex = -1;
       temp_score[turnIndexBeforeMove] = 10 - points_to_win[turnIndexBeforeMove];
       temp_score[1-turnIndexBeforeMove] = 10 - points_to_win[1-turnIndexBeforeMove];
+      /*-------
       points_to_win[0] = 10;
       points_to_win[1] = 10;
       head[0] = getInitialHP();
       head[1] = getInitialHP();
+      -------*/
     }
     else {
       turnIndex = 1 - turnIndex;

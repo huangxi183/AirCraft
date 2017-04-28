@@ -31962,6 +31962,8 @@ var game;
         if (isFirstMove()) {
             game.state = gameLogic.getInitialState();
             log.info(game.currentUpdateUI);
+            game.remain_score[0] = 10;
+            game.remain_score[1] = 10;
             var move = {
                 turnIndex: 0,
                 state: game.state,
@@ -32046,6 +32048,9 @@ var game;
     }
     game.isPieceBlank = isPieceBlank;
     function showCraft(row, col) {
+        if (isFirstMove()) {
+            return false;
+        }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
         //if(state.board[1-turnIndex][row][col] > 1 || state.board[1-turnIndex][row][col] < -1)
@@ -32056,6 +32061,9 @@ var game;
     }
     game.showCraft = showCraft;
     function showBlank(row, col) {
+        if (isFirstMove()) {
+            return true;
+        }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
         if (game.state.board[1 - turnIndex][row][col] == 0)
@@ -32065,6 +32073,9 @@ var game;
     }
     game.showBlank = showBlank;
     function showDamagedCraft(row, col) {
+        if (isFirstMove()) {
+            return false;
+        }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
         if (game.state.board[1 - turnIndex][row][col] < -1)

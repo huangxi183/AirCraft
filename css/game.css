@@ -28,7 +28,7 @@ textarea, input {
   display: none !important;
 }
 body {
-  background-color: rgb(250,250,250);
+  background-color: #fff5f7;
 }
 
 .r {
@@ -79,7 +79,7 @@ body {
 }
 
 .grey {
-  background-color: #C0C0C0
+  background-color: #b2c8bb
 }
 
 .red {

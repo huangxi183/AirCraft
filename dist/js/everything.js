@@ -31822,14 +31822,6 @@ var gameLogic;
         return { board: [temp_board_0, temp_board_1], delta: null };
     }
     gameLogic.getInitialState = getInitialState;
-    /**
-     * Return the winner (either 'X' or 'O') or '' if there is no winner.
-     * The board is a matrix of size 3x3 containing either 'X', 'O', or ''.
-     * E.g., getWinner returns 'X' for the following board:
-     *     [['X', 'O', ''],
-     *      ['X', 'O', ''],
-     *      ['X', '', '']]
-     */
     function winOrNot(turnIndexBeforeMove) {
         if (gameLogic.points_to_win[turnIndexBeforeMove] <= 0) {
             return true;

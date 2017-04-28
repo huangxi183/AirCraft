@@ -192,14 +192,6 @@ module gameLogic {
     return {board: [temp_board_0, temp_board_1], delta: null};
   }
 
-  /**
-   * Return the winner (either 'X' or 'O') or '' if there is no winner.
-   * The board is a matrix of size 3x3 containing either 'X', 'O', or ''.
-   * E.g., getWinner returns 'X' for the following board:
-   *     [['X', 'O', ''],
-   *      ['X', 'O', ''],
-   *      ['X', '', '']]
-   */
   function winOrNot(turnIndexBeforeMove: number): boolean {
     if (points_to_win[turnIndexBeforeMove] <= 0) {
       return true;
@@ -243,12 +235,10 @@ module gameLogic {
       turnIndex = -1;
       temp_score[turnIndexBeforeMove] = 10 - points_to_win[turnIndexBeforeMove];
       temp_score[1-turnIndexBeforeMove] = 10 - points_to_win[1-turnIndexBeforeMove];
-      /*-------
       points_to_win[0] = 10;
       points_to_win[1] = 10;
       head[0] = getInitialHP();
       head[1] = getInitialHP();
-      -------*/
     }
     else {
       turnIndex = 1 - turnIndex;

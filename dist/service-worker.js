@@ -9,9 +9,13 @@ var urlsToCache = [
   '//yoav-zibin.github.io/TicTacToe/dist/css/everything.min.css',
 ];
 <<<<<<< HEAD
+<<<<<<< HEAD
 var CACHE_NAME = 'cache-v2017-04-28T22:39:37.658Z';
 =======
 var CACHE_NAME = 'cache-v2017-05-01T02:03:04.688Z';
+>>>>>>> dev
+=======
+var CACHE_NAME = 'cache-v2017-05-01T02:10:28.455Z';
 >>>>>>> dev
 
 self.addEventListener('activate', function(event) {

@@ -8,10 +8,6 @@ var gameLogic;
 (function (gameLogic) {
     gameLogic.ROWS = 6;
     gameLogic.COLS = 6;
-    gameLogic.points_to_win = [10, 10];
-    var head = [];
-    head[0] = getInitialHP();
-    head[1] = getInitialHP();
     function getInitialHP() {
         var temp = { index: Math.floor(Math.random() * 20) + 1, x: 0, y: 0, direct: 0 };
         return temp;
@@ -21,6 +17,9 @@ var gameLogic;
     /** Returns the initial AirCraft board, which is a ROWSxCOLS matrix containing ''. */
     function getInitialBoard(i) {
         var board = [];
+        var head = [];
+        head[0] = getInitialHP();
+        head[1] = getInitialHP();
         // generate random craft head
         //head.index = Math.floor(Math.random() * 20) + 1;
         //choose a direction based on the head position
@@ -163,18 +162,18 @@ var gameLogic;
         return board;
     }
     gameLogic.getInitialBoard = getInitialBoard;
-    function getPTW(turnIndex) {
-        return gameLogic.points_to_win[turnIndex];
+    function getPTW(state, turnIndex) {
+        return state.points_To_Win[turnIndex];
     }
     gameLogic.getPTW = getPTW;
     function getInitialState() {
         var temp_board_0 = getInitialBoard(0);
         var temp_board_1 = getInitialBoard(1);
-        return { board: [temp_board_0, temp_board_1], delta: null };
+        return { board: [temp_board_0, temp_board_1], delta: null, points_To_Win: [10, 10] };
     }
     gameLogic.getInitialState = getInitialState;
-    function winOrNot(turnIndexBeforeMove) {
-        if (gameLogic.points_to_win[turnIndexBeforeMove] <= 0) {
+    function winOrNot(turnIndexBeforeMove, state) {
+        if (state.points_To_Win[turnIndexBeforeMove] <= 0) {
             return true;
         }
         else
@@ -193,12 +192,13 @@ var gameLogic;
         if (board[row][col] < 0) {
             throw new Error("One can only make a move in an empty position!");
         }
-        if (winOrNot(turnIndexBeforeMove)) {
+        if (winOrNot(turnIndexBeforeMove, stateBeforeMove)) {
             throw new Error("Can only make a move if the game is not over!");
         }
         var boardAfterMove = angular.copy(board);
+        var points_To_Win = angular.copy(stateBeforeMove.points_To_Win);
         if (boardAfterMove[row][col] > 0) {
-            gameLogic.points_to_win[turnIndexBeforeMove] -= boardAfterMove[row][col];
+            points_To_Win[turnIndexBeforeMove] -= boardAfterMove[row][col];
             boardAfterMove[row][col] = -boardAfterMove[row][col];
         }
         else {
@@ -207,24 +207,26 @@ var gameLogic;
         var finalboard = [];
         finalboard[turnIndexBeforeMove] = boardAfterMove;
         finalboard[1 - turnIndexBeforeMove] = stateBeforeMove.board[1 - turnIndexBeforeMove];
-        var winner = winOrNot(turnIndexBeforeMove);
+        var winner = winOrNot(turnIndexBeforeMove, stateBeforeMove);
         var turnIndex = turnIndexBeforeMove;
         var temp_score = [0, 0];
         if (winner) {
             turnIndex = -1;
-            temp_score[turnIndexBeforeMove] = 10 - gameLogic.points_to_win[turnIndexBeforeMove];
-            temp_score[1 - turnIndexBeforeMove] = 10 - gameLogic.points_to_win[1 - turnIndexBeforeMove];
-            gameLogic.points_to_win[0] = 10;
-            gameLogic.points_to_win[1] = 10;
+            temp_score[turnIndexBeforeMove] = 10 - points_To_Win[turnIndexBeforeMove];
+            temp_score[1 - turnIndexBeforeMove] = 10 - points_To_Win[1 - turnIndexBeforeMove];
+            /*
+            points_to_win[0] = 10;
+            points_to_win[1] = 10;
             head[0] = getInitialHP();
             head[1] = getInitialHP();
+            */
         }
         else {
             turnIndex = 1 - turnIndex;
             temp_score = null;
         }
         var delta = { row: row, col: col };
-        var state = { delta: delta, board: finalboard };
+        var state = { delta: delta, board: finalboard, points_To_Win: points_To_Win };
         //endMatchScores: number[];
         return { turnIndex: turnIndex, state: state, endMatchScores: temp_score };
     }

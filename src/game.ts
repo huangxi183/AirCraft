@@ -65,6 +65,7 @@ module game {
   export function updateUI(params: IUpdateUI): void {
     log.info("Sue got updateUI:", params);
     didMakeMove = false; // Only one move per updateUI
+    if (params.yourPlayerIndex == -2) params.yourPlayerIndex = 0;
     currentUpdateUI = params;
     clearAnimationTimeout();
     state = params.state;
@@ -104,8 +105,8 @@ module game {
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
     didMakeMove = true;
-    remain_score[turnIndex] = gameLogic.getPTW(turnIndex);
-    log.info(["let go",gameLogic.getPTW(turnIndex)]);
+    remain_score[turnIndex] = gameLogic.getPTW(move.state, turnIndex);
+    log.info(["let go",gameLogic.getPTW(move.state, turnIndex)]);
     log.info(["lets go",remain_score[turnIndex]]);
     gameService.makeMove(move,null,"TODO");
   }
@@ -114,7 +115,32 @@ module game {
     return !currentUpdateUI.state;
   }
 
+  function yourPlayerIndex() {
+    return currentUpdateUI.yourPlayerIndex;
+  }
+
+  function isComputer() {
+    let playerInfo = currentUpdateUI.playersInfo[currentUpdateUI.yourPlayerIndex];
+    // In community games, playersInfo is [].
+    return playerInfo && playerInfo.playerId === '';
+  }
+
+  function isComputerTurn() {
+    return isMyTurn() && isComputer();
+  }
+
+  function isHumanTurn() {
+    return isMyTurn() && !isComputer();
+  }
+
+  function isMyTurn() {
+    return !didMakeMove && // you can only make one move per updateUI.
+      currentUpdateUI.turnIndex >= 0 && // game is ongoing
+      currentUpdateUI.yourPlayerIndex === currentUpdateUI.turnIndex; // it's my turn
+  }
+
   export function cellClicked(row: number, col: number): void {
+    if (!isMyTurn()) return;
     log.info("Clicked on cell:", row, col);
     let nextMove: IMove;
     try {
@@ -205,8 +231,8 @@ module game {
       return false;
   }
 
-  export function showHp(i : number){
-    return gameLogic.getPTW(1 - i);
+  export function showHp(){
+    return currentUpdateUI.state ? currentUpdateUI.state.points_To_Win[1 - currentUpdateUI.yourPlayerIndex] : '';
   }
   //--------->
 

@@ -56,6 +56,8 @@ var game;
     function updateUI(params) {
         log.info("Sue got updateUI:", params);
         game.didMakeMove = false; // Only one move per updateUI
+        if (params.yourPlayerIndex == -2)
+            params.yourPlayerIndex = 0;
         game.currentUpdateUI = params;
         clearAnimationTimeout();
         game.state = params.state;
@@ -93,15 +95,36 @@ var game;
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
         game.didMakeMove = true;
-        game.remain_score[turnIndex] = gameLogic.getPTW(turnIndex);
-        log.info(["let go", gameLogic.getPTW(turnIndex)]);
+        game.remain_score[turnIndex] = gameLogic.getPTW(move.state, turnIndex);
+        log.info(["let go", gameLogic.getPTW(move.state, turnIndex)]);
         log.info(["lets go", game.remain_score[turnIndex]]);
         gameService.makeMove(move, null, "TODO");
     }
     function isFirstMove() {
         return !game.currentUpdateUI.state;
     }
+    function yourPlayerIndex() {
+        return game.currentUpdateUI.yourPlayerIndex;
+    }
+    function isComputer() {
+        var playerInfo = game.currentUpdateUI.playersInfo[game.currentUpdateUI.yourPlayerIndex];
+        // In community games, playersInfo is [].
+        return playerInfo && playerInfo.playerId === '';
+    }
+    function isComputerTurn() {
+        return isMyTurn() && isComputer();
+    }
+    function isHumanTurn() {
+        return isMyTurn() && !isComputer();
+    }
+    function isMyTurn() {
+        return !game.didMakeMove &&
+            game.currentUpdateUI.turnIndex >= 0 &&
+            game.currentUpdateUI.yourPlayerIndex === game.currentUpdateUI.turnIndex; // it's my turn
+    }
     function cellClicked(row, col) {
+        if (!isMyTurn())
+            return;
         log.info("Clicked on cell:", row, col);
         var nextMove;
         try {
@@ -193,8 +216,8 @@ var game;
             return false;
     }
     game.showDamagedBlank = showDamagedBlank;
-    function showHp(i) {
-        return gameLogic.getPTW(1 - i);
+    function showHp() {
+        return game.currentUpdateUI.state ? game.currentUpdateUI.state.points_To_Win[1 - game.currentUpdateUI.yourPlayerIndex] : '';
     }
     game.showHp = showHp;
     //--------->

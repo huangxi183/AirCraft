@@ -8,18 +8,18 @@ var gameLogic;
 (function (gameLogic) {
     gameLogic.ROWS = 6;
     gameLogic.COLS = 6;
-    function getInitialHP() {
+    function getInitialHeadPosition() {
         var temp = { index: Math.floor(Math.random() * 20) + 1, x: 0, y: 0, direct: 0 };
         return temp;
     }
-    gameLogic.getInitialHP = getInitialHP;
+    gameLogic.getInitialHeadPosition = getInitialHeadPosition;
     //  HeadPosi = {index : Math.floor(Math.random() * 20) + 1, x :0, y :0, direct :0};
     /** Returns the initial AirCraft board, which is a ROWSxCOLS matrix containing ''. */
     function getInitialBoard(i) {
         var board = [];
         var head = [];
-        head[0] = getInitialHP();
-        head[1] = getInitialHP();
+        head[i] = getInitialHeadPosition();
+        //head[1] = getInitialHeadPosition();
         // generate random craft head
         //head.index = Math.floor(Math.random() * 20) + 1;
         //choose a direction based on the head position
@@ -173,7 +173,7 @@ var gameLogic;
     }
     gameLogic.getInitialState = getInitialState;
     function winOrNot(turnIndexBeforeMove, state) {
-        if (state.points_To_Win[turnIndexBeforeMove] <= 0) {
+        if (state.points_To_Win[turnIndexBeforeMove] <= 0 && state.points_To_Win[1 - turnIndexBeforeMove] > 0) {
             return true;
         }
         else
@@ -207,13 +207,18 @@ var gameLogic;
         var finalboard = [];
         finalboard[turnIndexBeforeMove] = boardAfterMove;
         finalboard[1 - turnIndexBeforeMove] = stateBeforeMove.board[1 - turnIndexBeforeMove];
-        var winner = winOrNot(turnIndexBeforeMove, stateBeforeMove);
+        //-----
+        var new_points_To_Win = points_To_Win;
+        var new_delta = { row: row, col: col };
+        var new_state = { delta: new_delta, board: finalboard, points_To_Win: new_points_To_Win };
+        //-----
+        var winner = winOrNot(turnIndexBeforeMove, new_state);
         var turnIndex = turnIndexBeforeMove;
-        var temp_score = [0, 0];
+        var endMatchScores = [0, 0];
         if (winner) {
             turnIndex = -1;
-            temp_score[turnIndexBeforeMove] = 10 - points_To_Win[turnIndexBeforeMove];
-            temp_score[1 - turnIndexBeforeMove] = 10 - points_To_Win[1 - turnIndexBeforeMove];
+            endMatchScores[turnIndexBeforeMove] = 10 - points_To_Win[turnIndexBeforeMove];
+            endMatchScores[1 - turnIndexBeforeMove] = 10 - points_To_Win[1 - turnIndexBeforeMove];
             /*
             points_to_win[0] = 10;
             points_to_win[1] = 10;
@@ -222,13 +227,13 @@ var gameLogic;
             */
         }
         else {
-            turnIndex = 1 - turnIndex;
-            temp_score = null;
+            turnIndex = 1 - turnIndexBeforeMove;
+            endMatchScores = null;
         }
         var delta = { row: row, col: col };
         var state = { delta: delta, board: finalboard, points_To_Win: points_To_Win };
         //endMatchScores: number[];
-        return { turnIndex: turnIndex, state: state, endMatchScores: temp_score };
+        return { turnIndex: turnIndex, state: state, endMatchScores: endMatchScores };
     }
     gameLogic.createMove = createMove;
     function createInitialMove() {

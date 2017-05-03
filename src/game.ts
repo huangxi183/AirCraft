@@ -52,7 +52,6 @@ module game {
     return {};
   }
 
-
   export function getCellStyle(row: number, col: number) {
     let scale = 1.0;
     let opacity = 0.5;
@@ -108,7 +107,7 @@ module game {
     remain_score[turnIndex] = gameLogic.getPTW(move.state, turnIndex);
     log.info(["let go",gameLogic.getPTW(move.state, turnIndex)]);
     log.info(["lets go",remain_score[turnIndex]]);
-    gameService.makeMove(move,null,"TODO");
+    gameService.makeMove(move,null,"Move Made");
   }
 
   function isFirstMove() {

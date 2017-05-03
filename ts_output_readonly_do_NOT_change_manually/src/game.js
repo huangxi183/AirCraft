@@ -98,7 +98,7 @@ var game;
         game.remain_score[turnIndex] = gameLogic.getPTW(move.state, turnIndex);
         log.info(["let go", gameLogic.getPTW(move.state, turnIndex)]);
         log.info(["lets go", game.remain_score[turnIndex]]);
-        gameService.makeMove(move, null, "TODO");
+        gameService.makeMove(move, null, "Move Made");
     }
     function isFirstMove() {
         return !game.currentUpdateUI.state;

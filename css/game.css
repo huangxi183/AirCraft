@@ -1,4 +1,4 @@
-html, body {
+html, body{
   margin: 0;
   padding: 0;
   width: 100%;
@@ -6,6 +6,7 @@ html, body {
   overflow: hidden;
   position: fixed!important;
 }
+
 /* To prevent long-press that will bring up copy-paste dialog. */
 * {
   -webkit-user-select: none;
@@ -27,8 +28,10 @@ textarea, input {
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
 }
-body {
-  background-color: #fff5f7;
+body{
+  background:url("../pics/background.jpg");
+  background-size: cover;
+  background-position:center; 
 }
 
 .r {

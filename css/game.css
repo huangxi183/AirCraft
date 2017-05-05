@@ -29,7 +29,7 @@ textarea, input {
   display: none !important;
 }
 body{
-  background:url("../pics/backgrounds.jpg");
+  background:url("../pics/background.jpg");
   background-size: cover;
   background-position:center; 
 }

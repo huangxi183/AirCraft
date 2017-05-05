@@ -233,6 +233,13 @@ module game {
   export function showHp(){
     return currentUpdateUI.state ? currentUpdateUI.state.points_To_Win[1 - currentUpdateUI.yourPlayerIndex] : '';
   }
+
+  export function showHP_1(){
+    if (showHp() == 1) {
+      return true;
+    }
+    else return false;
+  }
   //--------->
 
 

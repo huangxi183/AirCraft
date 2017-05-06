@@ -230,15 +230,71 @@ module game {
       return false;
   }
 
-  export function showHp(){
-    return currentUpdateUI.state ? currentUpdateUI.state.points_To_Win[1 - currentUpdateUI.yourPlayerIndex] : '';
+/*
+  export function showHp(): number{
+    if(currentUpdateUI.state){
+      return currentUpdateUI.state.points_To_Win[1-currentUpdateUI.yourPlayerIndex];
+    }
+    return -1;
+  }
+*/
+  export function showHp(): number{
+    return currentUpdateUI.state ? currentUpdateUI.state.points_To_Win[1 - currentUpdateUI.yourPlayerIndex] : -1;
+  }
+  export function showOpHp(): number{
+    return currentUpdateUI.state ? currentUpdateUI.state.points_To_Win[currentUpdateUI.yourPlayerIndex] : -1;
   }
 
   export function showHP_1(){
     if (showHp() == 1) {
       return true;
     }
+    else {
+      return false
+    }
+  }
+
+  export function showHP_2(){
+    if (showHp() === 2) return true;
     else return false;
+  }
+  export function showHP_3(){
+    if (showHp() === 3) return true;
+    else return false;
+  }
+  export function showHP_4(){
+    if (showHp() === 4) return true;
+    else return false;
+  }
+  export function showHP_5(){
+    if (showHp() === 5) return true;
+    else return false;
+  }
+
+  export function showHP_6(){
+    if (showHp() === 6) return true;
+    else return false;
+  }
+  export function showHP_7(){
+    if (showHp() === 7) return true;
+    else return false;
+  }
+  export function showHP_8(){
+    if (showHp() === 8) return true;
+    else return false;
+  }
+
+  export function showHP_9(){
+    if (showHp() === 9) return true;
+    else return false;
+  }
+  export function showHP_10(){
+    if (showHp() == 10) {
+      return true;
+    }
+    else {
+      return false
+    }
   }
   //--------->
 

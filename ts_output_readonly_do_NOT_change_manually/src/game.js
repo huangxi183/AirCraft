@@ -216,10 +216,96 @@ var game;
             return false;
     }
     game.showDamagedBlank = showDamagedBlank;
+    /*
+      export function showHp(): number{
+        if(currentUpdateUI.state){
+          return currentUpdateUI.state.points_To_Win[1-currentUpdateUI.yourPlayerIndex];
+        }
+        return -1;
+      }
+    */
     function showHp() {
-        return game.currentUpdateUI.state ? game.currentUpdateUI.state.points_To_Win[1 - game.currentUpdateUI.yourPlayerIndex] : '';
+        return game.currentUpdateUI.state ? game.currentUpdateUI.state.points_To_Win[1 - game.currentUpdateUI.yourPlayerIndex] : -1;
     }
     game.showHp = showHp;
+    function showOpHp() {
+        return game.currentUpdateUI.state ? game.currentUpdateUI.state.points_To_Win[game.currentUpdateUI.yourPlayerIndex] : -1;
+    }
+    game.showOpHp = showOpHp;
+    function showHP_1() {
+        if (showHp() == 1) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    game.showHP_1 = showHP_1;
+    function showHP_2() {
+        if (showHp() === 2)
+            return true;
+        else
+            return false;
+    }
+    game.showHP_2 = showHP_2;
+    function showHP_3() {
+        if (showHp() === 3)
+            return true;
+        else
+            return false;
+    }
+    game.showHP_3 = showHP_3;
+    function showHP_4() {
+        if (showHp() === 4)
+            return true;
+        else
+            return false;
+    }
+    game.showHP_4 = showHP_4;
+    function showHP_5() {
+        if (showHp() === 5)
+            return true;
+        else
+            return false;
+    }
+    game.showHP_5 = showHP_5;
+    function showHP_6() {
+        if (showHp() === 6)
+            return true;
+        else
+            return false;
+    }
+    game.showHP_6 = showHP_6;
+    function showHP_7() {
+        if (showHp() === 7)
+            return true;
+        else
+            return false;
+    }
+    game.showHP_7 = showHP_7;
+    function showHP_8() {
+        if (showHp() === 8)
+            return true;
+        else
+            return false;
+    }
+    game.showHP_8 = showHP_8;
+    function showHP_9() {
+        if (showHp() === 9)
+            return true;
+        else
+            return false;
+    }
+    game.showHP_9 = showHP_9;
+    function showHP_10() {
+        if (showHp() == 10) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    game.showHP_10 = showHP_10;
     //--------->
     function shouldShowImage(row, col) {
         var turnIndex;

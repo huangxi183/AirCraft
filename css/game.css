@@ -74,9 +74,12 @@ body{
   border: 1pt solid #75CDF1;
   border-radius: 10px;
   transform:scale(0.90);
-  box-shadow:inset 0px 0px 10px #75CDF1;
+  box-shadow:inset 0px 0px 100px #75CDF1;
 }
 
+.hp{
+  background-color:url('pics/Clip-art-airplane-sounds-free-clipart-images.jpg')
+}
 
 .blank:hover
 {
@@ -91,6 +94,7 @@ body{
   border-radius: 10px;
   cursor: pointer;
   line-height: 150%;
+  opacity: 0.5;
   z-index: 99999;
   background-color: #14bcc8;
   text-decoration: none;

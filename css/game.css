@@ -77,10 +77,6 @@ body{
   box-shadow:inset 0px 0px 100px #75CDF1;
 }
 
-.hp{
-  background-color:url('pics/Clip-art-airplane-sounds-free-clipart-images.jpg')
-}
-
 .blank:hover
 {
   -webkit-transform:scale(1.25); /* Safari and Chrome */

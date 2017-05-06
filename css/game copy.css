@@ -16,6 +16,7 @@ html, body{
   -webkit-touch-callout: none;
   -moz-touch-callout: none;
   -ms-touch-callout: none;
+  touch-callout: none;
   outline: 0; /* To prevent blue-box outline after click: http://stackoverflow.com/questions/21719306/getting-rid-of-a-blue-box-around-button-when-pressed */
 }
 textarea, input {
@@ -31,9 +32,7 @@ body{
   /*background:url("../pics/background.jpg");*/
   background-size: cover;
   background-position:center; 
-  cursor: url('./imgs/cursor.ico'), default;
 }
-
 
 .r {
   border-right: 2pt solid black;
@@ -53,15 +52,13 @@ body{
   to {opacity: 1;}
 }
 
-/*
 .image:hover img {
-  -webkit-transform:scale(1.25); // Safari and Chrome
-  -moz-transform:scale(1.25); // Firefox
-  -ms-transform:scale(1.25); // IE 9
-  -o-transform:scale(1.25); // Opera
+  -webkit-transform:scale(1.25); /* Safari and Chrome */
+  -moz-transform:scale(1.25); /* Firefox */
+  -ms-transform:scale(1.25); /* IE 9 */
+  -o-transform:scale(1.25); /* Opera */
   transform:scale(1.25);
 }
-*/
 
 .blank{
   /*border: 1pt solid black;*/
@@ -71,7 +68,6 @@ body{
   transform:scale(0.90);
   box-shadow:0px 0px 10px #75CDF1;
   /*padding: 10px;*/
-  cursor: "./imgs/cursor.ico";
 }
 
 .blank_should_not_click{
@@ -79,21 +75,9 @@ body{
   border-radius: 10px;
   transform:scale(0.90);
   box-shadow:inset 0px 0px 100px #75CDF1;
-  cursor: "./imgs/cursor.ico";
 }
 
-.blank_with_hover{
-  /*border: 1pt solid black;*/
-  border: 1pt solid #75CDF1;
-  /*border-color: #75CDF1;*/
-  border-radius: 10px;
-  transform:scale(0.90);
-  box-shadow:0px 0px 10px #75CDF1;
-  cursor: "./imgs/cursor.ico";
-  /*padding: 10px;*/
-}
-
-.blank_with_hover:hover
+.blank:hover
 {
   -webkit-transform:scale(1.25); /* Safari and Chrome */
   -moz-transform:scale(1.25); /* Firefox */
@@ -127,13 +111,3 @@ body{
   background-color: #75CDF1;
   border-radius: 10px;
 }
-.container{
-  perspective:1000;
-  transform-style:preserve-3d;
-  cursor: url("https://huangxi183.github.io/AirCraft/imgs/cursor.png"), auto;
-}
-.flip{transition:0.6s;transform-style:preserve-3d;}
-.front,.back{backface-visibility:hidden;}
-.front{z-index:2;}
-.back{transform:rotateY(-180deg);}
-.container:hover .flip{transform:rotateY(180deg);}

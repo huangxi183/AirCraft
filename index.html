@@ -88,7 +88,6 @@
                  ng-class="{blank_should_not_click:1}"
                  id="{{'e2e_test1_div_' + row + 'x' + col}}">
                 <div style="width:100%; height: 100%"
-                     ng-class="{slowlyAppear: game.shouldSlowlyAppear(row, col)}"
                      ng-style="game.getCellStyle(row, col)">
                     <svg ng-if="game.showCraft(row, col)"
                          id="{{'e2e_test_pieceC_1' + row + 'x' + col}}"

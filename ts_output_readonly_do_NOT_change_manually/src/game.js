@@ -223,6 +223,9 @@ var game;
     //--------->
     //-----------------Check location.
     function isHead(row, col) {
+        if (isFirstMove()) {
+            return false;
+        }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
         if (game.state.headLoc[1 - turnIndex][0] === row && game.state.headLoc[1 - turnIndex][1] === col) {
@@ -234,6 +237,9 @@ var game;
     }
     game.isHead = isHead;
     function isbody1(row, col) {
+        if (isFirstMove()) {
+            return false;
+        }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
         if (game.state.body1[1 - turnIndex][0] === row && game.state.body1[1 - turnIndex][1] === col) {
@@ -245,6 +251,9 @@ var game;
     }
     game.isbody1 = isbody1;
     function isbody2(row, col) {
+        if (isFirstMove()) {
+            return false;
+        }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
         if (game.state.body2[1 - turnIndex][0] === row && game.state.body2[1 - turnIndex][1] === col) {
@@ -256,6 +265,9 @@ var game;
     }
     game.isbody2 = isbody2;
     function isleftwing1(row, col) {
+        if (isFirstMove()) {
+            return false;
+        }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
         if (game.state.leftwing1[1 - turnIndex][0] === row && game.state.leftwing1[1 - turnIndex][1] === col) {
@@ -267,6 +279,9 @@ var game;
     }
     game.isleftwing1 = isleftwing1;
     function isleftwing2(row, col) {
+        if (isFirstMove()) {
+            return false;
+        }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
         if (game.state.leftwing2[1 - turnIndex][0] === row && game.state.leftwing2[1 - turnIndex][1] === col) {
@@ -278,6 +293,9 @@ var game;
     }
     game.isleftwing2 = isleftwing2;
     function isrightwing1(row, col) {
+        if (isFirstMove()) {
+            return false;
+        }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
         if (game.state.rightwing1[1 - turnIndex][0] === row && game.state.rightwing1[1 - turnIndex][1] === col) {
@@ -289,6 +307,9 @@ var game;
     }
     game.isrightwing1 = isrightwing1;
     function isrightwing2(row, col) {
+        if (isFirstMove()) {
+            return false;
+        }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
         if (game.state.rightwing2[1 - turnIndex][0] === row && game.state.rightwing2[1 - turnIndex][1] === col) {
@@ -300,6 +321,9 @@ var game;
     }
     game.isrightwing2 = isrightwing2;
     function islefttail(row, col) {
+        if (isFirstMove()) {
+            return false;
+        }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
         if (game.state.lefttail[1 - turnIndex][0] === row && game.state.lefttail[1 - turnIndex][1] === col) {
@@ -311,6 +335,9 @@ var game;
     }
     game.islefttail = islefttail;
     function isrighttail(row, col) {
+        if (isFirstMove()) {
+            return false;
+        }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
         if (game.state.righttail[1 - turnIndex][0] === row && game.state.righttail[1 - turnIndex][1] === col) {
@@ -322,6 +349,9 @@ var game;
     }
     game.isrighttail = isrighttail;
     function ismidtail(row, col) {
+        if (isFirstMove()) {
+            return false;
+        }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
         if (game.state.midtail[1 - turnIndex][0] === row && game.state.midtail[1 - turnIndex][1] === col) {

@@ -70,6 +70,7 @@ body{
   border-radius: 10px;
   transform:scale(0.90);
   box-shadow:0px 0px 10px #75CDF1;
+  cursor: url("./imgs/cursor.png"), auto;
   /*padding: 10px;*/
 }
 
@@ -87,6 +88,7 @@ body{
   border-radius: 10px;
   transform:scale(0.90);
   box-shadow:0px 0px 10px #75CDF1;
+  cursor: url("./imgs/cursor.png"), auto;
   /*padding: 10px;*/
 }
 
@@ -127,7 +129,6 @@ body{
 .container{
   perspective:1000;
   transform-style:preserve-3d;
-  cursor: url("https://huangxi183.github.io/AirCraft/imgs/cursor.png"), auto;
 }
 .flip{transition:0.6s;transform-style:preserve-3d;}
 .front,.back{backface-visibility:hidden;}

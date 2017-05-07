@@ -126,6 +126,7 @@ body{
   background-color: #75CDF1;
   border-radius: 10px;
 }
+
 .container{
   perspective:1000;
   transform-style:preserve-3d;

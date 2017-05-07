@@ -228,7 +228,7 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
-        if (game.state.headLoc[1 - turnIndex][0] === row && game.state.headLoc[1 - turnIndex][1] === col) {
+        if (game.state.headLoc[1 - turnIndex][0] == row && game.state.headLoc[1 - turnIndex][1] == col) {
             return true;
         }
         else {
@@ -242,7 +242,7 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
-        if (game.state.body1[1 - turnIndex][0] === row && game.state.body1[1 - turnIndex][1] === col) {
+        if (game.state.body1[1 - turnIndex][0] == row && game.state.body1[1 - turnIndex][1] == col) {
             return true;
         }
         else {
@@ -256,7 +256,7 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
-        if (game.state.body2[1 - turnIndex][0] === row && game.state.body2[1 - turnIndex][1] === col) {
+        if (game.state.body2[1 - turnIndex][0] == row && game.state.body2[1 - turnIndex][1] == col) {
             return true;
         }
         else {
@@ -270,7 +270,7 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
-        if (game.state.leftwing1[1 - turnIndex][0] === row && game.state.leftwing1[1 - turnIndex][1] === col) {
+        if (game.state.leftwing1[1 - turnIndex][0] == row && game.state.leftwing1[1 - turnIndex][1] == col) {
             return true;
         }
         else {
@@ -284,7 +284,7 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
-        if (game.state.leftwing2[1 - turnIndex][0] === row && game.state.leftwing2[1 - turnIndex][1] === col) {
+        if (game.state.leftwing2[1 - turnIndex][0] == row && game.state.leftwing2[1 - turnIndex][1] == col) {
             return true;
         }
         else {
@@ -298,7 +298,7 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
-        if (game.state.rightwing1[1 - turnIndex][0] === row && game.state.rightwing1[1 - turnIndex][1] === col) {
+        if (game.state.rightwing1[1 - turnIndex][0] == row && game.state.rightwing1[1 - turnIndex][1] == col) {
             return true;
         }
         else {
@@ -312,7 +312,7 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
-        if (game.state.rightwing2[1 - turnIndex][0] === row && game.state.rightwing2[1 - turnIndex][1] === col) {
+        if (game.state.rightwing2[1 - turnIndex][0] == row && game.state.rightwing2[1 - turnIndex][1] == col) {
             return true;
         }
         else {
@@ -326,7 +326,7 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
-        if (game.state.lefttail[1 - turnIndex][0] === row && game.state.lefttail[1 - turnIndex][1] === col) {
+        if (game.state.lefttail[1 - turnIndex][0] == row && game.state.lefttail[1 - turnIndex][1] == col) {
             return true;
         }
         else {
@@ -340,7 +340,7 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
-        if (game.state.righttail[1 - turnIndex][0] === row && game.state.righttail[1 - turnIndex][1] === col) {
+        if (game.state.righttail[1 - turnIndex][0] == row && game.state.righttail[1 - turnIndex][1] == col) {
             return true;
         }
         else {
@@ -354,7 +354,7 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
-        if (game.state.midtail[1 - turnIndex][0] === row && game.state.midtail[1 - turnIndex][1] === col) {
+        if (game.state.midtail[1 - turnIndex][0] == row && game.state.midtail[1 - turnIndex][1] == col) {
             return true;
         }
         else {

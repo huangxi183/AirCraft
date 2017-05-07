@@ -242,7 +242,7 @@ module game {
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
-    if (state.headLoc[1-turnIndex][0] === row && state.headLoc[1-turnIndex][1] === col) {
+    if (state.headLoc[1-turnIndex][0] == row && state.headLoc[1-turnIndex][1] == col) {
       return true;
     }
     else {
@@ -255,7 +255,7 @@ module game {
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
-    if (state.body1[1-turnIndex][0] === row && state.body1[1-turnIndex][1] === col) {
+    if (state.body1[1-turnIndex][0] == row && state.body1[1-turnIndex][1] == col) {
       return true;
     }
     else {
@@ -268,7 +268,7 @@ module game {
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
-    if (state.body2[1-turnIndex][0] === row && state.body2[1-turnIndex][1] === col) {
+    if (state.body2[1-turnIndex][0] == row && state.body2[1-turnIndex][1] == col) {
       return true;
     }
     else {
@@ -281,7 +281,7 @@ module game {
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
-    if (state.leftwing1[1-turnIndex][0] === row && state.leftwing1[1-turnIndex][1] === col) {
+    if (state.leftwing1[1-turnIndex][0] == row && state.leftwing1[1-turnIndex][1] == col) {
       return true;
     }
     else {
@@ -294,7 +294,7 @@ module game {
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
-    if (state.leftwing2[1-turnIndex][0] === row && state.leftwing2[1-turnIndex][1] === col) {
+    if (state.leftwing2[1-turnIndex][0] == row && state.leftwing2[1-turnIndex][1] == col) {
       return true;
     }
     else {
@@ -307,7 +307,7 @@ module game {
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
-    if (state.rightwing1[1-turnIndex][0] === row && state.rightwing1[1-turnIndex][1] === col) {
+    if (state.rightwing1[1-turnIndex][0] == row && state.rightwing1[1-turnIndex][1] == col) {
       return true;
     }
     else {
@@ -320,7 +320,7 @@ module game {
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
-    if (state.rightwing2[1-turnIndex][0] === row && state.rightwing2[1-turnIndex][1] === col) {
+    if (state.rightwing2[1-turnIndex][0] == row && state.rightwing2[1-turnIndex][1] == col) {
       return true;
     }
     else {
@@ -333,7 +333,7 @@ module game {
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
-    if (state.lefttail[1-turnIndex][0] === row && state.lefttail[1-turnIndex][1] === col) {
+    if (state.lefttail[1-turnIndex][0] == row && state.lefttail[1-turnIndex][1] == col) {
       return true;
     }
     else {
@@ -346,7 +346,7 @@ module game {
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
-    if (state.righttail[1-turnIndex][0] === row && state.righttail[1-turnIndex][1] === col) {
+    if (state.righttail[1-turnIndex][0] == row && state.righttail[1-turnIndex][1] == col) {
       return true;
     }
     else {
@@ -359,7 +359,7 @@ module game {
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
-    if (state.midtail[1-turnIndex][0] === row && state.midtail[1-turnIndex][1] === col) {
+    if (state.midtail[1-turnIndex][0] == row && state.midtail[1-turnIndex][1] == col) {
       return true;
     }
     else {

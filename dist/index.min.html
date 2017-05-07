@@ -84,6 +84,36 @@
                          id="{{'e2e_test_pieceC_1' + row + 'x' + col}}"
                          ng-class="{blue:1}"
                          width="100%" height="100%">
+                         <img src="./imgs/head.jpg"
+                              ng-if="game.isHead(row, col)"
+                              style="position: absolute; top:0%; left:0%; width:100%; height:100%">
+                         <img src="./imgs/body1.jpg" 
+                              ng-if="game.isbody1(row, col)"
+                              style="position: absolute; top:0%; left:0%; width:100%; height:100%">
+                         <img src="./imgs/body2.jpg"
+                              ng-if="game.isbody2(row, col)"
+                              style="position: absolute; top:0%; left:0%; width:100%; height:100%">
+                         <img src="./imgs/leftwing1.jpg" 
+                              ng-if="game.isleftwing1(row, col)"
+                              style="position: absolute; top:0%; left:0%; width:100%; height:100%">
+                         <img src="./imgs/leftwing2.jpg"
+                              ng-if="game.isleftwing2(row, col)"
+                              style="position: absolute; top:0%; left:0%; width:100%; height:100%">
+                         <img src="./imgs/rightwing1.jpg" 
+                              ng-if="game.isrightwing1(row, col)"
+                              style="position: absolute; top:0%; left:0%; width:100%; height:100%">
+                         <img src="./imgs/rightwing2.jpg"
+                              ng-if="game.isrightwing2(row, col)"
+                              style="position: absolute; top:0%; left:0%; width:100%; height:100%">
+                         <img src="./imgs/lefttail.jpg"
+                              ng-if="game.islefttail(row, col)"
+                              style="position: absolute; top:0%; left:0%; width:100%; height:100%">
+                         <img src="./imgs/midtail.jpg"
+                              ng-if="game.ismidtail(row, col)"
+                              style="position: absolute; top:0%; left:0%; width:100%; height:100%">
+                         <img src="./imgs/righttail.jpg"
+                              ng-if="game.isrighttail(row, col)"
+                              style="position: absolute; top:0%; left:0%; width:100%; height:100%">
                     </svg>
                     <svg ng-if="game.showDamagedCraft(row, col)"
                         id="{{'e2e_test_pieceD_1' + row + 'x' + col}}"

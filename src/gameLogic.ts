@@ -1,4 +1,4 @@
-type Board = number[][]; 
+type Board = number[][];
 //>=0:blank
 // == -1:grey
 //<-1:red
@@ -13,6 +13,16 @@ interface IState {
   board: Board[];
   delta: BoardDelta;
   points_To_Win: number[];
+  headLoc:number[][];
+  body1:number[][];
+  body2:number[][];
+  leftwing1:number[][];
+  leftwing2:number[][];
+  rightwing1:number[][];
+  rightwing2:number[][];
+  lefttail:number[][];
+  midtail:number[][];
+  righttail:number[][];
 }
 // head info
 interface HeadPosi{
@@ -186,9 +196,282 @@ module gameLogic {
   }
 
   export function getInitialState(): IState {
+    let _headLoc:number[][] = [];
+    _headLoc[0] = [0, 0];
+    _headLoc[1] = [0, 0];
+    let _body1:number[][] = [];
+    _body1[0] = [0, 0];
+    _body1[1] = [0, 0];
+    let _body2:number[][] = [];
+    _body2[0] = [0, 0];
+    _body2[1] = [0, 0];
+    let _leftwing1:number[][] = [];
+    _leftwing1[0] = [0, 0];
+    _leftwing1[1] = [0, 0];
+    let _leftwing2:number[][] = [];
+    _leftwing2[0] = [0, 0];
+    _leftwing2[1] = [0, 0];
+    let _rightwing1:number[][] = [];
+    _rightwing1[0] = [0, 0];
+    _rightwing1[1] = [0, 0];
+    let _rightwing2:number[][] = [];
+    _rightwing2[0] = [0, 0];
+    _rightwing2[1] = [0, 0];
+    let _lefttail:number[][] = [];
+    _lefttail[0] = [0, 0];
+    _lefttail[1] = [0, 0];
+    let _midtail:number[][] = [];
+    _midtail[0] = [0, 0];
+    _midtail[1] = [0, 0];
+    let _righttail:number[][] = [];
+    _righttail[0] = [0, 0];
+    _righttail[1] = [0, 0];
+
     let temp_board_0 : Board = getInitialBoard(0);
     let temp_board_1 : Board = getInitialBoard(1);
-    return {board: [temp_board_0, temp_board_1], delta: null, points_To_Win: [10, 10]};
+
+    for (let i = 0; i < 6; i++) {
+      for (let j = 0; j < 6; j++) {
+        //----------For the first aircraft.
+        // Not annoying corner case.
+        if (temp_board_0[i][j] === 10 && i !== 0 && j !== 0 && i !== 5 && j !== 5) {
+
+          // Head toward right.
+          if (temp_board_0[i][j - 1] === 5) {
+            _headLoc[0] = [i, j];
+            _body1[0] = [i, j - 1];
+            _body2[0] = [i, j - 2];
+            _leftwing1[0] = [i - 1, j - 1]; 
+            _leftwing2[0] = [i - 2, j - 1]; 
+            _rightwing1[0] = [i + 1, j - 1];
+            _rightwing2[0] = [i + 2, j - 1];
+            _midtail[0] = [i, j - 3];
+            _lefttail[0] = [i - 1, j - 3];
+            _righttail[0] = [i + 1, j - 3];
+          }
+
+          // Head toward left.
+          else if (temp_board_0[i][j + 1] === 5) {
+            _headLoc[0] = [i, j];
+            _body1[0] = [i, j + 1];
+            _body2[0] = [i, j + 2];
+            _leftwing1[0] = [i + 1, j + 1]; 
+            _leftwing2[0] = [i + 2, j + 1]; 
+            _rightwing1[0] = [i - 1, j + 1];
+            _rightwing2[0] = [i - 2, j + 1];
+            _midtail[0] = [i, j + 3];
+            _lefttail[0] = [i + 1, j + 3];
+            _righttail[0] = [i - 1, j + 3];
+          }
+
+          // Head toward bottom.
+          else if (temp_board_0[i - 1][j] === 5) {
+            _headLoc[0] = [i, j];
+            _body1[0] = [i - 1, j];
+            _body2[0] = [i - 2, j];
+            _leftwing1[0] = [i - 1, j + 1]; 
+            _leftwing2[0] = [i - 1, j + 2]; 
+            _rightwing1[0] = [i - 1, j - 1];
+            _rightwing2[0] = [i - 1, j - 2];
+            _midtail[0] = [i - 3, j];
+            _lefttail[0] = [i - 3, j + 1];
+            _righttail[0] = [i - 3, j - 1];
+          }
+
+          // Head toward top.
+          else if (temp_board_0[i + 1][j] === 5) {
+            _headLoc[0] = [i, j];
+            _body1[0] = [i + 1, j];
+            _body2[0] = [i + 2, j];
+            _leftwing1[0] = [i + 1, j - 1]; 
+            _leftwing2[0] = [i + 1, j - 2]; 
+            _rightwing1[0] = [i + 1, j + 1];
+            _rightwing2[0] = [i + 1, j + 2];
+            _midtail[0] = [i + 3, j];
+            _lefttail[0] = [i + 3, j - 1];
+            _righttail[0] = [i + 3, j + 1];
+          }
+        }
+
+        // Head at top edge.
+        else if (temp_board_0[i][j] === 10 && i == 0) {
+            _headLoc[0] = [i, j];
+            _body1[0] = [i + 1, j];
+            _body2[0] = [i + 2, j];
+            _leftwing1[0] = [i + 1, j - 1]; 
+            _leftwing2[0] = [i + 1, j - 2]; 
+            _rightwing1[0] = [i + 1, j + 1];
+            _rightwing2[0] = [i + 1, j + 2];
+            _midtail[0] = [i + 3, j];
+            _lefttail[0] = [i + 3, j - 1];
+            _righttail[0] = [i + 3, j + 1];
+        }
+
+        // Head at bottom edge.
+        else if (temp_board_0[i][j] === 10 && i == 5) {
+            _headLoc[0] = [i, j];
+            _body1[0] = [i - 1, j];
+            _body2[0] = [i - 2, j];
+            _leftwing1[0] = [i - 1, j + 1]; 
+            _leftwing2[0] = [i - 1, j + 2]; 
+            _rightwing1[0] = [i - 1, j - 1];
+            _rightwing2[0] = [i - 1, j - 2];
+            _midtail[0] = [i - 3, j];
+            _lefttail[0] = [i - 3, j + 1];
+            _righttail[0] = [i - 3, j - 1];
+        }
+
+        // Head at left edge.
+        else if (temp_board_0[i][j] === 10 && j == 0) {
+            _headLoc[0] = [i, j];
+            _body1[0] = [i, j + 1];
+            _body2[0] = [i, j + 2];
+            _leftwing1[0] = [i + 1, j + 1]; 
+            _leftwing2[0] = [i + 2, j + 1]; 
+            _rightwing1[0] = [i - 1, j + 1];
+            _rightwing2[0] = [i - 2, j + 1];
+            _midtail[0] = [i, j + 3];
+            _lefttail[0] = [i + 1, j + 3];
+            _righttail[0] = [i - 1, j + 3];
+        }
+
+        // Head at right edge.
+        else if (temp_board_0[i][j] === 10 && j == 5) {
+            _headLoc[0] = [i, j];
+            _body1[0] = [i, j - 1];
+            _body2[0] = [i, j - 2];
+            _leftwing1[0] = [i - 1, j - 1]; 
+            _leftwing2[0] = [i - 2, j - 1]; 
+            _rightwing1[0] = [i + 1, j - 1];
+            _rightwing2[0] = [i + 2, j - 1];
+            _midtail[0] = [i, j - 3];
+            _lefttail[0] = [i - 1, j - 3];
+            _righttail[0] = [i + 1, j - 3];
+        }
+        //----------For the first aircraft.
+        
+        //---------For the second aircraft.
+        // Not annoying corner case.
+        if (temp_board_1[i][j] === 10 && i !== 0 && j !== 0 && i !== 5 && j !== 5) {
+
+          // Head toward right.
+          if (temp_board_1[i][j - 1] === 5) {
+            _headLoc[1] = [i, j];
+            _body1[1] = [i, j - 1];
+            _body2[1] = [i, j - 2];
+            _leftwing1[1] = [i - 1, j - 1]; 
+            _leftwing2[1] = [i - 2, j - 1]; 
+            _rightwing1[1] = [i + 1, j - 1];
+            _rightwing2[1] = [i + 2, j - 1];
+            _midtail[1] = [i, j - 3];
+            _lefttail[1] = [i - 1, j - 3];
+            _righttail[1] = [i + 1, j - 3];
+          }
+
+          // Head toward left.
+          else if (temp_board_1[i][j + 1] === 5) {
+            _headLoc[1] = [i, j];
+            _body1[1] = [i, j + 1];
+            _body2[1] = [i, j + 2];
+            _leftwing1[1] = [i + 1, j + 1]; 
+            _leftwing2[1] = [i + 2, j + 1]; 
+            _rightwing1[1] = [i - 1, j + 1];
+            _rightwing2[1] = [i - 2, j + 1];
+            _midtail[1] = [i, j + 3];
+            _lefttail[1] = [i + 1, j + 3];
+            _righttail[1] = [i - 1, j + 3];
+          }
+
+          // Head toward bottom.
+          else if (temp_board_1[i - 1][j] === 5) {
+            _headLoc[1] = [i, j];
+            _body1[1] = [i - 1, j];
+            _body2[1] = [i - 2, j];
+            _leftwing1[1] = [i - 1, j + 1]; 
+            _leftwing2[1] = [i - 1, j + 2]; 
+            _rightwing1[1] = [i - 1, j - 1];
+            _rightwing2[1] = [i - 1, j - 2];
+            _midtail[1] = [i - 3, j];
+            _lefttail[1] = [i - 3, j + 1];
+            _righttail[1] = [i - 3, j - 1];
+          }
+
+          // Head toward top.
+          else if (temp_board_1[i + 1][j] === 5) {
+            _headLoc[1] = [i, j];
+            _body1[1] = [i + 1, j];
+            _body2[1] = [i + 2, j];
+            _leftwing1[1] = [i + 1, j - 1]; 
+            _leftwing2[1] = [i + 1, j - 2]; 
+            _rightwing1[1] = [i + 1, j + 1];
+            _rightwing2[1] = [i + 1, j + 2];
+            _midtail[1] = [i + 3, j];
+            _lefttail[1] = [i + 3, j - 1];
+            _righttail[1] = [i + 3, j + 1];
+          }
+        }
+
+        // Head at top edge.
+        else if (temp_board_1[i][j] === 10 && i == 0) {
+            _headLoc[1] = [i, j];
+            _body1[1] = [i + 1, j];
+            _body2[1] = [i + 2, j];
+            _leftwing1[1] = [i + 1, j - 1]; 
+            _leftwing2[1] = [i + 1, j - 2]; 
+            _rightwing1[1] = [i + 1, j + 1];
+            _rightwing2[1] = [i + 1, j + 2];
+            _midtail[1] = [i + 3, j];
+            _lefttail[1] = [i + 3, j - 1];
+            _righttail[1] = [i + 3, j + 1];
+        }
+
+        // Head at bottom edge.
+        else if (temp_board_1[i][j] === 10 && i == 5) {
+            _headLoc[1] = [i, j];
+            _body1[1] = [i - 1, j];
+            _body2[1] = [i - 2, j];
+            _leftwing1[1] = [i - 1, j + 1]; 
+            _leftwing2[1] = [i - 1, j + 2]; 
+            _rightwing1[1] = [i - 1, j - 1];
+            _rightwing2[1] = [i - 1, j - 2];
+            _midtail[1] = [i - 3, j];
+            _lefttail[1] = [i - 3, j + 1];
+            _righttail[1] = [i - 3, j - 1];
+        }
+
+        // Head at left edge.
+        else if (temp_board_1[i][j] === 10 && j == 0) {
+            _headLoc[1] = [i, j];
+            _body1[1] = [i, j + 1];
+            _body2[1] = [i, j + 2];
+            _leftwing1[1] = [i + 1, j + 1]; 
+            _leftwing2[1] = [i + 2, j + 1]; 
+            _rightwing1[1] = [i - 1, j + 1];
+            _rightwing2[1] = [i - 2, j + 1];
+            _midtail[1] = [i, j + 3];
+            _lefttail[1] = [i + 1, j + 3];
+            _righttail[1] = [i - 1, j + 3];
+        }
+
+        // Head at right edge.
+        else if (temp_board_1[i][j] === 10 && j == 5) {
+            _headLoc[1] = [i, j];
+            _body1[1] = [i, j - 1];
+            _body2[1] = [i, j - 2];
+            _leftwing1[1] = [i - 1, j - 1]; 
+            _leftwing2[1] = [i - 2, j - 1]; 
+            _rightwing1[1] = [i + 1, j - 1];
+            _rightwing2[1] = [i + 2, j - 1];
+            _midtail[1] = [i, j - 3];
+            _lefttail[1] = [i - 1, j - 3];
+            _righttail[1] = [i + 1, j - 3];
+        }
+        //---------For the second aircraft.
+      }
+    }
+    
+    return {board: [temp_board_0, temp_board_1], delta: null, points_To_Win: [10, 10], headLoc:_headLoc, body1:_body1, body2:_body2, 
+      leftwing1:_leftwing1, leftwing2:_leftwing2, rightwing1:_rightwing1, rightwing2:_rightwing2, lefttail:_lefttail, midtail:_midtail, righttail:_righttail};
   }
 
   function winOrNot(turnIndexBeforeMove: number, state:IState): boolean {
@@ -215,8 +498,20 @@ module gameLogic {
     if (winOrNot(turnIndexBeforeMove, stateBeforeMove)) {
       throw new Error("Can only make a move if the game is not over!");
     }
+
     let boardAfterMove = angular.copy(board);
     let points_To_Win = angular.copy(stateBeforeMove.points_To_Win);
+    let headLoc = angular.copy(stateBeforeMove.headLoc);
+    let body1 = angular.copy(stateBeforeMove.body1);
+    let body2 = angular.copy(stateBeforeMove.body2);
+    let leftwing1 = angular.copy(stateBeforeMove.leftwing1);
+    let leftwing2 = angular.copy(stateBeforeMove.leftwing2);
+    let rightwing1 = angular.copy(stateBeforeMove.rightwing1);
+    let rightwing2 = angular.copy(stateBeforeMove.rightwing2);
+    let lefttail = angular.copy(stateBeforeMove.lefttail);
+    let righttail = angular.copy(stateBeforeMove.righttail);
+    let midtail = angular.copy(stateBeforeMove.midtail);
+
     if (boardAfterMove[row][col] > 0) {
       points_To_Win[turnIndexBeforeMove] -= boardAfterMove[row][col];
       boardAfterMove[row][col] = -boardAfterMove[row][col];
@@ -231,7 +526,8 @@ module gameLogic {
     //-----
     let new_points_To_Win = points_To_Win;
     let new_delta: BoardDelta = {row: row, col: col};
-    let new_state: IState = {delta: new_delta, board: finalboard, points_To_Win: new_points_To_Win};
+    let new_state: IState = {delta: new_delta, board: finalboard, points_To_Win: new_points_To_Win,
+    headLoc, body1, body2, leftwing1, leftwing2, rightwing1, rightwing2, lefttail, righttail, midtail};
     //-----
 
     let winner = winOrNot(turnIndexBeforeMove, new_state);
@@ -241,12 +537,6 @@ module gameLogic {
       turnIndex = -1;
       endMatchScores[turnIndexBeforeMove] = 10 - points_To_Win[turnIndexBeforeMove];
       endMatchScores[1-turnIndexBeforeMove] = 10 - points_To_Win[1-turnIndexBeforeMove];
-      /*
-      points_to_win[0] = 10;
-      points_to_win[1] = 10;
-      head[0] = getInitialHP();
-      head[1] = getInitialHP();
-      */
     }
     else {
       turnIndex = 1 - turnIndexBeforeMove;
@@ -254,7 +544,8 @@ module gameLogic {
     }
 
     let delta: BoardDelta = {row: row, col: col};
-    let state: IState = {delta: delta, board: finalboard, points_To_Win: points_To_Win};
+    let state: IState = {delta: delta, board: finalboard, points_To_Win: points_To_Win,
+    headLoc, body1, body2, leftwing1, leftwing2, rightwing1, rightwing2, lefttail, righttail, midtail};
 
     //endMatchScores: number[];
     return {turnIndex: turnIndex, state: state, endMatchScores: endMatchScores};

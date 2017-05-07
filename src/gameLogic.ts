@@ -1,4 +1,4 @@
-type Board = number[][];
+type Board = number[][]; 
 //>=0:blank
 // == -1:grey
 //<-1:red
@@ -12,11 +12,12 @@ type IProposalData = BoardDelta;
 interface IState {
   board: Board[];
   delta: BoardDelta;
+  points_To_Win: number[];
 }
 // head info
 interface HeadPosi{
   index: number;
-  x:number;
+  x:number
   y:number;
   direct:number;
 }
@@ -29,6 +30,7 @@ import log = gamingPlatform.log;
 import dragAndDropService = gamingPlatform.dragAndDropService;
 
 module gameLogic {
+<<<<<<< HEAD
   export const ROWS = 12;
   export const COLS = 12;
   export let points_to_win = [10,10];
@@ -40,12 +42,20 @@ module gameLogic {
   head[1][0] = getInitialHP();
   head[1][1] = getInitialHP();
   export function getInitialHP(){
+=======
+  export const ROWS = 6;
+  export const COLS = 6;
+  export function getInitialHeadPosition(){
+>>>>>>> master
     let temp :HeadPosi = {index : Math.floor(Math.random() * 20) + 1, x :0, y :0, direct :0};
     return temp;
   }
   
   export function getInitialBoard(i:number): Board {
     let board: Board = [];
+    let head : HeadPosi[] = [];
+    head[i] = getInitialHeadPosition();
+    //head[1] = getInitialHeadPosition();
     // generate random craft head
     //head.index = Math.floor(Math.random() * 20) + 1;
 
@@ -203,6 +213,7 @@ module gameLogic {
         break;
     }
 
+<<<<<<< HEAD
 //-------1st aircraft---------------
 
 
@@ -354,23 +365,30 @@ module gameLogic {
     }
 
   //-------2nd aircraft----------------
+=======
+>>>>>>> master
     return board;
   }
   
 
-  export function getPTW(turnIndex: number){
-    return points_to_win[turnIndex];
+  export function getPTW(state:IState, turnIndex: number): number {
+    return state.points_To_Win[turnIndex];
   }
 
   export function getInitialState(): IState {
     let temp_board_0 : Board = getInitialBoard(0);
     let temp_board_1 : Board = getInitialBoard(1);
-    return {board: [temp_board_0, temp_board_1], delta: null};
+    return {board: [temp_board_0, temp_board_1], delta: null, points_To_Win: [10, 10]};
   }
 
+<<<<<<< HEAD
   function winOrNot(turnIndexBeforeMove: number): boolean {
     if (points_to_win[turnIndexBeforeMove] <= 0) {
       alert("Game Over!")
+=======
+  function winOrNot(turnIndexBeforeMove: number, state:IState): boolean {
+    if (state.points_To_Win[turnIndexBeforeMove] <= 0 && state.points_To_Win[1 - turnIndexBeforeMove] > 0) {
+>>>>>>> master
       return true;
     }
     else return false;
@@ -386,12 +404,13 @@ module gameLogic {
     if (board[row][col] < 0) {
       throw new Error("One can only make a move in an empty position!");
     }
-    if (winOrNot(turnIndexBeforeMove)) {
+    if (winOrNot(turnIndexBeforeMove, stateBeforeMove)) {
       throw new Error("Can only make a move if the game is not over!");
     }
     let boardAfterMove = angular.copy(board);
+    let points_To_Win = angular.copy(stateBeforeMove.points_To_Win);
     if (boardAfterMove[row][col] > 0) {
-      points_to_win[turnIndexBeforeMove] -= boardAfterMove[row][col];
+      points_To_Win[turnIndexBeforeMove] -= boardAfterMove[row][col];
       boardAfterMove[row][col] = -boardAfterMove[row][col];
     }
     else {
@@ -401,24 +420,36 @@ module gameLogic {
     finalboard[turnIndexBeforeMove] = boardAfterMove;
     finalboard[1-turnIndexBeforeMove] = stateBeforeMove.board[1-turnIndexBeforeMove];
 
-    let winner = winOrNot(turnIndexBeforeMove);
+    //-----
+    let new_points_To_Win = points_To_Win;
+    let new_delta: BoardDelta = {row: row, col: col};
+    let new_state: IState = {delta: new_delta, board: finalboard, points_To_Win: new_points_To_Win};
+    //-----
+
+    let winner = winOrNot(turnIndexBeforeMove, new_state);
     let turnIndex: number = turnIndexBeforeMove;
-    let temp_score =[0,0];
+    let endMatchScores =[0,0];
     if (winner) {
       turnIndex = -1;
-      temp_score[turnIndexBeforeMove] = 10 - points_to_win[turnIndexBeforeMove];
-      temp_score[1-turnIndexBeforeMove] = 10 - points_to_win[1-turnIndexBeforeMove];
+      endMatchScores[turnIndexBeforeMove] = 10 - points_To_Win[turnIndexBeforeMove];
+      endMatchScores[1-turnIndexBeforeMove] = 10 - points_To_Win[1-turnIndexBeforeMove];
+      /*
+      points_to_win[0] = 10;
+      points_to_win[1] = 10;
+      head[0] = getInitialHP();
+      head[1] = getInitialHP();
+      */
     }
     else {
-      turnIndex = 1 - turnIndex;
-      temp_score = null;
+      turnIndex = 1 - turnIndexBeforeMove;
+      endMatchScores = null;
     }
 
     let delta: BoardDelta = {row: row, col: col};
-    let state: IState = {delta: delta, board: finalboard};
+    let state: IState = {delta: delta, board: finalboard, points_To_Win: points_To_Win};
 
     //endMatchScores: number[];
-    return {turnIndex: turnIndex, state: state, endMatchScores: temp_score};
+    return {turnIndex: turnIndex, state: state, endMatchScores: endMatchScores};
   }
   
   export function createInitialMove(): number {

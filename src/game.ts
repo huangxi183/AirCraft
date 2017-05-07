@@ -64,12 +64,15 @@ module game {
   export function updateUI(params: IUpdateUI): void {
     log.info("Sue got updateUI:", params);
     didMakeMove = false; // Only one move per updateUI
+    if (params.yourPlayerIndex == -2) params.yourPlayerIndex = 0;
     currentUpdateUI = params;
     clearAnimationTimeout();
     state = params.state;
     if (isFirstMove()) {
       state = gameLogic.getInitialState();
       log.info(currentUpdateUI);
+      remain_score[0] = 10;
+      remain_score[1] = 10;
       let move:IMove = {
         turnIndex: 0,
         state: state,
@@ -102,18 +105,50 @@ module game {
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
     didMakeMove = true;
+<<<<<<< HEAD
     remain_score[turnIndex] = gameLogic.getPTW(turnIndex);
     */
     didMakeMove = true;
     remain_score[currentUpdateUI.yourPlayerIndex] = gameLogic.getPTW(currentUpdateUI.yourPlayerIndex);
     gameService.makeMove(move, null, "TODO");
+=======
+    remain_score[turnIndex] = gameLogic.getPTW(move.state, turnIndex);
+    log.info(["let go",gameLogic.getPTW(move.state, turnIndex)]);
+    log.info(["lets go",remain_score[turnIndex]]);
+    gameService.makeMove(move,null,"Move Made");
+>>>>>>> master
   }
 
   function isFirstMove() {
     return !currentUpdateUI.state;
   }
 
+  function yourPlayerIndex() {
+    return currentUpdateUI.yourPlayerIndex;
+  }
+
+  function isComputer() {
+    let playerInfo = currentUpdateUI.playersInfo[currentUpdateUI.yourPlayerIndex];
+    // In community games, playersInfo is [].
+    return playerInfo && playerInfo.playerId === '';
+  }
+
+  function isComputerTurn() {
+    return isMyTurn() && isComputer();
+  }
+
+  function isHumanTurn() {
+    return isMyTurn() && !isComputer();
+  }
+
+  function isMyTurn() {
+    return !didMakeMove && // you can only make one move per updateUI.
+      currentUpdateUI.turnIndex >= 0 && // game is ongoing
+      currentUpdateUI.yourPlayerIndex === currentUpdateUI.turnIndex; // it's my turn
+  }
+
   export function cellClicked(row: number, col: number): void {
+    if (!isMyTurn()) return;
     log.info("Clicked on cell:", row, col);
     let nextMove: IMove;
     /*
@@ -167,15 +202,25 @@ module game {
     /*
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+<<<<<<< HEAD
     */
     if(state.board[currentUpdateUI.yourPlayerIndex][row][col] == -1){
+=======
+    if(state.board[turnIndex][row][col] == -1){
+>>>>>>> master
       return true;
     }else
       return false;
   }
 
   export function showCraft(row: number, col:number): boolean{
+<<<<<<< HEAD
     /*
+=======
+    if(isFirstMove()){
+      return false;
+    }
+>>>>>>> master
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
     */
@@ -186,7 +231,13 @@ module game {
       return false;
   }
   export function showBlank(row: number, col:number): boolean{
+<<<<<<< HEAD
     /*
+=======
+    if(isFirstMove()){
+      return true;
+    }
+>>>>>>> master
     let turnIndex: number;
     turnIndex = 1 - currentUpdateUI.yourPlayerIndex;
     */
@@ -196,7 +247,13 @@ module game {
       return false;
   }
   export function showDamagedCraft(row:number, col:number): boolean{
+<<<<<<< HEAD
     /*
+=======
+    if(isFirstMove()){
+      return false;
+    }
+>>>>>>> master
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
     */
@@ -216,6 +273,9 @@ module game {
       return false;
   }
 
+  export function showHp(): number{
+    return currentUpdateUI.state ? currentUpdateUI.state.points_To_Win[1 - currentUpdateUI.yourPlayerIndex] : -1;
+  }
   //--------->
 
 
@@ -237,11 +297,15 @@ angular.module('myApp', ['gameServices'])
   .run(['$rootScope', '$timeout',
     function ($rootScope: angular.IScope, $timeout: angular.ITimeoutService) {
       $rootScope['game'] = game;
+<<<<<<< HEAD
       //$rootScope['hp'] = ()=>game.remain_score[game.currentUpdateUI.turnIndex];
+=======
+>>>>>>> master
       $rootScope['hp'] = ()=>game.remain_score[game.currentUpdateUI.yourPlayerIndex];
       game.init($rootScope, $timeout);
     }]);
 
+<<<<<<< HEAD
 /*
 angular.module('myApp', ['gameServices'])
   .run(['$rootScope', '$timeout',
@@ -258,6 +322,9 @@ angular.module('myApp', ['gameServices'])
 */
 
 // var myapp = angular.module('myHp',[]);
+=======
+    // var myapp = angular.module('myHp',[]);
+>>>>>>> master
 // myapp.controller('myCtrl_2',function ($scope) {
 //   $scope.score =game.remain_score[game.currentUpdateUI.yourPlayerIndex];
 // });

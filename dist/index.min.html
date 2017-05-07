@@ -1,52 +1,115 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="myApp" ng-strict-di manifest="index.min.appcache">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <title>SkyCraft</title>
-  <meta name="description" content="SkyCraft game">
-  <link rel="shortcut icon" type="image/x-icon" href="data:image/x-icon;,"><!-- Suppress browser request for favicon.ico -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Aircraft-Battle</title>
+    <meta name="description" content="Aircraft-Battle game">
+    <link rel="shortcut icon" type="image/x-icon" href="data:image/x-icon;,"><!-- Suppress browser request for favicon.ico -->
 
-  <!-- To ensure CSS files are downloaded in parallel, always include external CSS before external JavaScript. -->
-  <link rel="stylesheet" type="text/css" href="css/everything.min.css">
+    <!-- To ensure CSS files are downloaded in parallel, always include external CSS before external JavaScript. -->
+    <link rel="stylesheet" type="text/css" href="css/everything.min.css">
 
-  <script src="js/everything.min.js"></script>
+    <script src="js/everything.min.js"></script>
 </head>
-<body ng-cloak>
-<div id="gameArea">
-  <div ng-repeat="row in [0, 1, 2]"
-      style="position:absolute; top:{{row * 33}}%; left:0; width:100%; height:33%;">
-    <div ng-repeat="col in [0, 1, 2]"
-        style="position:absolute; top:0; left:{{col * 33}}%; width:33%; height:100%;"
-        ng-class="{r: col < 2, b: row < 2}"
-        ng-click="game.cellClicked(row, col)"
-        ng-class="{blank: bk, grey: unhit, red: hit}"
-        id="{{'e2e_test_div_' + row + 'x' + col}}">
-      <div style="width:100%; height: 100%"
-          ng-class="{slowlyAppear: game.shouldSlowlyAppear(row, col)}"
-          ng-style="game.getCellStyle(row, col)"
-          ng-if="game.shouldShowImage(row, col)">
-        <svg ng-if="game.isPieceO(row, col)"
-            id="{{'e2e_test_pieceO_' + row + 'x' + col}}"
-            width="100%" height="100%">
-          <circle cx="50%" cy="50%" r="27%"
-            stroke="blue" stroke-width="5%" fill="white" />
-        </svg>
-        <svg ng-if="game.isPieceX(row, col)"
-            id="{{'e2e_test_pieceX_' + row + 'x' + col}}"
-            width="100%" height="100%">
-          <line x1="25%" y1="25%"
-                x2="75%" y2="75%"
-                stroke="red"
-                stroke-width="5%"/>
-          <line x1="25%" y1="75%"
-                x2="75%" y2="25%"
-                stroke="red"
-                stroke-width="5%"/>
-        </svg>
-      </div>
+
+<body ng-cloak >
+<img src="./imgs/background-min.jpg" style="position: absolute; top:0%; left:0%; width:100%; height:100%"/>
+<div id="gameArea" style="position : absolute; top:5%;left: 2%; right: 2%;">
+    <div id="moveArea" style="position:absolute; top:10%; left:1%; width:45%; height:90%;">
+        <div ng-repeat="row in [0, 1, 2, 3, 4, 5]"
+             style="position:absolute; top:{{row * 16.6}}%; left:0; width:100%; height:16.6%;">
+            <div ng-repeat="col in [0, 1, 2, 3, 4 ,5]"
+                    style="position:absolute; top:0; left:{{col * 16.6}}%; width:16.6%; height:100%;"
+                    ng-click="game.cellClicked(row, col)"
+                    id="{{'e2e_test_div_' + row + 'x' + col}}">
+
+                <!--div class="container" style="cursor:crosshair; position: absolute; top:0%; left:0%; width:100%; height:100%"
+                     ng-if="!game.shouldShowImage(row, col)"
+                     ng-class="{blank_with_hover:1}"-->
+                <div class="container" style="position: absolute; top:0%; left:0%; width:100%; height:100%"
+                     ng-if="!game.shouldShowImage(row, col)"
+                     ng-class="{blank_with_hover:1}">
+                    <div class="flip" style="position: absolute; top:0%; left:0%; width:100%; height:100%">
+                        <div class="back">
+                            <div ng-class="{blank:1}">
+                            </div>
+                        </div>
+                        <div class="back">
+                            <img src="imgs/misshit.gif" style="position:absolute; top:0%;left:0%;width:100%">
+                        </div>
+                    </div>
+                </div>
+
+                <div style="width:100%; height: 100%"
+                    ng-class="{slowlyAppear: game.shouldSlowlyAppear(row, col)}"
+                    ng-style="game.getCellStyle(row, col)"
+                    ng-if="game.shouldShowImage(row, col)">
+                    <svg ng-if="game.isPieceHit(row, col)"
+                         width="100%" height="100%">
+                         <img ng-if="game.isPieceHit(row, col)"
+                              src="./imgs/hit.gif"
+                              style="position: absolute; top:0%; left:0%; width:100%; height:100%">
+                    </svg>
+                    <svg ng-if="game.isPieceBlank(row, col)"
+                         width="100%" height="100%">
+                         <img ng-if="game.isPieceBlank(row, col)"
+                              src="./imgs/misshit.gif"
+                              style="position: absolute; top:0%; left:0%; width:100%; height:100%">
+                    </svg>
+                </div>
+
+            </div>
+        </div>
     </div>
-  </div>
+
+    <img src="./imgs/hp.gif" style="position: absolute; top:2%; left:87%; height:5%; width:5%"/>
+    <img ng-src="./imgs/hp{{game.showHp()}}.gif" style="position: absolute; top:2%; left:92%; height:5%"/>
+    <!--div  style="position : bsolute; top:1%; left:90%; right: 0%; width:10%; height:3%;">
+        <img src="pics/hp.gif" style="position: absolute; top:0%; left:0%; width:50%; height:200%">
+        <img ng-src="pics/{{game.showHp()}}.gif" style="position: absolute;">
+    </div-->
+
+    <div id="showArea" style="position: absolute; top:10%; right:1%; width:45%; height:90%;">
+        <div ng-repeat="row in [0, 1, 2, 3, 4, 5]"
+             style="position:absolute; top:{{row * 16.6}}%; left:0; width:100%; height:16.6%;">
+            <div ng-repeat="col in [0, 1, 2, 3, 4 ,5]"
+                 style="position:absolute; top:0; left:{{col * 16.6}}%; width:16.6%; height:100%;"
+                 ng-class="{blank_should_not_click:1}"
+                 id="{{'e2e_test1_div_' + row + 'x' + col}}">
+                <div style="width:100%; height: 100%"
+                     ng-class="{slowlyAppear: game.shouldSlowlyAppear(row, col)}"
+                     ng-style="game.getCellStyle(row, col)">
+                    <svg ng-if="game.showCraft(row, col)"
+                         id="{{'e2e_test_pieceC_1' + row + 'x' + col}}"
+                         ng-class="{blue:1}"
+                         width="100%" height="100%">
+                    </svg>
+                    <svg ng-if="game.showDamagedCraft(row, col)"
+                        id="{{'e2e_test_pieceD_1' + row + 'x' + col}}"
+                        ng-class="{blue:1}"
+                        width="100%" height="100%">
+                        <img src="./imgs/bomb.gif"
+                             ng-if="game.showDamagedCraft(row, col)"
+                             style="position: absolute; top:0%; left:0%; width:100%; height:100%">
+                    </svg>
+                    <svg ng-if="game.showDamagedBlank(row, col)"
+                        id="{{'e2e_test_pieceD_1' + row + 'x' + col}}"
+                        ng-class="{grey:1}"
+                        width="100%" height="100%">
+                        <img src="./imgs/misshit.gif"
+                             ng-if="game.showDamagedBlank(row, col)"
+                             style="position: absolute; top:0%; left:0%; width:100%; height:100%">
+                    </svg>
+                    <svg ng-if="game.showBlank(row, col)"
+                         id="{{'e2e_test_pieceB_1' + row + 'x' + col}}"
+                         ng-class="{grey:1}"
+                         width="100%" height="100%">
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 </body>

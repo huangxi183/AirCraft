@@ -1,0 +1,113 @@
+html, body{
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: fixed!important;
+}
+
+/* To prevent long-press that will bring up copy-paste dialog. */
+* {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -moz-touch-callout: none;
+  -ms-touch-callout: none;
+  touch-callout: none;
+  outline: 0; /* To prevent blue-box outline after click: http://stackoverflow.com/questions/21719306/getting-rid-of-a-blue-box-around-button-when-pressed */
+}
+textarea, input {
+  -webkit-user-select: text !important;
+  -moz-user-select: text !important;
+  -ms-user-select: text !important;
+  user-select: text !important;
+}
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+body{
+  /*background:url("../pics/background.jpg");*/
+  background-size: cover;
+  background-position:center; 
+}
+
+.r {
+  border-right: 2pt solid black;
+  border-left: 2pt solid black;
+}
+.b {
+  border-bottom: 2pt solid black;
+  border-top: 2pt solid black;
+}
+
+.slowlyAppear {
+  animation: slowlyAppear 0.5s linear;
+}
+
+@keyframes slowlyAppear {
+  from {opacity: 0.1;}
+  to {opacity: 1;}
+}
+
+.image:hover img {
+  -webkit-transform:scale(1.25); /* Safari and Chrome */
+  -moz-transform:scale(1.25); /* Firefox */
+  -ms-transform:scale(1.25); /* IE 9 */
+  -o-transform:scale(1.25); /* Opera */
+  transform:scale(1.25);
+}
+
+.blank{
+  /*border: 1pt solid black;*/
+  border: 1pt solid #75CDF1;
+  /*border-color: #75CDF1;*/
+  border-radius: 10px;
+  transform:scale(0.90);
+  box-shadow:0px 0px 10px #75CDF1;
+  /*padding: 10px;*/
+}
+
+.blank_should_not_click{
+  border: 1pt solid #75CDF1;
+  border-radius: 10px;
+  transform:scale(0.90);
+  box-shadow:inset 0px 0px 100px #75CDF1;
+}
+
+.blank:hover
+{
+  -webkit-transform:scale(1.25); /* Safari and Chrome */
+  -moz-transform:scale(1.25); /* Firefox */
+  -ms-transform:scale(1.25); /* IE 9 */
+  -o-transform:scale(1.25); /* Opera */
+  transform:scale(1.25);
+  transition: 0.15s ease;
+  -webkit-transition: 0.15s ease;
+  border: 2pt #75CDF1;
+  border-radius: 10px;
+  cursor: pointer;
+  line-height: 150%;
+  opacity: 0.5;
+  z-index: 99999;
+  background-color: #14bcc8;
+  text-decoration: none;
+  color: #FFFFFF;
+}
+
+.grey {
+  background-color: #b2c8bb;
+  border-radius: 10px;
+}
+
+.red {
+  background-color: #FF0000;
+  border-radius: 10px;
+}
+
+.blue{
+  background-color: #75CDF1;
+  border-radius: 10px;
+}

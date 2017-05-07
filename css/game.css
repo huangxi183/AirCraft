@@ -1,4 +1,4 @@
-html, body {
+html, body{
   margin: 0;
   padding: 0;
   width: 100%;
@@ -6,6 +6,7 @@ html, body {
   overflow: hidden;
   position: fixed!important;
 }
+
 /* To prevent long-press that will bring up copy-paste dialog. */
 * {
   -webkit-user-select: none;
@@ -15,7 +16,6 @@ html, body {
   -webkit-touch-callout: none;
   -moz-touch-callout: none;
   -ms-touch-callout: none;
-  touch-callout: none;
   outline: 0; /* To prevent blue-box outline after click: http://stackoverflow.com/questions/21719306/getting-rid-of-a-blue-box-around-button-when-pressed */
 }
 textarea, input {
@@ -27,9 +27,13 @@ textarea, input {
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
 }
-body {
-  background-color: rgb(250,250,250);
+body{
+  /*background:url("../pics/background.jpg");*/
+  background-size: cover;
+  background-position:center; 
+  cursor: url("./imgs/cursor.png"), auto;
 }
+
 
 .r {
   border-right: 2pt solid black;
@@ -49,18 +53,46 @@ body {
   to {opacity: 1;}
 }
 
+/*
 .image:hover img {
-  -webkit-transform:scale(1.25); /* Safari and Chrome */
-  -moz-transform:scale(1.25); /* Firefox */
-  -ms-transform:scale(1.25); /* IE 9 */
-  -o-transform:scale(1.25); /* Opera */
+  -webkit-transform:scale(1.25); // Safari and Chrome
+  -moz-transform:scale(1.25); // Firefox
+  -ms-transform:scale(1.25); // IE 9
+  -o-transform:scale(1.25); // Opera
   transform:scale(1.25);
 }
+*/
 
 .blank{
-  border: 2pt solid black;
+  /*border: 1pt solid black;*/
+  border: 1pt solid #75CDF1;
+  /*border-color: #75CDF1;*/
+  border-radius: 10px;
+  transform:scale(0.90);
+  box-shadow:0px 0px 10px #75CDF1;
+  cursor: url("./imgs/cursor.png"), auto;
+  /*padding: 10px;*/
 }
-.blank:hover
+
+.blank_should_not_click{
+  border: 1pt solid #75CDF1;
+  border-radius: 10px;
+  transform:scale(0.90);
+  box-shadow:inset 0px 0px 100px #75CDF1;
+}
+
+.blank_with_hover{
+  /*border: 1pt solid black;*/
+  border: 1pt solid #75CDF1;
+  /*border-color: #75CDF1;*/
+  border-radius: 10px;
+  transform:scale(0.90);
+  box-shadow:0px 0px 10px #75CDF1;
+  cursor: url("./imgs/cursor.png"), auto;
+  /*padding: 10px;*/
+}
+
+.blank_with_hover:hover
 {
   -webkit-transform:scale(1.25); /* Safari and Chrome */
   -moz-transform:scale(1.25); /* Firefox */
@@ -69,9 +101,11 @@ body {
   transform:scale(1.25);
   transition: 0.15s ease;
   -webkit-transition: 0.15s ease;
-  border: 2pt solid black;
-  cursor: pointer;
+  border: 2pt #75CDF1;
+  border-radius: 10px;
+  cursor: url("./imgs/cursor.png"), auto;
   line-height: 150%;
+  opacity: 0.5;
   z-index: 99999;
   background-color: #14bcc8;
   text-decoration: none;
@@ -79,13 +113,26 @@ body {
 }
 
 .grey {
-  background-color: #C0C0C0
+  background-color: #b2c8bb;
+  border-radius: 10px;
 }
 
 .red {
-  background-color: #FF0000
+  background-color: #FF0000;
+  border-radius: 10px;
 }
 
 .blue{
-  background-color: #00FFFF
+  background-color: #75CDF1;
+  border-radius: 10px;
 }
+
+.container{
+  perspective:1000;
+  transform-style:preserve-3d;
+}
+.flip{transition:0.6s;transform-style:preserve-3d;}
+.front,.back{backface-visibility:hidden;}
+.front{z-index:2;}
+.back{transform:rotateY(-180deg);}
+.container:hover .flip{transform:rotateY(180deg);}

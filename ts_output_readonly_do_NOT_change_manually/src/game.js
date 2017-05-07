@@ -56,17 +56,22 @@ var game;
     function updateUI(params) {
         log.info("Sue got updateUI:", params);
         game.didMakeMove = false; // Only one move per updateUI
+        if (params.yourPlayerIndex == -2)
+            params.yourPlayerIndex = 0;
         game.currentUpdateUI = params;
         clearAnimationTimeout();
         game.state = params.state;
         if (isFirstMove()) {
             game.state = gameLogic.getInitialState();
             log.info(game.currentUpdateUI);
+            game.remain_score[0] = 10;
+            game.remain_score[1] = 10;
             var move = {
                 turnIndex: 0,
                 state: game.state,
                 endMatchScores: null,
             };
+            //makeMove(move);
         }
         // We calculate the AI move only after the animation finishes,
         // because if we call aiService now
@@ -94,13 +99,41 @@ var game;
         remain_score[turnIndex] = gameLogic.getPTW(turnIndex);
         */
         game.didMakeMove = true;
+<<<<<<< HEAD
         game.remain_score[game.currentUpdateUI.yourPlayerIndex] = gameLogic.getPTW(game.currentUpdateUI.yourPlayerIndex);
         gameService.makeMove(move, null, "TODO");
+=======
+        game.remain_score[turnIndex] = gameLogic.getPTW(move.state, turnIndex);
+        log.info(["let go", gameLogic.getPTW(move.state, turnIndex)]);
+        log.info(["lets go", game.remain_score[turnIndex]]);
+        gameService.makeMove(move, null, "Move Made");
+>>>>>>> master
     }
     function isFirstMove() {
         return !game.currentUpdateUI.state;
     }
+    function yourPlayerIndex() {
+        return game.currentUpdateUI.yourPlayerIndex;
+    }
+    function isComputer() {
+        var playerInfo = game.currentUpdateUI.playersInfo[game.currentUpdateUI.yourPlayerIndex];
+        // In community games, playersInfo is [].
+        return playerInfo && playerInfo.playerId === '';
+    }
+    function isComputerTurn() {
+        return isMyTurn() && isComputer();
+    }
+    function isHumanTurn() {
+        return isMyTurn() && !isComputer();
+    }
+    function isMyTurn() {
+        return !game.didMakeMove &&
+            game.currentUpdateUI.turnIndex >= 0 &&
+            game.currentUpdateUI.yourPlayerIndex === game.currentUpdateUI.turnIndex; // it's my turn
+    }
     function cellClicked(row, col) {
+        if (!isMyTurn())
+            return;
         log.info("Clicked on cell:", row, col);
         var nextMove;
         /*
@@ -129,6 +162,7 @@ var game;
     //<------ add game control two functions by:jam
     function isPieceHit(row, col) {
         var temp_pro;
+<<<<<<< HEAD
         /*
         let turnIndex: number;
         turnIndex = currentUpdateUI.yourPlayerIndex;
@@ -139,6 +173,12 @@ var game;
         */
         log.info(game.state.board[game.currentUpdateUI.yourPlayerIndex]);
         if (game.state.board[game.currentUpdateUI.yourPlayerIndex][row][col] < -1) {
+=======
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        log.info(game.state.board[turnIndex]);
+        if (game.state.board[turnIndex][row][col] < -1) {
+>>>>>>> master
             return true;
         }
         else
@@ -147,11 +187,17 @@ var game;
     game.isPieceHit = isPieceHit;
     function isPieceBlank(row, col) {
         var temp_pro;
+<<<<<<< HEAD
         /*
         let turnIndex: number;
         turnIndex = currentUpdateUI.yourPlayerIndex;
         */
         if (game.state.board[game.currentUpdateUI.yourPlayerIndex][row][col] == -1) {
+=======
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (game.state.board[turnIndex][row][col] == -1) {
+>>>>>>> master
             return true;
         }
         else
@@ -159,10 +205,18 @@ var game;
     }
     game.isPieceBlank = isPieceBlank;
     function showCraft(row, col) {
+<<<<<<< HEAD
         /*
         let turnIndex: number;
         turnIndex = currentUpdateUI.yourPlayerIndex;
         */
+=======
+        if (isFirstMove()) {
+            return false;
+        }
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+>>>>>>> master
         //if(state.board[1-turnIndex][row][col] > 1 || state.board[1-turnIndex][row][col] < -1)
         if (game.state.board[1 - game.currentUpdateUI.yourPlayerIndex][row][col] >= 1)
             return true;
@@ -171,22 +225,40 @@ var game;
     }
     game.showCraft = showCraft;
     function showBlank(row, col) {
+<<<<<<< HEAD
         /*
         let turnIndex: number;
         turnIndex = 1 - currentUpdateUI.yourPlayerIndex;
         */
         if (game.state.board[1 - game.currentUpdateUI.yourPlayerIndex][row][col] == 0)
+=======
+        if (isFirstMove()) {
+            return true;
+        }
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (game.state.board[1 - turnIndex][row][col] == 0)
+>>>>>>> master
             return true;
         else
             return false;
     }
     game.showBlank = showBlank;
     function showDamagedCraft(row, col) {
+<<<<<<< HEAD
         /*
         let turnIndex: number;
         turnIndex = currentUpdateUI.yourPlayerIndex;
         */
         if (game.state.board[1 - game.currentUpdateUI.yourPlayerIndex][row][col] < -1)
+=======
+        if (isFirstMove()) {
+            return false;
+        }
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (game.state.board[1 - turnIndex][row][col] < -1)
+>>>>>>> master
             return true;
         else
             return false;
@@ -203,6 +275,10 @@ var game;
             return false;
     }
     game.showDamagedBlank = showDamagedBlank;
+    function showHp() {
+        return game.currentUpdateUI.state ? game.currentUpdateUI.state.points_To_Win[1 - game.currentUpdateUI.yourPlayerIndex] : -1;
+    }
+    game.showHp = showHp;
     //--------->
     function shouldShowImage(row, col) {
         /*
@@ -222,7 +298,10 @@ angular.module('myApp', ['gameServices'])
     .run(['$rootScope', '$timeout',
     function ($rootScope, $timeout) {
         $rootScope['game'] = game;
+<<<<<<< HEAD
         //$rootScope['hp'] = ()=>game.remain_score[game.currentUpdateUI.turnIndex];
+=======
+>>>>>>> master
         $rootScope['hp'] = function () { return game.remain_score[game.currentUpdateUI.yourPlayerIndex]; };
         game.init($rootScope, $timeout);
     }]);

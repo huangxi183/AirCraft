@@ -30889,7 +30889,14 @@ $provide.value("$locale", {
 
 !window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
 ;
-"use strict"; var emulatorServicesCompilationDate = "Sun Feb 5 11:02:57 EST 2017";
+/**
+ * IMPORTANT: do not change anything in this file!
+ * These are are services that communicate between the game and the platform,
+ * and it cannot be changed.
+ */
+
+;
+"use strict"; var emulatorServicesCompilationDate = "Sun Apr 23 16:21:11 EDT 2017";
 
 ;
 var gamingPlatform;
@@ -30908,19 +30915,24 @@ var gamingPlatform;
             return ILogLevel;
         })();
         var alwaysLogs = [];
+        var logLaterFunctions = [];
         var lastLogs = [];
         var startTime = getCurrentTime();
         function getCurrentTime() {
             return new Date().getTime();
         }
         log_1.getCurrentTime = getCurrentTime;
+        function getMillisecondsFromStart() {
+            return getCurrentTime() - startTime;
+        }
+        log_1.getMillisecondsFromStart = getMillisecondsFromStart;
         function getLogEntry(args, logLevel, consoleFunc) {
-            var millisecondsFromStart = getCurrentTime() - startTime;
             // Note that if the first argument to console.log is a string,
             // then it's supposed to be a format string, see:
             // https://developer.mozilla.org/en-US/docs/Web/API/Console/log
             // However, the output looks better on chrome if I pass a string as the first argument,
             // and I hope then it doesn't break anything anywhere else...
+            var millisecondsFromStart = getMillisecondsFromStart();
             var secondsFromStart = millisecondsFromStart / 1000;
             var consoleArgs = ['', secondsFromStart, ' seconds:'].concat(args);
             consoleFunc.apply(console, consoleArgs);
@@ -30933,6 +30945,7 @@ var gamingPlatform;
             lastLogs.push(getLogEntry(args, logLevel, consoleFunc));
         }
         function getLogs() {
+            logLaterFunctions.map(function (func) { return alwaysLog(func()); });
             return lastLogs.concat(alwaysLogs);
         }
         log_1.getLogs = getLogs;
@@ -30944,6 +30957,10 @@ var gamingPlatform;
             alwaysLogs.push(getLogEntry(args, ILogLevel.ALWAYS, console.log));
         }
         log_1.alwaysLog = alwaysLog;
+        function logLater(func) {
+            logLaterFunctions.push(func);
+        }
+        log_1.logLater = logLater;
         function info() {
             var args = [];
             for (var _i = 0; _i < arguments.length; _i++) {
@@ -31028,133 +31045,7 @@ var gamingPlatform;
     var gameService;
     (function (gameService) {
         var isLocalTesting = window.parent === window;
-        // UI for local testing
-        var playersInCommunity = 5;
-        gameService.playModes = ["passAndPlay", "playAgainstTheComputer", "onlyAIs", "multiplayer", "community"];
-        gameService.playMode = "passAndPlay";
-        gameService.supportedLanguages = [{ name: "English", code: "en" },
-            { name: "עברית", code: "iw" },
-            { name: "português", code: "pt" },
-            { name: "中文", code: "zh" },
-            { name: "ελληνικά", code: "el" },
-            { name: "French", code: "fr" },
-            { name: "हिन्दी", code: "hi" },
-            { name: "español", code: "es" },
-        ];
-        gameService.currentLanguage = gameService.supportedLanguages[0];
-        gameService.languageCode = "en";
-        gameService.ogImageMaker = "https://dotted-guru-139914.appspot.com/";
-        gameService.numberOfPlayersRequiredToMove = 3; // for community matches.
-        gameService.numberOfPlayers = 2;
-        gameService.iframeRows = 1;
-        gameService.iframeCols = 1;
-        gameService.locationTrustedStr = null;
         var game;
-        var playersInfo;
-        gameService.history = [];
-        gameService.historyIndex = 0;
-        var playerIdToProposal = null;
-        gameService.savedStates = [];
-        gameService.selectedSavedStateToLoad = null;
-        // test ogImage, getLogs, etc
-        var testingHtml = "\n    <div style=\"position:absolute; width:100%; height:10%; overflow: scroll;\">\n      <select\n        ng-options=\"playMode for playMode in gameService.playModes track by playMode\"\n        ng-model=\"gameService.playMode\"\n        ng-change=\"gameService.reloadIframes()\"></select>\n      <button ng-click=\"gameService.startNewMatch()\">Start new match</button>\n      <select ng-change=\"gameService.historyIndexChanged()\" ng-model=\"gameService.historyIndex\" ng-options=\"index for index in gameService.getIntegersTill(gameService.history.length)\">\n        <option value=\"\">-- current move --</option>\n      </select>\n      <select ng-change=\"gameService.currentLanguageChanged()\" ng-model=\"gameService.currentLanguage\" ng-options=\"language.name for language in gameService.supportedLanguages\">\n        <option value=\"\">-- current game language --</option>\n      </select>\n      <button ng-click=\"gameService.saveState()\">Save match</button>\n      <select ng-change=\"gameService.loadMatch()\" ng-model=\"gameService.selectedSavedStateToLoad\" ng-options=\"savedState.name for savedState in gameService.savedStates\">\n        <option value=\"\">-- load match --</option>\n      </select>\n      <input ng-model=\"gameService.ogImageMaker\">\n      <button ng-click=\"gameService.getOgImageState()\">Open AppEngine image</button>\n      Number of players required to move in a community match: <input ng-model=\"gameService.numberOfPlayersRequiredToMove\">\n    </div>\n    <div style=\"position:absolute; width:100%; height:90%; top: 10%;\">\n      <div ng-repeat=\"row in gameService.getIntegersTill(gameService.iframeRows)\"\n          style=\"position:absolute; top:{{row * 100 / gameService.iframeRows}}%; left:0; width:100%; height:{{100 / gameService.iframeRows}}%;\">\n        <div ng-repeat=\"col in gameService.getIntegersTill(gameService.iframeCols)\"\n            style=\"position:absolute; top:0; left:{{col * 100 / gameService.iframeCols}}%; width:{{100 / gameService.iframeCols}}%; height:100%;\">\n          <iframe id=\"game_iframe_{{col + row*gameService.iframeCols}}\"\n            ng-src=\"{{gameService.locationTrustedStr}}\"\n            seamless=\"seamless\" style=\"position:absolute; width:100%; height:100%;\">\n          </iframe>\n        </div>\n      </div>\n    </div>\n  ";
-        var cacheIntegersTill = [];
-        function getIntegersTill(number) {
-            if (cacheIntegersTill[number])
-                return cacheIntegersTill[number];
-            var res = [];
-            for (var i = 0; i < number; i++) {
-                res.push(i);
-            }
-            cacheIntegersTill[number] = res;
-            return res;
-        }
-        gameService.getIntegersTill = getIntegersTill;
-        function clearState() {
-            var state = {
-                turnIndex: 0,
-                endMatchScores: null,
-                state: null,
-            };
-            gameService.history = [state];
-            gameService.historyIndex = 0;
-            playerIdToProposal = {};
-        }
-        gameService.clearState = clearState;
-        function historyIndexChanged() {
-            // angular makes historyIndex a string!
-            gameService.historyIndex = Number(gameService.historyIndex);
-            playerIdToProposal = {};
-            reloadIframes();
-        }
-        gameService.historyIndexChanged = historyIndexChanged;
-        function startNewMatch() {
-            clearState();
-            reloadIframes();
-        }
-        gameService.startNewMatch = startNewMatch;
-        function sendSetLanguage(id) {
-            passMessage({ setLanguage: { language: gameService.currentLanguage.code } }, id);
-        }
-        function currentLanguageChanged() {
-            for (var r = 0; r < gameService.iframeRows; r++) {
-                for (var c = 0; c < gameService.iframeCols; c++) {
-                    var id = c + r * gameService.iframeCols;
-                    sendSetLanguage(id);
-                }
-            }
-        }
-        gameService.currentLanguageChanged = currentLanguageChanged;
-        function saveState() {
-            var defaultStateName = "Saved state " + gameService.savedStates.length;
-            var stateName = prompt("Please enter the state name", defaultStateName);
-            if (!stateName)
-                stateName = defaultStateName;
-            gameService.savedStates.push({ name: stateName, playerIdToProposal: playerIdToProposal, history: gameService.history });
-            localStorage.setItem("savedStates", angular.toJson(gameService.savedStates, true));
-        }
-        gameService.saveState = saveState;
-        function loadMatch() {
-            if (!gameService.selectedSavedStateToLoad)
-                return;
-            gameService.history = angular.copy(gameService.selectedSavedStateToLoad.history);
-            gameService.historyIndex = gameService.history.length - 1;
-            playerIdToProposal = angular.copy(gameService.selectedSavedStateToLoad.playerIdToProposal);
-            gameService.selectedSavedStateToLoad = null;
-            reloadIframes();
-        }
-        gameService.loadMatch = loadMatch;
-        function loadSavedStates() {
-            var savedStatesJson = localStorage.getItem("savedStates");
-            if (savedStatesJson)
-                gameService.savedStates = angular.fromJson(savedStatesJson);
-        }
-        function getOgImageState() {
-            passMessage({ getStateForOgImage: true }, 0);
-        }
-        gameService.getOgImageState = getOgImageState;
-        function reloadIframes() {
-            gamingPlatform.log.log("reloadIframes: playMode=", gameService.playMode);
-            setPlayersInfo();
-            // Setting to 0 to force the game to send gameReady and then it will get the correct changeUI.
-            gameService.iframeRows = 0;
-            gameService.iframeCols = 0;
-            gamingPlatform.$timeout(function () {
-                if (gameService.playMode == "community") {
-                    gameService.iframeRows = gameService.numberOfPlayers;
-                    gameService.iframeCols = playersInCommunity;
-                }
-                else if (gameService.playMode == "multiplayer") {
-                    gameService.iframeRows = 1;
-                    gameService.iframeCols = gameService.numberOfPlayers; // if I want to support a viewer, then add +1.
-                }
-                else {
-                    gameService.iframeRows = 1;
-                    gameService.iframeCols = 1;
-                }
-            });
-        }
-        gameService.reloadIframes = reloadIframes;
         function checkMove(move) {
             if (!move) {
                 throw new Error("Game called makeMove with a null move=" + move);
@@ -31172,7 +31063,7 @@ var gamingPlatform;
             }
         }
         gameService.checkMove = checkMove;
-        function checkMakeMove(lastUpdateUI, move) {
+        function checkMakeMove(lastUpdateUI, move, proposal) {
             if (!lastUpdateUI) {
                 throw new Error("Game called makeMove before getting updateUI or it called makeMove more than once for a single updateUI.");
             }
@@ -31181,226 +31072,41 @@ var gamingPlatform;
             if (!wasYourTurn) {
                 throw new Error("Game called makeMove when it wasn't your turn: yourPlayerIndex=" + lastUpdateUI.yourPlayerIndex + " turnIndexAfterMove=" + lastUpdateUI.turnIndex);
             }
-            checkMove(move);
-        }
-        function checkCommunityMove(lastCommunityUI, proposal, move) {
-            if (!lastCommunityUI) {
-                throw new Error("Don't call communityMove before getting communityUI.");
+            if (lastUpdateUI.playerIdToProposal) {
+                var oldProposal = lastUpdateUI.playerIdToProposal[lastUpdateUI.yourPlayerInfo.playerId];
+                if (oldProposal) {
+                    throw new Error("Called communityMove when yourPlayerId already made a proposal, see: " + angular.toJson(oldProposal, true));
+                }
             }
             if (move) {
                 checkMove(move);
-            }
-            var wasYourTurn = lastCommunityUI.turnIndex >= 0 &&
-                lastCommunityUI.yourPlayerIndex === lastCommunityUI.turnIndex; // it's my turn
-            if (!wasYourTurn) {
-                throw new Error("Called communityMove when it wasn't your turn: yourPlayerIndex=" + lastCommunityUI.yourPlayerIndex + " turnIndexAfterMove=" + lastCommunityUI.turnIndex);
-            }
-            var oldProposal = lastCommunityUI.playerIdToProposal[lastCommunityUI.yourPlayerInfo.playerId];
-            if (oldProposal) {
-                throw new Error("Called communityMove when yourPlayerId already made a proposal, see: " + angular.toJson(oldProposal, true));
             }
         }
         function sendMessage(msg) {
             gamingPlatform.messageService.sendMessage(msg);
         }
-        function setPlayersInfo() {
-            playersInfo = [];
-            for (var i = 0; i < gameService.numberOfPlayers; i++) {
-                var playerId = gameService.playMode === "onlyAIs" ||
-                    i !== 0 && gameService.playMode === "playAgainstTheComputer" ?
-                    "" :
-                    "" + (i + 42);
-                playersInfo.push({ playerId: playerId, avatarImageUrl: null, displayName: null });
-            }
-        }
         function passMessage(msg, toIndex) {
             var iframe = window.document.getElementById("game_iframe_" + toIndex);
             iframe.contentWindow.postMessage(msg, "*");
         }
-        function getIndexOfSource(src) {
-            var i = 0;
-            while (true) {
-                var iframe = window.document.getElementById("game_iframe_" + i);
-                if (!iframe) {
-                    console.error("Can't find src=", src);
-                    return -1;
-                }
-                if (iframe.contentWindow === src)
-                    return i;
-                i++;
+        var lastUpdateUiMessage = null;
+        function makeMove(move, proposal, chatDescription) {
+            if (!chatDescription) {
+                throw new Error("You didn't set chatDescription in makeMove!");
             }
-        }
-        function overrideInnerHtml() {
-            gamingPlatform.log.info("Overriding body's html");
-            gameService.locationTrustedStr = gamingPlatform.$sce.trustAsResourceUrl(location.toString());
-            var el = angular.element(testingHtml);
-            window.document.body.innerHTML = '';
-            angular.element(window.document.body).append(gamingPlatform.$compile(el)(gamingPlatform.$rootScope));
-            window.addEventListener("message", function (event) {
-                gamingPlatform.$rootScope.$apply(function () { return gotMessageFromGame(event); });
-            });
-        }
-        function getState() {
-            return gameService.history[gameService.historyIndex];
-        }
-        function getPlayerIndex(id) {
-            if (gameService.playMode == "community") {
-                // id = col + row*gameService.iframeCols;
-                // iframeCols = playersInCommunity
-                return Math.floor(id / gameService.iframeCols);
-            }
-            if (gameService.playMode == "multiplayer") {
-                return id == gameService.numberOfPlayers ? -2 : id; // -2 is viewer
-            }
-            return getState().turnIndex;
-        }
-        function getChangeUI(id) {
-            var index = getPlayerIndex(id);
-            var state = getState();
-            if (gameService.playMode == "community") {
-                var communityUI = {
-                    numberOfPlayersRequiredToMove: gameService.numberOfPlayersRequiredToMove,
-                    yourPlayerIndex: index,
-                    yourPlayerInfo: {
-                        avatarImageUrl: "",
-                        displayName: "",
-                        playerId: "playerId" + id,
-                    },
-                    playerIdToProposal: playerIdToProposal,
-                    numberOfPlayers: gameService.numberOfPlayers,
-                    state: state.state,
-                    turnIndex: state.turnIndex,
-                    endMatchScores: state.endMatchScores,
-                };
-                return { communityUI: communityUI };
-            }
-            var updateUI = {
-                yourPlayerIndex: index,
-                playersInfo: playersInfo,
-                numberOfPlayers: gameService.numberOfPlayers,
-                state: state.state,
-                turnIndex: state.turnIndex,
-                endMatchScores: state.endMatchScores,
-                playMode: gameService.playMode == "multiplayer" ? index : gameService.playMode,
-            };
-            return { updateUI: updateUI };
-        }
-        function sendChangeUI(id) {
-            passMessage(getChangeUI(id), id);
-        }
-        function getQueryString(params) {
-            var res = [];
-            for (var key in params) {
-                var value = params[key];
-                res.push(encodeURIComponent(key) + "=" + encodeURIComponent(value));
-            }
-            return res.join("&");
-        }
-        function getImageMakerUrl(stateStr) {
-            var params = {};
-            params["fbId0"] = "10153589934097337";
-            params["fbId1"] = "10153693068502449";
-            var state = getState();
-            if (state.endMatchScores) {
-                params["winner"] = state.endMatchScores[0] > state.endMatchScores[1] ? '0' : '1';
-                ;
-            }
-            params["myIndex"] = '0';
-            params["state"] = stateStr;
-            return gameService.ogImageMaker + "?" + getQueryString(params);
-        }
-        function gotMessageFromGame(event) {
-            var source = event.source;
-            var id = getIndexOfSource(source);
-            if (id == -1)
-                return;
-            var index = getPlayerIndex(id);
-            var message = event.data;
-            gamingPlatform.log.info("Platform got message", message);
-            if (message.gameReady) {
-                sendSetLanguage(id);
-                sendChangeUI(id);
-            }
-            else if (message.sendStateForOgImage) {
-                var imageMakerUrl = getImageMakerUrl(message.sendStateForOgImage);
-                gamingPlatform.log.info(imageMakerUrl);
-                window.open(imageMakerUrl, "_blank");
-            }
-            else {
-                // Check last message
-                var lastMessage = message.lastMessage;
-                if (!angular.equals(lastMessage, getChangeUI(id))) {
-                    console.warn("Ignoring message because message.lastMessage is wrong! This can happen if you play and immediately changed something like playMode. lastMessage=", lastMessage, " expected lastMessage=", getChangeUI(id));
-                    return;
-                }
-                // Check move&prposal
-                var move = message.move;
-                var proposal = message.proposal;
-                if (lastMessage.communityUI) {
-                    checkCommunityMove(lastMessage.communityUI, proposal, move);
-                }
-                else {
-                    checkMakeMove(lastMessage.updateUI, move);
-                }
-                if (index !== getState().turnIndex) {
-                    throw new Error("Not your turn! yourPlayerIndex=" + index + " and the turn is of playerIndex=" + getState().turnIndex);
-                }
-                // Update state&proposals
-                if (gameService.historyIndex != gameService.history.length - 1) {
-                    // cut the future
-                    gameService.history.splice(gameService.historyIndex + 1);
-                    playerIdToProposal = {};
-                }
-                if (gameService.historyIndex != gameService.history.length - 1)
-                    throw new Error("Internal err! historyIndex=" + gameService.historyIndex + " history.length=" + gameService.history.length);
-                if (move) {
-                    gameService.history.push(move);
-                    gameService.historyIndex++;
-                    playerIdToProposal = {};
-                }
-                else {
-                    playerIdToProposal['playerId' + id] = proposal;
-                }
-                setTimeout(function () {
-                    for (var r = 0; r < gameService.iframeRows; r++) {
-                        for (var c = 0; c < gameService.iframeCols; c++) {
-                            var id_1 = c + r * gameService.iframeCols;
-                            sendChangeUI(id_1);
-                        }
-                    }
-                }, 100);
-            }
-        }
-        var lastChangeUiMessage = null;
-        function communityMove(proposal, move) {
-            checkCommunityMove(lastChangeUiMessage.communityUI, proposal, move);
+            checkMakeMove(lastUpdateUiMessage, move, proposal);
             // I'm sending the move even in local testing to make sure it's simple json (or postMessage will fail).
-            sendMessage({ proposal: proposal, move: move, lastMessage: lastChangeUiMessage });
-            lastChangeUiMessage = null;
-        }
-        gameService.communityMove = communityMove;
-        function makeMove(move) {
-            checkMakeMove(lastChangeUiMessage.updateUI, move);
-            // I'm sending the move even in local testing to make sure it's simple json (or postMessage will fail).
-            sendMessage({ move: move, lastMessage: lastChangeUiMessage });
-            lastChangeUiMessage = null; // to make sure you don't call makeMove until you get the next updateUI.
+            sendMessage({ move: move, proposal: proposal, chatDescription: chatDescription, lastMessage: { updateUI: lastUpdateUiMessage } });
+            lastUpdateUiMessage = null; // to make sure you don't call makeMove until you get the next updateUI.
         }
         gameService.makeMove = makeMove;
         function callUpdateUI(updateUI) {
-            lastChangeUiMessage = angular.copy({ updateUI: updateUI });
+            lastUpdateUiMessage = angular.copy(updateUI);
             game.updateUI(updateUI);
         }
         gameService.callUpdateUI = callUpdateUI;
-        function callCommunityUI(communityUI) {
-            lastChangeUiMessage = angular.copy({ communityUI: communityUI });
-            game.communityUI(communityUI);
-        }
-        gameService.callCommunityUI = callCommunityUI;
         function gotMessageFromPlatform(message) {
-            if (message.communityUI) {
-                callCommunityUI(message.communityUI);
-            }
-            else if (message.updateUI) {
+            if (message.updateUI) {
                 callUpdateUI(message.updateUI);
             }
             else if (message.setLanguage) {
@@ -31419,20 +31125,42 @@ var gamingPlatform;
                 sendMessage({ sendStateForOgImage: game.getStateForOgImage() });
             }
         }
+        function createScriptWithCrossorigin(id, src) {
+            gamingPlatform.log.info("Loading script ", src, " into script element with id=", id);
+            if (document.getElementById(id)) {
+                gamingPlatform.log.error("Already loaded src=", src);
+                return;
+            }
+            var js = document.createElement('script');
+            js.src = src;
+            js.id = id;
+            js.onload = function () {
+                gamingPlatform.log.info("Loaded script ", src);
+                gamingPlatform.emulator.overrideInnerHtml();
+            };
+            js.async = 1;
+            js.crossorigin = "anonymous";
+            var fjs = document.getElementsByTagName('script')[0];
+            fjs.parentNode.insertBefore(js, fjs);
+        }
         var didCallSetGame = false;
         function setGame(_game) {
             game = _game;
-            setPlayersInfo();
-            loadSavedStates();
-            clearState();
             if (didCallSetGame) {
                 throw new Error("You can call setGame exactly once!");
             }
             didCallSetGame = true;
             gamingPlatform.log.info("Called setGame");
             if (isLocalTesting) {
-                gamingPlatform.$rootScope['gameService'] = gameService;
-                gamingPlatform.$timeout(overrideInnerHtml, 50); // waiting a bit because the game might access the html (like boardArea) to listen to TouchEvents
+                // waiting a bit because the game might access the html (like boardArea) to listen to TouchEvents
+                gamingPlatform.$timeout(function () {
+                    if (gamingPlatform.emulator) {
+                        gamingPlatform.emulator.overrideInnerHtml();
+                    }
+                    else {
+                        createScriptWithCrossorigin("emulator", "https://yoav-zibin.github.io/emulator/ts_output_readonly_do_NOT_change_manually/src/emulator.js");
+                    }
+                }, 50);
             }
             else {
                 gamingPlatform.messageService.addMessageListener(gotMessageFromPlatform);
@@ -31441,10 +31169,14 @@ var gamingPlatform;
             // but they will stay 0 (on ios) until we send gameReady (because platform will hide the iframe)
             sendMessage({ gameReady: "v4" });
             gamingPlatform.log.info("Calling 'fake' updateUI with yourPlayerIndex=-2 , meaning you're a viewer so you can't make a move");
+            var playerInfo = { playerId: '', avatarImageUrl: null, displayName: null };
             callUpdateUI({
+                numberOfPlayersRequiredToMove: null,
+                playerIdToProposal: null,
                 yourPlayerIndex: -2,
-                playersInfo: playersInfo,
-                numberOfPlayers: gameService.numberOfPlayers,
+                yourPlayerInfo: playerInfo,
+                playersInfo: [playerInfo, playerInfo],
+                numberOfPlayers: 2,
                 state: null,
                 turnIndex: 0,
                 endMatchScores: null,
@@ -31925,19 +31657,18 @@ var gameLogic;
 (function (gameLogic) {
     gameLogic.ROWS = 6;
     gameLogic.COLS = 6;
-    var points_to_win = [10, 10];
-    var head = [];
-    head[0] = getInitialHP();
-    head[1] = getInitialHP();
-    function getInitialHP() {
+    function getInitialHeadPosition() {
         var temp = { index: Math.floor(Math.random() * 20) + 1, x: 0, y: 0, direct: 0 };
         return temp;
     }
-    gameLogic.getInitialHP = getInitialHP;
+    gameLogic.getInitialHeadPosition = getInitialHeadPosition;
     //  HeadPosi = {index : Math.floor(Math.random() * 20) + 1, x :0, y :0, direct :0};
     /** Returns the initial AirCraft board, which is a ROWSxCOLS matrix containing ''. */
     function getInitialBoard(i) {
         var board = [];
+        var head = [];
+        head[i] = getInitialHeadPosition();
+        //head[1] = getInitialHeadPosition();
         // generate random craft head
         //head.index = Math.floor(Math.random() * 20) + 1;
         //choose a direction based on the head position
@@ -32080,23 +31811,20 @@ var gameLogic;
         return board;
     }
     gameLogic.getInitialBoard = getInitialBoard;
+    function getPTW(state, turnIndex) {
+        return state.points_To_Win[turnIndex];
+    }
+    gameLogic.getPTW = getPTW;
     function getInitialState() {
         var temp_board_0 = getInitialBoard(0);
         var temp_board_1 = getInitialBoard(1);
-        return { board: [temp_board_0, temp_board_1], delta: null };
+        return { board: [temp_board_0, temp_board_1], delta: null, points_To_Win: [10, 10] };
     }
     gameLogic.getInitialState = getInitialState;
-    /**
-     * Return the winner (either 'X' or 'O') or '' if there is no winner.
-     * The board is a matrix of size 3x3 containing either 'X', 'O', or ''.
-     * E.g., getWinner returns 'X' for the following board:
-     *     [['X', 'O', ''],
-     *      ['X', 'O', ''],
-     *      ['X', '', '']]
-     */
-    function winOrNot(turnIndexBeforeMove) {
-        if (points_to_win[turnIndexBeforeMove] <= 0)
+    function winOrNot(turnIndexBeforeMove, state) {
+        if (state.points_To_Win[turnIndexBeforeMove] <= 0 && state.points_To_Win[1 - turnIndexBeforeMove] > 0) {
             return true;
+        }
         else
             return false;
     }
@@ -32113,12 +31841,13 @@ var gameLogic;
         if (board[row][col] < 0) {
             throw new Error("One can only make a move in an empty position!");
         }
-        if (winOrNot(turnIndexBeforeMove)) {
+        if (winOrNot(turnIndexBeforeMove, stateBeforeMove)) {
             throw new Error("Can only make a move if the game is not over!");
         }
         var boardAfterMove = angular.copy(board);
+        var points_To_Win = angular.copy(stateBeforeMove.points_To_Win);
         if (boardAfterMove[row][col] > 0) {
-            points_to_win[turnIndexBeforeMove] -= boardAfterMove[row][col];
+            points_To_Win[turnIndexBeforeMove] -= boardAfterMove[row][col];
             boardAfterMove[row][col] = -boardAfterMove[row][col];
         }
         else {
@@ -32127,22 +31856,33 @@ var gameLogic;
         var finalboard = [];
         finalboard[turnIndexBeforeMove] = boardAfterMove;
         finalboard[1 - turnIndexBeforeMove] = stateBeforeMove.board[1 - turnIndexBeforeMove];
-        var winner = winOrNot(turnIndexBeforeMove);
+        //-----
+        var new_points_To_Win = points_To_Win;
+        var new_delta = { row: row, col: col };
+        var new_state = { delta: new_delta, board: finalboard, points_To_Win: new_points_To_Win };
+        //-----
+        var winner = winOrNot(turnIndexBeforeMove, new_state);
         var turnIndex = turnIndexBeforeMove;
-        var temp_score = [0, 0];
+        var endMatchScores = [0, 0];
         if (winner) {
             turnIndex = -1;
-            temp_score[turnIndexBeforeMove] = 10 - points_to_win[turnIndexBeforeMove];
-            temp_score[1 - turnIndexBeforeMove] = 10 - points_to_win[1 - turnIndexBeforeMove];
+            endMatchScores[turnIndexBeforeMove] = 10 - points_To_Win[turnIndexBeforeMove];
+            endMatchScores[1 - turnIndexBeforeMove] = 10 - points_To_Win[1 - turnIndexBeforeMove];
+            /*
+            points_to_win[0] = 10;
+            points_to_win[1] = 10;
+            head[0] = getInitialHP();
+            head[1] = getInitialHP();
+            */
         }
         else {
-            turnIndex = 1 - turnIndex;
-            temp_score = null;
+            turnIndex = 1 - turnIndexBeforeMove;
+            endMatchScores = null;
         }
         var delta = { row: row, col: col };
-        var state = { delta: delta, board: finalboard };
+        var state = { delta: delta, board: finalboard, points_To_Win: points_To_Win };
         //endMatchScores: number[];
-        return { turnIndex: turnIndex, state: state, endMatchScores: temp_score };
+        return { turnIndex: turnIndex, state: state, endMatchScores: endMatchScores };
     }
     gameLogic.createMove = createMove;
     function createInitialMove() {
@@ -32171,6 +31911,7 @@ var game;
     game.animationEndedTimeout = null;
     game.state = null;
     game.proposals = null;
+    game.remain_score = [10, 10];
     //export let yourPlayerInfo: IPlayerInfo = null;
     function init($rootScope_, $timeout_) {
         game.$rootScope = $rootScope_;
@@ -32181,7 +31922,6 @@ var game;
         resizeGameAreaService.setWidthToHeight(2);
         gameService.setGame({
             updateUI: updateUI,
-            communityUI: communityUI,
             getStateForOgImage: null,
         });
     }
@@ -32203,49 +31943,6 @@ var game;
     function getTranslations() {
         return {};
     }
-    function communityUI(communityUI) {
-        currentCommunityUI = communityUI;
-        log.info("Game got communityUI:", communityUI);
-        // If only proposals changed, then do NOT call updateUI. Then update proposals.
-        var nextUpdateUI = {
-            playersInfo: [],
-            playMode: communityUI.yourPlayerIndex,
-            numberOfPlayers: communityUI.numberOfPlayers,
-            state: communityUI.state,
-            turnIndex: communityUI.turnIndex,
-            endMatchScores: communityUI.endMatchScores,
-            yourPlayerIndex: communityUI.yourPlayerIndex,
-        };
-        if (angular.equals(yourPlayerInfo, communityUI.yourPlayerInfo) &&
-            game.currentUpdateUI && angular.equals(game.currentUpdateUI, nextUpdateUI)) {
-            // We're not calling updateUI to avoid disrupting the player if he's in the middle of a move.
-        }
-        else {
-            // Things changed, so call updateUI.
-            updateUI(nextUpdateUI);
-        }
-        // This must be after calling updateUI, because we nullify things there (like playerIdToProposal&proposals&etc)
-        yourPlayerInfo = communityUI.yourPlayerInfo;
-        var playerIdToProposal = communityUI.playerIdToProposal;
-        game.didMakeMove = !!playerIdToProposal[communityUI.yourPlayerInfo.playerId];
-        game.proposals = [];
-        for (var i = 0; i < gameLogic.ROWS; i++) {
-            game.proposals[i] = [];
-            for (var j = 0; j < gameLogic.COLS; j++) {
-                game.proposals[i][j] = 0;
-            }
-        }
-        for (var playerId in playerIdToProposal) {
-            var proposal = playerIdToProposal[playerId];
-            var delta = proposal.data;
-            game.proposals[delta.row][delta.col]++;
-        }
-    }
-    game.communityUI = communityUI;
-    function isProposal(row, col) {
-        return game.proposals && game.proposals[row][col] > 0;
-    }
-    game.isProposal = isProposal;
     function getCellStyle(row, col) {
         var scale = 1.0;
         var opacity = 0.5;
@@ -32258,12 +31955,16 @@ var game;
     function updateUI(params) {
         log.info("Sue got updateUI:", params);
         game.didMakeMove = false; // Only one move per updateUI
+        if (params.yourPlayerIndex == -2)
+            params.yourPlayerIndex = 0;
         game.currentUpdateUI = params;
         clearAnimationTimeout();
         game.state = params.state;
         if (isFirstMove()) {
             game.state = gameLogic.getInitialState();
             log.info(game.currentUpdateUI);
+            game.remain_score[0] = 10;
+            game.remain_score[1] = 10;
             var move = {
                 turnIndex: 0,
                 state: game.state,
@@ -32290,13 +31991,39 @@ var game;
         if (game.didMakeMove) {
             return;
         }
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
         game.didMakeMove = true;
-        gameService.makeMove(move);
+        game.remain_score[turnIndex] = gameLogic.getPTW(move.state, turnIndex);
+        log.info(["let go", gameLogic.getPTW(move.state, turnIndex)]);
+        log.info(["lets go", game.remain_score[turnIndex]]);
+        gameService.makeMove(move, null, "Move Made");
     }
     function isFirstMove() {
         return !game.currentUpdateUI.state;
     }
+    function yourPlayerIndex() {
+        return game.currentUpdateUI.yourPlayerIndex;
+    }
+    function isComputer() {
+        var playerInfo = game.currentUpdateUI.playersInfo[game.currentUpdateUI.yourPlayerIndex];
+        // In community games, playersInfo is [].
+        return playerInfo && playerInfo.playerId === '';
+    }
+    function isComputerTurn() {
+        return isMyTurn() && isComputer();
+    }
+    function isHumanTurn() {
+        return isMyTurn() && !isComputer();
+    }
+    function isMyTurn() {
+        return !game.didMakeMove &&
+            game.currentUpdateUI.turnIndex >= 0 &&
+            game.currentUpdateUI.yourPlayerIndex === game.currentUpdateUI.turnIndex; // it's my turn
+    }
     function cellClicked(row, col) {
+        if (!isMyTurn())
+            return;
         log.info("Clicked on cell:", row, col);
         var nextMove;
         try {
@@ -32323,7 +32050,6 @@ var game;
         var temp_pro;
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
-        temp_pro = (isProposal(row, col) && game.currentUpdateUI.turnIndex == turnIndex);
         log.info(game.state.board[turnIndex]);
         if (game.state.board[turnIndex][row][col] < -1) {
             return true;
@@ -32336,7 +32062,6 @@ var game;
         var temp_pro;
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
-        temp_pro = (isProposal(row, col) && game.currentUpdateUI.turnIndex == turnIndex);
         if (game.state.board[turnIndex][row][col] == -1) {
             return true;
         }
@@ -32345,23 +32070,55 @@ var game;
     }
     game.isPieceBlank = isPieceBlank;
     function showCraft(row, col) {
+        if (isFirstMove()) {
+            return false;
+        }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
-        if (game.state.board[1 - turnIndex][row][col] > 1 || game.state.board[1 - turnIndex][row][col] < -1)
+        //if(state.board[1-turnIndex][row][col] > 1 || state.board[1-turnIndex][row][col] < -1)
+        if (game.state.board[1 - turnIndex][row][col] >= 1)
             return true;
         else
             return false;
     }
     game.showCraft = showCraft;
     function showBlank(row, col) {
+        if (isFirstMove()) {
+            return true;
+        }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
-        if (game.state.board[1 - turnIndex][row][col] < 1 && game.state.board[1 - turnIndex][row][col] >= -1)
+        if (game.state.board[1 - turnIndex][row][col] == 0)
             return true;
         else
             return false;
     }
     game.showBlank = showBlank;
+    function showDamagedCraft(row, col) {
+        if (isFirstMove()) {
+            return false;
+        }
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (game.state.board[1 - turnIndex][row][col] < -1)
+            return true;
+        else
+            return false;
+    }
+    game.showDamagedCraft = showDamagedCraft;
+    function showDamagedBlank(row, col) {
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (game.state.board[1 - turnIndex][row][col] == -1)
+            return true;
+        else
+            return false;
+    }
+    game.showDamagedBlank = showDamagedBlank;
+    function showHp() {
+        return game.currentUpdateUI.state ? game.currentUpdateUI.state.points_To_Win[1 - game.currentUpdateUI.yourPlayerIndex] : -1;
+    }
+    game.showHp = showHp;
     //--------->
     function shouldShowImage(row, col) {
         var turnIndex;
@@ -32379,8 +32136,13 @@ angular.module('myApp', ['gameServices'])
     .run(['$rootScope', '$timeout',
     function ($rootScope, $timeout) {
         $rootScope['game'] = game;
+        $rootScope['hp'] = function () { return game.remain_score[game.currentUpdateUI.yourPlayerIndex]; };
         game.init($rootScope, $timeout);
     }]);
+// var myapp = angular.module('myHp',[]);
+// myapp.controller('myCtrl_2',function ($scope) {
+//   $scope.score =game.remain_score[game.currentUpdateUI.yourPlayerIndex];
+// });
 //# sourceMappingURL=game.js.map
 ;
 var aiService;

@@ -7,6 +7,7 @@ js/everything.min.js
 css/everything.min.css
 
 NETWORK:
+*
 service-worker.js
 js/everything.min.js.map
 js/everything.js

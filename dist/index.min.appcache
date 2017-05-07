@@ -7,8 +7,8 @@ js/everything.min.js
 css/everything.min.css
 
 NETWORK:
-imgs/background-min.jpg
-service-worker.js
-js/everything.min.js.map
-js/everything.js
+#imgs/background-min.jpg
+#service-worker.js
+#js/everything.min.js.map
+#js/everything.js
 *

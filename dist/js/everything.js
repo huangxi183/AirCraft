@@ -31816,6 +31816,9 @@ var gameLogic;
     }
     gameLogic.getPTW = getPTW;
     function getInitialState() {
+        var _direction = [];
+        _direction[0] = 0;
+        _direction[1] = 0;
         var _headLoc = [];
         _headLoc[0] = [0, 0];
         _headLoc[1] = [0, 0];
@@ -31865,6 +31868,7 @@ var gameLogic;
                         _midtail[0] = [i, j - 3];
                         _lefttail[0] = [i - 1, j - 3];
                         _righttail[0] = [i + 1, j - 3];
+                        _direction[0] = 4;
                     }
                     else if (temp_board_0[i][j + 1] === 5) {
                         _headLoc[0] = [i, j];
@@ -31877,6 +31881,7 @@ var gameLogic;
                         _midtail[0] = [i, j + 3];
                         _lefttail[0] = [i + 1, j + 3];
                         _righttail[0] = [i - 1, j + 3];
+                        _direction[0] = 3;
                     }
                     else if (temp_board_0[i - 1][j] === 5) {
                         _headLoc[0] = [i, j];
@@ -31889,6 +31894,7 @@ var gameLogic;
                         _midtail[0] = [i - 3, j];
                         _lefttail[0] = [i - 3, j + 1];
                         _righttail[0] = [i - 3, j - 1];
+                        _direction[0] = 2;
                     }
                     else if (temp_board_0[i + 1][j] === 5) {
                         _headLoc[0] = [i, j];
@@ -31901,6 +31907,7 @@ var gameLogic;
                         _midtail[0] = [i + 3, j];
                         _lefttail[0] = [i + 3, j - 1];
                         _righttail[0] = [i + 3, j + 1];
+                        _direction[0] = 1;
                     }
                 }
                 else if (temp_board_0[i][j] === 10 && i == 0) {
@@ -31914,6 +31921,7 @@ var gameLogic;
                     _midtail[0] = [i + 3, j];
                     _lefttail[0] = [i + 3, j - 1];
                     _righttail[0] = [i + 3, j + 1];
+                    _direction[0] = 1;
                 }
                 else if (temp_board_0[i][j] === 10 && i == 5) {
                     _headLoc[0] = [i, j];
@@ -31926,6 +31934,7 @@ var gameLogic;
                     _midtail[0] = [i - 3, j];
                     _lefttail[0] = [i - 3, j + 1];
                     _righttail[0] = [i - 3, j - 1];
+                    _direction[0] = 2;
                 }
                 else if (temp_board_0[i][j] === 10 && j == 0) {
                     _headLoc[0] = [i, j];
@@ -31938,6 +31947,7 @@ var gameLogic;
                     _midtail[0] = [i, j + 3];
                     _lefttail[0] = [i + 1, j + 3];
                     _righttail[0] = [i - 1, j + 3];
+                    _direction[0] = 3;
                 }
                 else if (temp_board_0[i][j] === 10 && j == 5) {
                     _headLoc[0] = [i, j];
@@ -31950,6 +31960,7 @@ var gameLogic;
                     _midtail[0] = [i, j - 3];
                     _lefttail[0] = [i - 1, j - 3];
                     _righttail[0] = [i + 1, j - 3];
+                    _direction[0] = 4;
                 }
                 //----------For the first aircraft.
                 //---------For the second aircraft.
@@ -31967,6 +31978,7 @@ var gameLogic;
                         _midtail[1] = [i, j - 3];
                         _lefttail[1] = [i - 1, j - 3];
                         _righttail[1] = [i + 1, j - 3];
+                        _direction[1] = 4;
                     }
                     else if (temp_board_1[i][j + 1] === 5) {
                         _headLoc[1] = [i, j];
@@ -31979,6 +31991,7 @@ var gameLogic;
                         _midtail[1] = [i, j + 3];
                         _lefttail[1] = [i + 1, j + 3];
                         _righttail[1] = [i - 1, j + 3];
+                        _direction[1] = 3;
                     }
                     else if (temp_board_1[i - 1][j] === 5) {
                         _headLoc[1] = [i, j];
@@ -31991,6 +32004,7 @@ var gameLogic;
                         _midtail[1] = [i - 3, j];
                         _lefttail[1] = [i - 3, j + 1];
                         _righttail[1] = [i - 3, j - 1];
+                        _direction[1] = 2;
                     }
                     else if (temp_board_1[i + 1][j] === 5) {
                         _headLoc[1] = [i, j];
@@ -32003,6 +32017,7 @@ var gameLogic;
                         _midtail[1] = [i + 3, j];
                         _lefttail[1] = [i + 3, j - 1];
                         _righttail[1] = [i + 3, j + 1];
+                        _direction[1] = 1;
                     }
                 }
                 else if (temp_board_1[i][j] === 10 && i == 0) {
@@ -32016,6 +32031,7 @@ var gameLogic;
                     _midtail[1] = [i + 3, j];
                     _lefttail[1] = [i + 3, j - 1];
                     _righttail[1] = [i + 3, j + 1];
+                    _direction[1] = 1;
                 }
                 else if (temp_board_1[i][j] === 10 && i == 5) {
                     _headLoc[1] = [i, j];
@@ -32028,6 +32044,7 @@ var gameLogic;
                     _midtail[1] = [i - 3, j];
                     _lefttail[1] = [i - 3, j + 1];
                     _righttail[1] = [i - 3, j - 1];
+                    _direction[1] = 2;
                 }
                 else if (temp_board_1[i][j] === 10 && j == 0) {
                     _headLoc[1] = [i, j];
@@ -32040,6 +32057,7 @@ var gameLogic;
                     _midtail[1] = [i, j + 3];
                     _lefttail[1] = [i + 1, j + 3];
                     _righttail[1] = [i - 1, j + 3];
+                    _direction[1] = 3;
                 }
                 else if (temp_board_1[i][j] === 10 && j == 5) {
                     _headLoc[1] = [i, j];
@@ -32052,12 +32070,14 @@ var gameLogic;
                     _midtail[1] = [i, j - 3];
                     _lefttail[1] = [i - 1, j - 3];
                     _righttail[1] = [i + 1, j - 3];
+                    _direction[1] = 4;
                 }
                 //---------For the second aircraft.
             }
         }
         return { board: [temp_board_0, temp_board_1], delta: null, points_To_Win: [10, 10], headLoc: _headLoc, body1: _body1, body2: _body2,
-            leftwing1: _leftwing1, leftwing2: _leftwing2, rightwing1: _rightwing1, rightwing2: _rightwing2, lefttail: _lefttail, midtail: _midtail, righttail: _righttail };
+            leftwing1: _leftwing1, leftwing2: _leftwing2, rightwing1: _rightwing1, rightwing2: _rightwing2, lefttail: _lefttail, midtail: _midtail, righttail: _righttail,
+            direction: _direction };
     }
     gameLogic.getInitialState = getInitialState;
     function winOrNot(turnIndexBeforeMove, state) {
@@ -32095,6 +32115,7 @@ var gameLogic;
         var lefttail = angular.copy(stateBeforeMove.lefttail);
         var righttail = angular.copy(stateBeforeMove.righttail);
         var midtail = angular.copy(stateBeforeMove.midtail);
+        var direction = angular.copy(stateBeforeMove.direction);
         if (boardAfterMove[row][col] > 0) {
             points_To_Win[turnIndexBeforeMove] -= boardAfterMove[row][col];
             boardAfterMove[row][col] = -boardAfterMove[row][col];
@@ -32109,7 +32130,7 @@ var gameLogic;
         var new_points_To_Win = points_To_Win;
         var new_delta = { row: row, col: col };
         var new_state = { delta: new_delta, board: finalboard, points_To_Win: new_points_To_Win,
-            headLoc: headLoc, body1: body1, body2: body2, leftwing1: leftwing1, leftwing2: leftwing2, rightwing1: rightwing1, rightwing2: rightwing2, lefttail: lefttail, righttail: righttail, midtail: midtail };
+            headLoc: headLoc, body1: body1, body2: body2, leftwing1: leftwing1, leftwing2: leftwing2, rightwing1: rightwing1, rightwing2: rightwing2, lefttail: lefttail, righttail: righttail, midtail: midtail, direction: direction };
         //-----
         var winner = winOrNot(turnIndexBeforeMove, new_state);
         var turnIndex = turnIndexBeforeMove;
@@ -32125,7 +32146,7 @@ var gameLogic;
         }
         var delta = { row: row, col: col };
         var state = { delta: delta, board: finalboard, points_To_Win: points_To_Win,
-            headLoc: headLoc, body1: body1, body2: body2, leftwing1: leftwing1, leftwing2: leftwing2, rightwing1: rightwing1, rightwing2: rightwing2, lefttail: lefttail, righttail: righttail, midtail: midtail };
+            headLoc: headLoc, body1: body1, body2: body2, leftwing1: leftwing1, leftwing2: leftwing2, rightwing1: rightwing1, rightwing2: rightwing2, lefttail: lefttail, righttail: righttail, midtail: midtail, direction: direction };
         //endMatchScores: number[];
         return { turnIndex: turnIndex, state: state, endMatchScores: endMatchScores };
     }
@@ -32366,146 +32387,685 @@ var game;
     game.showHp = showHp;
     //--------->
     //-----------------Check location.
-    function isHead(row, col) {
+    /*
+    export function isbody1(row:number, col:number):boolean{
+      if(isFirstMove()){
+        return false;
+      }
+      let turnIndex: number;
+      turnIndex = currentUpdateUI.yourPlayerIndex;
+      if (state.body1[1-turnIndex][0] == row && state.body1[1-turnIndex][1] == col) {
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
+    export function isbody2(row:number, col:number):boolean{
+      if(isFirstMove()){
+        return false;
+      }
+      let turnIndex: number;
+      turnIndex = currentUpdateUI.yourPlayerIndex;
+      if (state.body2[1-turnIndex][0] == row && state.body2[1-turnIndex][1] == col) {
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
+    export function isleftwing1(row:number, col:number):boolean{
+      if(isFirstMove()){
+        return false;
+      }
+      let turnIndex: number;
+      turnIndex = currentUpdateUI.yourPlayerIndex;
+      if (state.leftwing1[1-turnIndex][0] == row && state.leftwing1[1-turnIndex][1] == col) {
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
+    export function isleftwing2(row:number, col:number):boolean{
+      if(isFirstMove()){
+        return false;
+      }
+      let turnIndex: number;
+      turnIndex = currentUpdateUI.yourPlayerIndex;
+      if (state.leftwing2[1-turnIndex][0] == row && state.leftwing2[1-turnIndex][1] == col) {
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
+    export function isrightwing1(row:number, col:number):boolean{
+      if(isFirstMove()){
+        return false;
+      }
+      let turnIndex: number;
+      turnIndex = currentUpdateUI.yourPlayerIndex;
+      if (state.rightwing1[1-turnIndex][0] == row && state.rightwing1[1-turnIndex][1] == col) {
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
+    export function isrightwing2(row:number, col:number):boolean{
+      if(isFirstMove()){
+        return false;
+      }
+      let turnIndex: number;
+      turnIndex = currentUpdateUI.yourPlayerIndex;
+      if (state.rightwing2[1-turnIndex][0] == row && state.rightwing2[1-turnIndex][1] == col) {
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
+    export function islefttail(row:number, col:number):boolean{
+      if(isFirstMove()){
+        return false;
+      }
+      let turnIndex: number;
+      turnIndex = currentUpdateUI.yourPlayerIndex;
+      if (state.lefttail[1-turnIndex][0] == row && state.lefttail[1-turnIndex][1] == col) {
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
+    export function isrighttail(row:number, col:number):boolean{
+      if(isFirstMove()){
+        return false;
+      }
+      let turnIndex: number;
+      turnIndex = currentUpdateUI.yourPlayerIndex;
+      if (state.righttail[1-turnIndex][0] == row && state.righttail[1-turnIndex][1] == col) {
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
+    export function ismidtail(row:number, col:number):boolean{
+      if(isFirstMove()){
+        return false;
+      }
+      let turnIndex: number;
+      turnIndex = currentUpdateUI.yourPlayerIndex;
+      if (state.midtail[1-turnIndex][0] == row && state.midtail[1-turnIndex][1] == col) {
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
+    */
+    function isHeadTop(row, col) {
         if (isFirstMove()) {
             return false;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
-        if (game.state.headLoc[1 - turnIndex][0] == row && game.state.headLoc[1 - turnIndex][1] == col) {
+        if (game.state.headLoc[1 - turnIndex][0] == row && game.state.headLoc[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 1) {
             return true;
         }
         else {
             return false;
         }
     }
-    game.isHead = isHead;
-    function isbody1(row, col) {
+    game.isHeadTop = isHeadTop;
+    function isHeadBottom(row, col) {
         if (isFirstMove()) {
             return false;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
-        if (game.state.body1[1 - turnIndex][0] == row && game.state.body1[1 - turnIndex][1] == col) {
+        if (game.state.headLoc[1 - turnIndex][0] == row && game.state.headLoc[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 2) {
             return true;
         }
         else {
             return false;
         }
     }
-    game.isbody1 = isbody1;
-    function isbody2(row, col) {
+    game.isHeadBottom = isHeadBottom;
+    function isHeadLeft(row, col) {
         if (isFirstMove()) {
             return false;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
-        if (game.state.body2[1 - turnIndex][0] == row && game.state.body2[1 - turnIndex][1] == col) {
+        if (game.state.headLoc[1 - turnIndex][0] == row && game.state.headLoc[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 3) {
             return true;
         }
         else {
             return false;
         }
     }
-    game.isbody2 = isbody2;
-    function isleftwing1(row, col) {
+    game.isHeadLeft = isHeadLeft;
+    function isHeadRight(row, col) {
         if (isFirstMove()) {
             return false;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
-        if (game.state.leftwing1[1 - turnIndex][0] == row && game.state.leftwing1[1 - turnIndex][1] == col) {
+        if (game.state.headLoc[1 - turnIndex][0] == row && game.state.headLoc[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 4) {
             return true;
         }
         else {
             return false;
         }
     }
-    game.isleftwing1 = isleftwing1;
-    function isleftwing2(row, col) {
+    game.isHeadRight = isHeadRight;
+    function isBody1Top(row, col) {
         if (isFirstMove()) {
             return false;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
-        if (game.state.leftwing2[1 - turnIndex][0] == row && game.state.leftwing2[1 - turnIndex][1] == col) {
+        if (game.state.body1[1 - turnIndex][0] == row && game.state.body1[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 1) {
             return true;
         }
         else {
             return false;
         }
     }
-    game.isleftwing2 = isleftwing2;
-    function isrightwing1(row, col) {
+    game.isBody1Top = isBody1Top;
+    function isBody1Bottom(row, col) {
         if (isFirstMove()) {
             return false;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
-        if (game.state.rightwing1[1 - turnIndex][0] == row && game.state.rightwing1[1 - turnIndex][1] == col) {
+        if (game.state.body1[1 - turnIndex][0] == row && game.state.body1[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 2) {
             return true;
         }
         else {
             return false;
         }
     }
-    game.isrightwing1 = isrightwing1;
-    function isrightwing2(row, col) {
+    game.isBody1Bottom = isBody1Bottom;
+    function isBody1Left(row, col) {
         if (isFirstMove()) {
             return false;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
-        if (game.state.rightwing2[1 - turnIndex][0] == row && game.state.rightwing2[1 - turnIndex][1] == col) {
+        if (game.state.body1[1 - turnIndex][0] == row && game.state.body1[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 3) {
             return true;
         }
         else {
             return false;
         }
     }
-    game.isrightwing2 = isrightwing2;
-    function islefttail(row, col) {
+    game.isBody1Left = isBody1Left;
+    function isBody1Right(row, col) {
         if (isFirstMove()) {
             return false;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
-        if (game.state.lefttail[1 - turnIndex][0] == row && game.state.lefttail[1 - turnIndex][1] == col) {
+        if (game.state.body1[1 - turnIndex][0] == row && game.state.body1[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 4) {
             return true;
         }
         else {
             return false;
         }
     }
-    game.islefttail = islefttail;
-    function isrighttail(row, col) {
+    game.isBody1Right = isBody1Right;
+    function isBody2Top(row, col) {
         if (isFirstMove()) {
             return false;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
-        if (game.state.righttail[1 - turnIndex][0] == row && game.state.righttail[1 - turnIndex][1] == col) {
+        if (game.state.body2[1 - turnIndex][0] == row && game.state.body2[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 1) {
             return true;
         }
         else {
             return false;
         }
     }
-    game.isrighttail = isrighttail;
-    function ismidtail(row, col) {
+    game.isBody2Top = isBody2Top;
+    function isBody2Bottom(row, col) {
         if (isFirstMove()) {
             return false;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
-        if (game.state.midtail[1 - turnIndex][0] == row && game.state.midtail[1 - turnIndex][1] == col) {
+        if (game.state.body2[1 - turnIndex][0] == row && game.state.body2[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 2) {
             return true;
         }
         else {
             return false;
         }
     }
-    game.ismidtail = ismidtail;
+    game.isBody2Bottom = isBody2Bottom;
+    function isBody2Left(row, col) {
+        if (isFirstMove()) {
+            return false;
+        }
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (game.state.body2[1 - turnIndex][0] == row && game.state.body2[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 3) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    game.isBody2Left = isBody2Left;
+    function isBody2Right(row, col) {
+        if (isFirstMove()) {
+            return false;
+        }
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (game.state.body2[1 - turnIndex][0] == row && game.state.body2[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 4) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    game.isBody2Right = isBody2Right;
+    function isLeftWing1Top(row, col) {
+        if (isFirstMove()) {
+            return false;
+        }
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (game.state.leftwing1[1 - turnIndex][0] == row && game.state.leftwing1[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 1) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    game.isLeftWing1Top = isLeftWing1Top;
+    function isLeftWing1Bottom(row, col) {
+        if (isFirstMove()) {
+            return false;
+        }
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (game.state.leftwing1[1 - turnIndex][0] == row && game.state.leftwing1[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 2) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    game.isLeftWing1Bottom = isLeftWing1Bottom;
+    function isLeftWing1Left(row, col) {
+        if (isFirstMove()) {
+            return false;
+        }
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (game.state.leftwing1[1 - turnIndex][0] == row && game.state.leftwing1[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 3) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    game.isLeftWing1Left = isLeftWing1Left;
+    function isLeftWing1Right(row, col) {
+        if (isFirstMove()) {
+            return false;
+        }
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (game.state.leftwing1[1 - turnIndex][0] == row && game.state.leftwing1[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 4) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    game.isLeftWing1Right = isLeftWing1Right;
+    function isLeftWing2Top(row, col) {
+        if (isFirstMove()) {
+            return false;
+        }
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (game.state.leftwing2[1 - turnIndex][0] == row && game.state.leftwing2[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 1) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    game.isLeftWing2Top = isLeftWing2Top;
+    function isLeftWing2Bottom(row, col) {
+        if (isFirstMove()) {
+            return false;
+        }
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (game.state.leftwing2[1 - turnIndex][0] == row && game.state.leftwing2[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 2) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    game.isLeftWing2Bottom = isLeftWing2Bottom;
+    function isLeftWing2Left(row, col) {
+        if (isFirstMove()) {
+            return false;
+        }
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (game.state.leftwing2[1 - turnIndex][0] == row && game.state.leftwing2[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 3) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    game.isLeftWing2Left = isLeftWing2Left;
+    function isLeftWing2Right(row, col) {
+        if (isFirstMove()) {
+            return false;
+        }
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (game.state.leftwing2[1 - turnIndex][0] == row && game.state.leftwing2[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 4) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    game.isLeftWing2Right = isLeftWing2Right;
+    function isRightWing1Top(row, col) {
+        if (isFirstMove()) {
+            return false;
+        }
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (game.state.rightwing1[1 - turnIndex][0] == row && game.state.rightwing1[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 1) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    game.isRightWing1Top = isRightWing1Top;
+    function isRightWing1Bottom(row, col) {
+        if (isFirstMove()) {
+            return false;
+        }
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (game.state.rightwing1[1 - turnIndex][0] == row && game.state.rightwing1[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 2) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    game.isRightWing1Bottom = isRightWing1Bottom;
+    function isRightWing1Left(row, col) {
+        if (isFirstMove()) {
+            return false;
+        }
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (game.state.rightwing1[1 - turnIndex][0] == row && game.state.rightwing1[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 3) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    game.isRightWing1Left = isRightWing1Left;
+    function isRightWing1Right(row, col) {
+        if (isFirstMove()) {
+            return false;
+        }
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (game.state.rightwing1[1 - turnIndex][0] == row && game.state.rightwing1[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 4) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    game.isRightWing1Right = isRightWing1Right;
+    function isRightWing2Top(row, col) {
+        if (isFirstMove()) {
+            return false;
+        }
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (game.state.rightwing2[1 - turnIndex][0] == row && game.state.rightwing2[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 1) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    game.isRightWing2Top = isRightWing2Top;
+    function isRightWing2Bottom(row, col) {
+        if (isFirstMove()) {
+            return false;
+        }
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (game.state.rightwing2[1 - turnIndex][0] == row && game.state.rightwing2[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 2) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    game.isRightWing2Bottom = isRightWing2Bottom;
+    function isRightWing2Left(row, col) {
+        if (isFirstMove()) {
+            return false;
+        }
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (game.state.rightwing2[1 - turnIndex][0] == row && game.state.rightwing2[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 3) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    game.isRightWing2Left = isRightWing2Left;
+    function isRightWing2Right(row, col) {
+        if (isFirstMove()) {
+            return false;
+        }
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (game.state.rightwing2[1 - turnIndex][0] == row && game.state.rightwing2[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 4) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    game.isRightWing2Right = isRightWing2Right;
+    function isMidTailTop(row, col) {
+        if (isFirstMove()) {
+            return false;
+        }
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (game.state.midtail[1 - turnIndex][0] == row && game.state.midtail[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 1) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    game.isMidTailTop = isMidTailTop;
+    function isMidTailBottom(row, col) {
+        if (isFirstMove()) {
+            return false;
+        }
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (game.state.midtail[1 - turnIndex][0] == row && game.state.midtail[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 2) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    game.isMidTailBottom = isMidTailBottom;
+    function isMidTailLeft(row, col) {
+        if (isFirstMove()) {
+            return false;
+        }
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (game.state.midtail[1 - turnIndex][0] == row && game.state.midtail[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 3) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    game.isMidTailLeft = isMidTailLeft;
+    function isMidTailRight(row, col) {
+        if (isFirstMove()) {
+            return false;
+        }
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (game.state.midtail[1 - turnIndex][0] == row && game.state.midtail[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 4) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    game.isMidTailRight = isMidTailRight;
+    function isLeftTailTop(row, col) {
+        if (isFirstMove()) {
+            return false;
+        }
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (game.state.lefttail[1 - turnIndex][0] == row && game.state.lefttail[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 1) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    game.isLeftTailTop = isLeftTailTop;
+    function isLeftTailBottom(row, col) {
+        if (isFirstMove()) {
+            return false;
+        }
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (game.state.lefttail[1 - turnIndex][0] == row && game.state.lefttail[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 2) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    game.isLeftTailBottom = isLeftTailBottom;
+    function isLeftTailLeft(row, col) {
+        if (isFirstMove()) {
+            return false;
+        }
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (game.state.lefttail[1 - turnIndex][0] == row && game.state.lefttail[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 3) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    game.isLeftTailLeft = isLeftTailLeft;
+    function isLeftTailRight(row, col) {
+        if (isFirstMove()) {
+            return false;
+        }
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (game.state.lefttail[1 - turnIndex][0] == row && game.state.lefttail[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 4) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    game.isLeftTailRight = isLeftTailRight;
+    function isRightTailTop(row, col) {
+        if (isFirstMove()) {
+            return false;
+        }
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (game.state.righttail[1 - turnIndex][0] == row && game.state.righttail[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 1) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    game.isRightTailTop = isRightTailTop;
+    function isRightTailBottom(row, col) {
+        if (isFirstMove()) {
+            return false;
+        }
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (game.state.righttail[1 - turnIndex][0] == row && game.state.righttail[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 2) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    game.isRightTailBottom = isRightTailBottom;
+    function isRightTailLeft(row, col) {
+        if (isFirstMove()) {
+            return false;
+        }
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (game.state.righttail[1 - turnIndex][0] == row && game.state.righttail[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 3) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    game.isRightTailLeft = isRightTailLeft;
+    function isRightTailRight(row, col) {
+        if (isFirstMove()) {
+            return false;
+        }
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (game.state.righttail[1 - turnIndex][0] == row && game.state.righttail[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 4) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    game.isRightTailRight = isRightTailRight;
     //-----------------Check location.
     function shouldShowImage(row, col) {
         var turnIndex;

@@ -23,6 +23,7 @@ interface IState {
   lefttail:number[][];
   midtail:number[][];
   righttail:number[][];
+  direction:number[];
 }
 // head info
 interface HeadPosi{
@@ -196,6 +197,9 @@ module gameLogic {
   }
 
   export function getInitialState(): IState {
+    let _direction: number[] = [];
+    _direction[0] = 0;
+    _direction[1] = 0;
     let _headLoc:number[][] = [];
     _headLoc[0] = [0, 0];
     _headLoc[1] = [0, 0];
@@ -248,6 +252,7 @@ module gameLogic {
             _midtail[0] = [i, j - 3];
             _lefttail[0] = [i - 1, j - 3];
             _righttail[0] = [i + 1, j - 3];
+            _direction[0] = 4;
           }
 
           // Head toward left.
@@ -262,6 +267,7 @@ module gameLogic {
             _midtail[0] = [i, j + 3];
             _lefttail[0] = [i + 1, j + 3];
             _righttail[0] = [i - 1, j + 3];
+            _direction[0] = 3;
           }
 
           // Head toward bottom.
@@ -276,6 +282,7 @@ module gameLogic {
             _midtail[0] = [i - 3, j];
             _lefttail[0] = [i - 3, j + 1];
             _righttail[0] = [i - 3, j - 1];
+            _direction[0] = 2;
           }
 
           // Head toward top.
@@ -290,6 +297,7 @@ module gameLogic {
             _midtail[0] = [i + 3, j];
             _lefttail[0] = [i + 3, j - 1];
             _righttail[0] = [i + 3, j + 1];
+            _direction[0] = 1;
           }
         }
 
@@ -305,6 +313,7 @@ module gameLogic {
             _midtail[0] = [i + 3, j];
             _lefttail[0] = [i + 3, j - 1];
             _righttail[0] = [i + 3, j + 1];
+            _direction[0] = 1;
         }
 
         // Head at bottom edge.
@@ -319,6 +328,7 @@ module gameLogic {
             _midtail[0] = [i - 3, j];
             _lefttail[0] = [i - 3, j + 1];
             _righttail[0] = [i - 3, j - 1];
+            _direction[0] = 2;
         }
 
         // Head at left edge.
@@ -333,6 +343,7 @@ module gameLogic {
             _midtail[0] = [i, j + 3];
             _lefttail[0] = [i + 1, j + 3];
             _righttail[0] = [i - 1, j + 3];
+            _direction[0] = 3;
         }
 
         // Head at right edge.
@@ -347,6 +358,7 @@ module gameLogic {
             _midtail[0] = [i, j - 3];
             _lefttail[0] = [i - 1, j - 3];
             _righttail[0] = [i + 1, j - 3];
+            _direction[0] = 4; 
         }
         //----------For the first aircraft.
         
@@ -366,6 +378,7 @@ module gameLogic {
             _midtail[1] = [i, j - 3];
             _lefttail[1] = [i - 1, j - 3];
             _righttail[1] = [i + 1, j - 3];
+            _direction[1] = 4;
           }
 
           // Head toward left.
@@ -380,6 +393,7 @@ module gameLogic {
             _midtail[1] = [i, j + 3];
             _lefttail[1] = [i + 1, j + 3];
             _righttail[1] = [i - 1, j + 3];
+            _direction[1] = 3;
           }
 
           // Head toward bottom.
@@ -394,6 +408,7 @@ module gameLogic {
             _midtail[1] = [i - 3, j];
             _lefttail[1] = [i - 3, j + 1];
             _righttail[1] = [i - 3, j - 1];
+            _direction[1] = 2;
           }
 
           // Head toward top.
@@ -408,6 +423,7 @@ module gameLogic {
             _midtail[1] = [i + 3, j];
             _lefttail[1] = [i + 3, j - 1];
             _righttail[1] = [i + 3, j + 1];
+            _direction[1] = 1;
           }
         }
 
@@ -423,6 +439,7 @@ module gameLogic {
             _midtail[1] = [i + 3, j];
             _lefttail[1] = [i + 3, j - 1];
             _righttail[1] = [i + 3, j + 1];
+            _direction[1] = 1;
         }
 
         // Head at bottom edge.
@@ -437,6 +454,7 @@ module gameLogic {
             _midtail[1] = [i - 3, j];
             _lefttail[1] = [i - 3, j + 1];
             _righttail[1] = [i - 3, j - 1];
+            _direction[1] = 2;
         }
 
         // Head at left edge.
@@ -451,6 +469,7 @@ module gameLogic {
             _midtail[1] = [i, j + 3];
             _lefttail[1] = [i + 1, j + 3];
             _righttail[1] = [i - 1, j + 3];
+            _direction[1] = 3;
         }
 
         // Head at right edge.
@@ -465,13 +484,15 @@ module gameLogic {
             _midtail[1] = [i, j - 3];
             _lefttail[1] = [i - 1, j - 3];
             _righttail[1] = [i + 1, j - 3];
+            _direction[1] = 4;
         }
         //---------For the second aircraft.
       }
     }
     
     return {board: [temp_board_0, temp_board_1], delta: null, points_To_Win: [10, 10], headLoc:_headLoc, body1:_body1, body2:_body2, 
-      leftwing1:_leftwing1, leftwing2:_leftwing2, rightwing1:_rightwing1, rightwing2:_rightwing2, lefttail:_lefttail, midtail:_midtail, righttail:_righttail};
+      leftwing1:_leftwing1, leftwing2:_leftwing2, rightwing1:_rightwing1, rightwing2:_rightwing2, lefttail:_lefttail, midtail:_midtail, righttail:_righttail,
+    direction:_direction};
   }
 
   function winOrNot(turnIndexBeforeMove: number, state:IState): boolean {
@@ -511,6 +532,7 @@ module gameLogic {
     let lefttail = angular.copy(stateBeforeMove.lefttail);
     let righttail = angular.copy(stateBeforeMove.righttail);
     let midtail = angular.copy(stateBeforeMove.midtail);
+    let direction = angular.copy(stateBeforeMove.direction);
 
     if (boardAfterMove[row][col] > 0) {
       points_To_Win[turnIndexBeforeMove] -= boardAfterMove[row][col];
@@ -527,7 +549,7 @@ module gameLogic {
     let new_points_To_Win = points_To_Win;
     let new_delta: BoardDelta = {row: row, col: col};
     let new_state: IState = {delta: new_delta, board: finalboard, points_To_Win: new_points_To_Win,
-    headLoc, body1, body2, leftwing1, leftwing2, rightwing1, rightwing2, lefttail, righttail, midtail};
+    headLoc, body1, body2, leftwing1, leftwing2, rightwing1, rightwing2, lefttail, righttail, midtail, direction};
     //-----
 
     let winner = winOrNot(turnIndexBeforeMove, new_state);
@@ -545,7 +567,7 @@ module gameLogic {
 
     let delta: BoardDelta = {row: row, col: col};
     let state: IState = {delta: delta, board: finalboard, points_To_Win: points_To_Win,
-    headLoc, body1, body2, leftwing1, leftwing2, rightwing1, rightwing2, lefttail, righttail, midtail};
+    headLoc, body1, body2, leftwing1, leftwing2, rightwing1, rightwing2, lefttail, righttail, midtail, direction};
 
     //endMatchScores: number[];
     return {turnIndex: turnIndex, state: state, endMatchScores: endMatchScores};

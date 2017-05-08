@@ -167,6 +167,9 @@ var gameLogic;
     }
     gameLogic.getPTW = getPTW;
     function getInitialState() {
+        var _direction = [];
+        _direction[0] = 0;
+        _direction[1] = 0;
         var _headLoc = [];
         _headLoc[0] = [0, 0];
         _headLoc[1] = [0, 0];
@@ -216,6 +219,7 @@ var gameLogic;
                         _midtail[0] = [i, j - 3];
                         _lefttail[0] = [i - 1, j - 3];
                         _righttail[0] = [i + 1, j - 3];
+                        _direction[0] = 4;
                     }
                     else if (temp_board_0[i][j + 1] === 5) {
                         _headLoc[0] = [i, j];
@@ -228,6 +232,7 @@ var gameLogic;
                         _midtail[0] = [i, j + 3];
                         _lefttail[0] = [i + 1, j + 3];
                         _righttail[0] = [i - 1, j + 3];
+                        _direction[0] = 3;
                     }
                     else if (temp_board_0[i - 1][j] === 5) {
                         _headLoc[0] = [i, j];
@@ -240,6 +245,7 @@ var gameLogic;
                         _midtail[0] = [i - 3, j];
                         _lefttail[0] = [i - 3, j + 1];
                         _righttail[0] = [i - 3, j - 1];
+                        _direction[0] = 2;
                     }
                     else if (temp_board_0[i + 1][j] === 5) {
                         _headLoc[0] = [i, j];
@@ -252,6 +258,7 @@ var gameLogic;
                         _midtail[0] = [i + 3, j];
                         _lefttail[0] = [i + 3, j - 1];
                         _righttail[0] = [i + 3, j + 1];
+                        _direction[0] = 1;
                     }
                 }
                 else if (temp_board_0[i][j] === 10 && i == 0) {
@@ -265,6 +272,7 @@ var gameLogic;
                     _midtail[0] = [i + 3, j];
                     _lefttail[0] = [i + 3, j - 1];
                     _righttail[0] = [i + 3, j + 1];
+                    _direction[0] = 1;
                 }
                 else if (temp_board_0[i][j] === 10 && i == 5) {
                     _headLoc[0] = [i, j];
@@ -277,6 +285,7 @@ var gameLogic;
                     _midtail[0] = [i - 3, j];
                     _lefttail[0] = [i - 3, j + 1];
                     _righttail[0] = [i - 3, j - 1];
+                    _direction[0] = 2;
                 }
                 else if (temp_board_0[i][j] === 10 && j == 0) {
                     _headLoc[0] = [i, j];
@@ -289,6 +298,7 @@ var gameLogic;
                     _midtail[0] = [i, j + 3];
                     _lefttail[0] = [i + 1, j + 3];
                     _righttail[0] = [i - 1, j + 3];
+                    _direction[0] = 3;
                 }
                 else if (temp_board_0[i][j] === 10 && j == 5) {
                     _headLoc[0] = [i, j];
@@ -301,6 +311,7 @@ var gameLogic;
                     _midtail[0] = [i, j - 3];
                     _lefttail[0] = [i - 1, j - 3];
                     _righttail[0] = [i + 1, j - 3];
+                    _direction[0] = 4;
                 }
                 //----------For the first aircraft.
                 //---------For the second aircraft.
@@ -318,6 +329,7 @@ var gameLogic;
                         _midtail[1] = [i, j - 3];
                         _lefttail[1] = [i - 1, j - 3];
                         _righttail[1] = [i + 1, j - 3];
+                        _direction[1] = 4;
                     }
                     else if (temp_board_1[i][j + 1] === 5) {
                         _headLoc[1] = [i, j];
@@ -330,6 +342,7 @@ var gameLogic;
                         _midtail[1] = [i, j + 3];
                         _lefttail[1] = [i + 1, j + 3];
                         _righttail[1] = [i - 1, j + 3];
+                        _direction[1] = 3;
                     }
                     else if (temp_board_1[i - 1][j] === 5) {
                         _headLoc[1] = [i, j];
@@ -342,6 +355,7 @@ var gameLogic;
                         _midtail[1] = [i - 3, j];
                         _lefttail[1] = [i - 3, j + 1];
                         _righttail[1] = [i - 3, j - 1];
+                        _direction[1] = 2;
                     }
                     else if (temp_board_1[i + 1][j] === 5) {
                         _headLoc[1] = [i, j];
@@ -354,6 +368,7 @@ var gameLogic;
                         _midtail[1] = [i + 3, j];
                         _lefttail[1] = [i + 3, j - 1];
                         _righttail[1] = [i + 3, j + 1];
+                        _direction[1] = 1;
                     }
                 }
                 else if (temp_board_1[i][j] === 10 && i == 0) {
@@ -367,6 +382,7 @@ var gameLogic;
                     _midtail[1] = [i + 3, j];
                     _lefttail[1] = [i + 3, j - 1];
                     _righttail[1] = [i + 3, j + 1];
+                    _direction[1] = 1;
                 }
                 else if (temp_board_1[i][j] === 10 && i == 5) {
                     _headLoc[1] = [i, j];
@@ -379,6 +395,7 @@ var gameLogic;
                     _midtail[1] = [i - 3, j];
                     _lefttail[1] = [i - 3, j + 1];
                     _righttail[1] = [i - 3, j - 1];
+                    _direction[1] = 2;
                 }
                 else if (temp_board_1[i][j] === 10 && j == 0) {
                     _headLoc[1] = [i, j];
@@ -391,6 +408,7 @@ var gameLogic;
                     _midtail[1] = [i, j + 3];
                     _lefttail[1] = [i + 1, j + 3];
                     _righttail[1] = [i - 1, j + 3];
+                    _direction[1] = 3;
                 }
                 else if (temp_board_1[i][j] === 10 && j == 5) {
                     _headLoc[1] = [i, j];
@@ -403,12 +421,14 @@ var gameLogic;
                     _midtail[1] = [i, j - 3];
                     _lefttail[1] = [i - 1, j - 3];
                     _righttail[1] = [i + 1, j - 3];
+                    _direction[1] = 4;
                 }
                 //---------For the second aircraft.
             }
         }
         return { board: [temp_board_0, temp_board_1], delta: null, points_To_Win: [10, 10], headLoc: _headLoc, body1: _body1, body2: _body2,
-            leftwing1: _leftwing1, leftwing2: _leftwing2, rightwing1: _rightwing1, rightwing2: _rightwing2, lefttail: _lefttail, midtail: _midtail, righttail: _righttail };
+            leftwing1: _leftwing1, leftwing2: _leftwing2, rightwing1: _rightwing1, rightwing2: _rightwing2, lefttail: _lefttail, midtail: _midtail, righttail: _righttail,
+            direction: _direction };
     }
     gameLogic.getInitialState = getInitialState;
     function winOrNot(turnIndexBeforeMove, state) {
@@ -446,6 +466,7 @@ var gameLogic;
         var lefttail = angular.copy(stateBeforeMove.lefttail);
         var righttail = angular.copy(stateBeforeMove.righttail);
         var midtail = angular.copy(stateBeforeMove.midtail);
+        var direction = angular.copy(stateBeforeMove.direction);
         if (boardAfterMove[row][col] > 0) {
             points_To_Win[turnIndexBeforeMove] -= boardAfterMove[row][col];
             boardAfterMove[row][col] = -boardAfterMove[row][col];
@@ -460,7 +481,7 @@ var gameLogic;
         var new_points_To_Win = points_To_Win;
         var new_delta = { row: row, col: col };
         var new_state = { delta: new_delta, board: finalboard, points_To_Win: new_points_To_Win,
-            headLoc: headLoc, body1: body1, body2: body2, leftwing1: leftwing1, leftwing2: leftwing2, rightwing1: rightwing1, rightwing2: rightwing2, lefttail: lefttail, righttail: righttail, midtail: midtail };
+            headLoc: headLoc, body1: body1, body2: body2, leftwing1: leftwing1, leftwing2: leftwing2, rightwing1: rightwing1, rightwing2: rightwing2, lefttail: lefttail, righttail: righttail, midtail: midtail, direction: direction };
         //-----
         var winner = winOrNot(turnIndexBeforeMove, new_state);
         var turnIndex = turnIndexBeforeMove;
@@ -476,7 +497,7 @@ var gameLogic;
         }
         var delta = { row: row, col: col };
         var state = { delta: delta, board: finalboard, points_To_Win: points_To_Win,
-            headLoc: headLoc, body1: body1, body2: body2, leftwing1: leftwing1, leftwing2: leftwing2, rightwing1: rightwing1, rightwing2: rightwing2, lefttail: lefttail, righttail: righttail, midtail: midtail };
+            headLoc: headLoc, body1: body1, body2: body2, leftwing1: leftwing1, leftwing2: leftwing2, rightwing1: rightwing1, rightwing2: rightwing2, lefttail: lefttail, righttail: righttail, midtail: midtail, direction: direction };
         //endMatchScores: number[];
         return { turnIndex: turnIndex, state: state, endMatchScores: endMatchScores };
     }

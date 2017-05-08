@@ -62,6 +62,10 @@ body{
   transform:scale(1.25);
 }
 */
+#gameArea{
+  cursor: url('./imgs/cursor.ico'), crosshair;
+
+}
 
 .blank{
   /*border: 1pt solid black;*/

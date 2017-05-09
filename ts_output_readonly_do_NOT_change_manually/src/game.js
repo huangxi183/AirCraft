@@ -13,6 +13,8 @@ var game;
     game.state = null;
     game.proposals = null;
     game.remain_score = [10, 10];
+    game.bomb = false;
+    game.a = [10, 10];
     //export let yourPlayerInfo: IPlayerInfo = null;
     function init($rootScope_, $timeout_) {
         game.$rootScope = $rootScope_;
@@ -66,12 +68,13 @@ var game;
             log.info(game.currentUpdateUI);
             game.remain_score[0] = 10;
             game.remain_score[1] = 10;
+            game.a[0] = 10;
+            game.a[1] = 10;
             var move = {
                 turnIndex: 0,
                 state: game.state,
                 endMatchScores: null,
             };
-            //makeMove(move);
         }
         // We calculate the AI move only after the animation finishes,
         // because if we call aiService now
@@ -201,10 +204,12 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
-        if (game.state.board[1 - turnIndex][row][col] < -1)
+        if (game.state.board[1 - turnIndex][row][col] < -1) {
             return true;
-        else
+        }
+        else {
             return false;
+        }
     }
     game.showDamagedCraft = showDamagedCraft;
     function showDamagedBlank(row, col) {
@@ -901,6 +906,18 @@ var game;
         }
     }
     game.isRightTailRight = isRightTailRight;
+    function shouldShowBomb() {
+        var turnIndex;
+        turnIndex = 1 - game.currentUpdateUI.yourPlayerIndex;
+        if (game.a[turnIndex] > game.remain_score[turnIndex]) {
+            //a[turnIndex] = remain_score[turnIndex];
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    game.shouldShowBomb = shouldShowBomb;
     //-----------------Check location.
     function shouldShowImage(row, col) {
         var turnIndex;

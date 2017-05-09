@@ -15,6 +15,8 @@
 
 <body ng-cloak >
 <img src="./imgs/background-min.jpg" style="position: absolute; top:0%; left:0%; width:100%; height:100%"/>
+
+
 <div id="gameArea" style="position : absolute; top:5%;left: 2%; right: 2%;">
     <div id="moveArea" style="position:absolute; top:10%; left:1%; width:45%; height:90%;">
         <div ng-repeat="row in [0, 1, 2, 3, 4, 5]"
@@ -69,6 +71,12 @@
         <img src="pics/hp.gif" style="position: absolute; top:0%; left:0%; width:50%; height:200%">
         <img ng-src="pics/{{game.showHp()}}.gif" style="position: absolute;">
     </div-->
+    
+    <img src="./imgs/bomb.gif"
+           ng-if="game.shouldShowBomb()"
+                style="position: absolute; top:0%; left:20%; width:50%; height:50%">
+
+
 
     <div id="showArea" style="position: absolute; top:10%; right:1%; width:45%; height:90%;">
         <div ng-repeat="row in [0, 1, 2, 3, 4, 5]"
@@ -216,10 +224,11 @@
                     <svg ng-if="game.showDamagedCraft(row, col)"
                         id="{{'e2e_test_pieceD_1' + row + 'x' + col}}"
                         ng-class="{blue:1}"
-                        width="100%" height="100%">
+                        width="100%" height="100%"
+                        >
                         <img src="./imgs/bomb.gif"
                              ng-if="game.showDamagedCraft(row, col)"
-                             style="position: absolute; top:0%; left:0%; width:100%; height:100%">
+                             style="position: absolute; top:0%; left:-22%; width:150%; height:100%">
                     </svg>
                     <svg ng-if="game.showDamagedBlank(row, col)"
                         id="{{'e2e_test_pieceD_1' + row + 'x' + col}}"

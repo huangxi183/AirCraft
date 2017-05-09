@@ -18,6 +18,8 @@ module game {
   export let state: IState = null;
   export let proposals: number[][] = null;
   export let remain_score : number[] = [10,10];
+  export let bomb: boolean = false;
+  export let a : number[] =[10,10];
   //export let yourPlayerInfo: IPlayerInfo = null;
 
   export function init($rootScope_: angular.IScope, $timeout_: angular.ITimeoutService) {
@@ -73,6 +75,8 @@ module game {
       log.info(currentUpdateUI);
       remain_score[0] = 10;
       remain_score[1] = 10;
+      a[0] = 10;
+      a[1] = 10;
       let move:IMove = {
         turnIndex: 0,
         state: state,
@@ -216,10 +220,14 @@ module game {
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
-    if(state.board[1-turnIndex][row][col] < -1)
+    if(state.board[1-turnIndex][row][col] < -1){
+    
       return true;
-    else
+    }
+    else{
       return false;
+    }
+      
   }
   export function showDamagedBlank(row:number, col:number): boolean{
     let turnIndex: number;
@@ -914,6 +922,17 @@ module game {
       return false;
     }
   }
+
+  export function shouldShowBomb():boolean{
+    let turnIndex:number;
+    turnIndex = 1- currentUpdateUI.yourPlayerIndex;
+    if(a[turnIndex] > remain_score[turnIndex]){
+      //a[turnIndex] = remain_score[turnIndex];
+      return true;
+    }else{
+      return false;
+    }
+  }
   //-----------------Check location.
 
 
@@ -929,6 +948,7 @@ module game {
   }
 }
 
+
 angular.module('myApp', ['gameServices'])
   .run(['$rootScope', '$timeout',
     function ($rootScope: angular.IScope, $timeout: angular.ITimeoutService) {
@@ -937,6 +957,8 @@ angular.module('myApp', ['gameServices'])
       game.init($rootScope, $timeout);
     }]);
 
+
+    
     // var myapp = angular.module('myHp',[]);
 // myapp.controller('myCtrl_2',function ($scope) {
 //   $scope.score =game.remain_score[game.currentUpdateUI.yourPlayerIndex];

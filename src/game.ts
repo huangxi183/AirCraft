@@ -923,16 +923,16 @@ module game {
     }
   }
 
-  export function shouldShowBomb():boolean{
-    let turnIndex:number;
-    turnIndex = 1- currentUpdateUI.yourPlayerIndex;
-    if(a[turnIndex] > remain_score[turnIndex]){
-      //a[turnIndex] = remain_score[turnIndex];
-      return true;
-    }else{
-      return false;
-    }
-  }
+  // export function shouldShowBomb():boolean{
+  //   let turnIndex:number;
+  //   turnIndex = 1- currentUpdateUI.yourPlayerIndex;
+  //   if(a[turnIndex] > remain_score[turnIndex]){
+  //     //a[turnIndex] = remain_score[turnIndex];
+  //     return true;
+  //   }else{
+  //     return false;
+  //   }
+  // }
   //-----------------Check location.
 
 

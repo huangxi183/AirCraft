@@ -78,6 +78,7 @@ module game {
         state: state,
         endMatchScores:null,
       };
+      
       //makeMove(move);
     }
     // We calculate the AI move only after the animation finishes,

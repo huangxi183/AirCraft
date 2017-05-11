@@ -18,6 +18,7 @@ module game {
   export let state: IState = null;
   export let proposals: number[][] = null;
   export let remain_score : number[] = [10,10];
+  export let bomb: boolean = false;
   //export let yourPlayerInfo: IPlayerInfo = null;
 
   export function init($rootScope_: angular.IScope, $timeout_: angular.ITimeoutService) {
@@ -70,7 +71,7 @@ module game {
     state = params.state;
     if (isFirstMove()) {
       state = gameLogic.getInitialState();
-      log.info(currentUpdateUI);
+      //log.info(currentUpdateUI);
       remain_score[0] = 10;
       remain_score[1] = 10;
       let move:IMove = {
@@ -88,6 +89,7 @@ module game {
 
   function animationEndedCallback() {
     log.info("Animation ended");
+    maybeSendComputerMove();
   }
 
   function clearAnimationTimeout() {
@@ -95,6 +97,18 @@ module game {
       $timeout.cancel(animationEndedTimeout);
       animationEndedTimeout = null;
     }
+  }
+
+  function maybeSendComputerMove() {
+    if (!isComputerTurn()) return;
+    let currentMove:IMove = {
+      endMatchScores: currentUpdateUI.endMatchScores,
+      state: currentUpdateUI.state,
+      turnIndex: currentUpdateUI.turnIndex,
+    }
+    let move = aiService.findComputerMove(currentMove);
+    log.info("Computer move: ", move);
+    makeMove(move);
   }
 
   function makeMove(move: IMove) {
@@ -105,8 +119,8 @@ module game {
     turnIndex = currentUpdateUI.yourPlayerIndex;
     didMakeMove = true;
     remain_score[turnIndex] = gameLogic.getPTW(move.state, turnIndex);
-    log.info(["let go",gameLogic.getPTW(move.state, turnIndex)]);
-    log.info(["lets go",remain_score[turnIndex]]);
+    //log.info(["let go",gameLogic.getPTW(move.state, turnIndex)]);
+    //log.info(["lets go",remain_score[turnIndex]]);
     gameService.makeMove(move,null,"Move Made");
   }
 
@@ -139,8 +153,9 @@ module game {
   }
 
   export function cellClicked(row: number, col: number): void {
-    if (!isMyTurn()) return;
     log.info("Clicked on cell:", row, col);
+    if (!isMyTurn()) return;
+    
     let nextMove: IMove;
     try {
       nextMove = gameLogic.createMove(
@@ -216,10 +231,14 @@ module game {
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
-    if(state.board[1-turnIndex][row][col] < -1)
+    if(state.board[1-turnIndex][row][col] < -1){
+    
       return true;
-    else
+    }
+    else{
       return false;
+    }
+      
   }
   export function showDamagedBlank(row:number, col:number): boolean{
     let turnIndex: number;
@@ -747,6 +766,7 @@ module game {
     }
   }
 
+
   export function isMidTailTop(row:number, col:number):boolean{
     if(isFirstMove()){
       return false;
@@ -914,6 +934,17 @@ module game {
       return false;
     }
   }
+
+  // export function shouldShowBomb():boolean{
+  //   let turnIndex:number;
+  //   turnIndex = 1- currentUpdateUI.yourPlayerIndex;
+  //   if(a[turnIndex] > remain_score[turnIndex]){
+  //     //a[turnIndex] = remain_score[turnIndex];
+  //     return true;
+  //   }else{
+  //     return false;
+  //   }
+  // }
   //-----------------Check location.
 
 
@@ -929,6 +960,7 @@ module game {
   }
 }
 
+
 angular.module('myApp', ['gameServices'])
   .run(['$rootScope', '$timeout',
     function ($rootScope: angular.IScope, $timeout: angular.ITimeoutService) {
@@ -937,6 +969,8 @@ angular.module('myApp', ['gameServices'])
       game.init($rootScope, $timeout);
     }]);
 
+
+    
     // var myapp = angular.module('myHp',[]);
 // myapp.controller('myCtrl_2',function ($scope) {
 //   $scope.score =game.remain_score[game.currentUpdateUI.yourPlayerIndex];

@@ -19,7 +19,6 @@ var aiService;
                     possibleMoves.push(gameLogic.createMove(state, i, j, turnIndexBeforeMove));
                 }
                 catch (e) {
-                    // The cell in that position was full.
                 }
             }
         }
@@ -34,7 +33,9 @@ var aiService;
      */
     function createComputerMove(move, alphaBetaLimits) {
         // We use alpha-beta search, where the search states are TicTacToe moves.
-        return alphaBetaService.alphaBetaDecision(move, move.turnIndex, getNextStates, getStateScoreForIndex0, null, alphaBetaLimits);
+        // return alphaBetaService.alphaBetaDecision(
+        //     move, move.turnIndex, getNextStates, getStateScoreForIndex0, null, alphaBetaLimits);
+        return getNextStates(move, move.turnIndex)[2];
     }
     aiService.createComputerMove = createComputerMove;
     function getStateScoreForIndex0(move, playerIndex) {

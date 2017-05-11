@@ -16,7 +16,7 @@ var gameLogic;
     //  HeadPosi = {index : Math.floor(Math.random() * 20) + 1, x :0, y :0, direct :0};
     /** Returns the initial AirCraft board, which is a ROWSxCOLS matrix containing ''. */
     function getInitialBoard(i) {
-        var board = [];
+        var board = [[]];
         var head = [];
         head[i] = getInitialHeadPosition();
         //head[1] = getInitialHeadPosition();
@@ -423,7 +423,6 @@ var gameLogic;
                     _righttail[1] = [i + 1, j - 3];
                     _direction[1] = 4;
                 }
-                //---------For the second aircraft.
             }
         }
         return { board: [temp_board_0, temp_board_1], delta: null, points_To_Win: [10, 10], headLoc: _headLoc, body1: _body1, body2: _body2,

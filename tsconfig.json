@@ -32,7 +32,7 @@
     },
     "files": [
         /*"src/aiService_test.ts",*/
-        /*src/aiService.ts",*/
+        "src/aiService.ts",
         /*"src/end_to_end_tests.ts",*/
         "src/game_ori.ts",
         "src/game.ts",

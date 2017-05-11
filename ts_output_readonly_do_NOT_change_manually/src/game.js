@@ -13,6 +13,7 @@ var game;
     game.state = null;
     game.proposals = null;
     game.remain_score = [10, 10];
+    game.bomb = false;
     //export let yourPlayerInfo: IPlayerInfo = null;
     function init($rootScope_, $timeout_) {
         game.$rootScope = $rootScope_;
@@ -63,7 +64,7 @@ var game;
         game.state = params.state;
         if (isFirstMove()) {
             game.state = gameLogic.getInitialState();
-            log.info(game.currentUpdateUI);
+            //log.info(currentUpdateUI);
             game.remain_score[0] = 10;
             game.remain_score[1] = 10;
             var move = {
@@ -71,7 +72,6 @@ var game;
                 state: game.state,
                 endMatchScores: null,
             };
-            //makeMove(move);
         }
         // We calculate the AI move only after the animation finishes,
         // because if we call aiService now
@@ -81,12 +81,25 @@ var game;
     game.updateUI = updateUI;
     function animationEndedCallback() {
         log.info("Animation ended");
+        maybeSendComputerMove();
     }
     function clearAnimationTimeout() {
         if (game.animationEndedTimeout) {
             game.$timeout.cancel(game.animationEndedTimeout);
             game.animationEndedTimeout = null;
         }
+    }
+    function maybeSendComputerMove() {
+        if (!isComputerTurn())
+            return;
+        var currentMove = {
+            endMatchScores: game.currentUpdateUI.endMatchScores,
+            state: game.currentUpdateUI.state,
+            turnIndex: game.currentUpdateUI.turnIndex,
+        };
+        var move = aiService.findComputerMove(currentMove);
+        log.info("Computer move: ", move);
+        makeMove(move);
     }
     function makeMove(move) {
         if (game.didMakeMove) {
@@ -96,8 +109,8 @@ var game;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
         game.didMakeMove = true;
         game.remain_score[turnIndex] = gameLogic.getPTW(move.state, turnIndex);
-        log.info(["let go", gameLogic.getPTW(move.state, turnIndex)]);
-        log.info(["lets go", game.remain_score[turnIndex]]);
+        //log.info(["let go",gameLogic.getPTW(move.state, turnIndex)]);
+        //log.info(["lets go",remain_score[turnIndex]]);
         gameService.makeMove(move, null, "Move Made");
     }
     function isFirstMove() {
@@ -123,9 +136,9 @@ var game;
             game.currentUpdateUI.yourPlayerIndex === game.currentUpdateUI.turnIndex; // it's my turn
     }
     function cellClicked(row, col) {
+        log.info("Clicked on cell:", row, col);
         if (!isMyTurn())
             return;
-        log.info("Clicked on cell:", row, col);
         var nextMove;
         try {
             nextMove = gameLogic.createMove(game.state, row, col, game.currentUpdateUI.turnIndex);
@@ -201,10 +214,12 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
-        if (game.state.board[1 - turnIndex][row][col] < -1)
+        if (game.state.board[1 - turnIndex][row][col] < -1) {
             return true;
-        else
+        }
+        else {
             return false;
+        }
     }
     game.showDamagedCraft = showDamagedCraft;
     function showDamagedBlank(row, col) {
@@ -901,6 +916,16 @@ var game;
         }
     }
     game.isRightTailRight = isRightTailRight;
+    // export function shouldShowBomb():boolean{
+    //   let turnIndex:number;
+    //   turnIndex = 1- currentUpdateUI.yourPlayerIndex;
+    //   if(a[turnIndex] > remain_score[turnIndex]){
+    //     //a[turnIndex] = remain_score[turnIndex];
+    //     return true;
+    //   }else{
+    //     return false;
+    //   }
+    // }
     //-----------------Check location.
     function shouldShowImage(row, col) {
         var turnIndex;

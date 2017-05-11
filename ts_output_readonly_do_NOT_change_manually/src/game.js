@@ -13,7 +13,6 @@ var game;
     game.state = null;
     game.proposals = null;
     game.remain_score = [10, 10];
-    game.bomb = false;
     //export let yourPlayerInfo: IPlayerInfo = null;
     function init($rootScope_, $timeout_) {
         game.$rootScope = $rootScope_;
@@ -92,6 +91,8 @@ var game;
     function maybeSendComputerMove() {
         if (!isComputerTurn())
             return;
+        if (isComputerTurn() && game.state.delta == null)
+            return;
         var currentMove = {
             endMatchScores: game.currentUpdateUI.endMatchScores,
             state: game.currentUpdateUI.state,
@@ -107,6 +108,7 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        // if(turnIndex == -2) return;
         game.didMakeMove = true;
         game.remain_score[turnIndex] = gameLogic.getPTW(move.state, turnIndex);
         //log.info(["let go",gameLogic.getPTW(move.state, turnIndex)]);
@@ -164,7 +166,9 @@ var game;
         var temp_pro;
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
-        log.info(game.state.board[turnIndex]);
+        if (turnIndex == -1)
+            return;
+        //log.info(state.board[turnIndex]);
         if (game.state.board[turnIndex][row][col] < -1) {
             return true;
         }
@@ -176,6 +180,8 @@ var game;
         var temp_pro;
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (turnIndex == -1)
+            return;
         if (game.state.board[turnIndex][row][col] == -1) {
             return true;
         }
@@ -189,6 +195,8 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (turnIndex == -1)
+            return;
         //if(state.board[1-turnIndex][row][col] > 1 || state.board[1-turnIndex][row][col] < -1)
         if (game.state.board[1 - turnIndex][row][col] >= 1)
             return true;
@@ -202,6 +210,8 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (turnIndex == -1)
+            return;
         if (game.state.board[1 - turnIndex][row][col] == 0)
             return true;
         else
@@ -214,6 +224,8 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (turnIndex == -1)
+            return;
         if (game.state.board[1 - turnIndex][row][col] < -1) {
             return true;
         }
@@ -225,6 +237,8 @@ var game;
     function showDamagedBlank(row, col) {
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (turnIndex == -1)
+            return;
         if (game.state.board[1 - turnIndex][row][col] == -1)
             return true;
         else
@@ -232,6 +246,10 @@ var game;
     }
     game.showDamagedBlank = showDamagedBlank;
     function showHp() {
+        var turnIndex;
+        turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (turnIndex == -1)
+            return;
         return game.currentUpdateUI.state ? game.currentUpdateUI.state.points_To_Win[1 - game.currentUpdateUI.yourPlayerIndex] : -1;
     }
     game.showHp = showHp;
@@ -362,6 +380,8 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (turnIndex == -1)
+            return;
         if (game.state.headLoc[1 - turnIndex][0] == row && game.state.headLoc[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 1) {
             return true;
         }
@@ -376,6 +396,8 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (turnIndex == -1)
+            return;
         if (game.state.headLoc[1 - turnIndex][0] == row && game.state.headLoc[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 2) {
             return true;
         }
@@ -390,6 +412,8 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (turnIndex == -1)
+            return;
         if (game.state.headLoc[1 - turnIndex][0] == row && game.state.headLoc[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 3) {
             return true;
         }
@@ -404,6 +428,8 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (turnIndex == -1)
+            return;
         if (game.state.headLoc[1 - turnIndex][0] == row && game.state.headLoc[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 4) {
             return true;
         }
@@ -418,6 +444,8 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (turnIndex == -1)
+            return;
         if (game.state.body1[1 - turnIndex][0] == row && game.state.body1[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 1) {
             return true;
         }
@@ -432,6 +460,8 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (turnIndex == -1)
+            return;
         if (game.state.body1[1 - turnIndex][0] == row && game.state.body1[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 2) {
             return true;
         }
@@ -446,6 +476,8 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (turnIndex == -1)
+            return;
         if (game.state.body1[1 - turnIndex][0] == row && game.state.body1[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 3) {
             return true;
         }
@@ -460,6 +492,8 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (turnIndex == -1)
+            return;
         if (game.state.body1[1 - turnIndex][0] == row && game.state.body1[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 4) {
             return true;
         }
@@ -474,6 +508,8 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (turnIndex == -1)
+            return;
         if (game.state.body2[1 - turnIndex][0] == row && game.state.body2[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 1) {
             return true;
         }
@@ -488,6 +524,8 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (turnIndex == -1)
+            return;
         if (game.state.body2[1 - turnIndex][0] == row && game.state.body2[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 2) {
             return true;
         }
@@ -502,6 +540,8 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (turnIndex == -1)
+            return;
         if (game.state.body2[1 - turnIndex][0] == row && game.state.body2[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 3) {
             return true;
         }
@@ -516,6 +556,8 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (turnIndex == -1)
+            return;
         if (game.state.body2[1 - turnIndex][0] == row && game.state.body2[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 4) {
             return true;
         }
@@ -530,6 +572,8 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (turnIndex == -1)
+            return;
         if (game.state.leftwing1[1 - turnIndex][0] == row && game.state.leftwing1[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 1) {
             return true;
         }
@@ -544,6 +588,8 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (turnIndex == -1)
+            return;
         if (game.state.leftwing1[1 - turnIndex][0] == row && game.state.leftwing1[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 2) {
             return true;
         }
@@ -558,6 +604,8 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (turnIndex == -1)
+            return;
         if (game.state.leftwing1[1 - turnIndex][0] == row && game.state.leftwing1[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 3) {
             return true;
         }
@@ -572,6 +620,8 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (turnIndex == -1)
+            return;
         if (game.state.leftwing1[1 - turnIndex][0] == row && game.state.leftwing1[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 4) {
             return true;
         }
@@ -586,6 +636,8 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (turnIndex == -1)
+            return;
         if (game.state.leftwing2[1 - turnIndex][0] == row && game.state.leftwing2[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 1) {
             return true;
         }
@@ -600,6 +652,8 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (turnIndex == -1)
+            return;
         if (game.state.leftwing2[1 - turnIndex][0] == row && game.state.leftwing2[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 2) {
             return true;
         }
@@ -614,6 +668,8 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (turnIndex == -1)
+            return;
         if (game.state.leftwing2[1 - turnIndex][0] == row && game.state.leftwing2[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 3) {
             return true;
         }
@@ -628,6 +684,8 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (turnIndex == -1)
+            return;
         if (game.state.leftwing2[1 - turnIndex][0] == row && game.state.leftwing2[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 4) {
             return true;
         }
@@ -642,6 +700,8 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (turnIndex == -1)
+            return;
         if (game.state.rightwing1[1 - turnIndex][0] == row && game.state.rightwing1[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 1) {
             return true;
         }
@@ -656,6 +716,8 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (turnIndex == -1)
+            return;
         if (game.state.rightwing1[1 - turnIndex][0] == row && game.state.rightwing1[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 2) {
             return true;
         }
@@ -670,6 +732,8 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (turnIndex == -1)
+            return;
         if (game.state.rightwing1[1 - turnIndex][0] == row && game.state.rightwing1[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 3) {
             return true;
         }
@@ -684,6 +748,8 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (turnIndex == -1)
+            return;
         if (game.state.rightwing1[1 - turnIndex][0] == row && game.state.rightwing1[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 4) {
             return true;
         }
@@ -698,6 +764,8 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (turnIndex == -1)
+            return;
         if (game.state.rightwing2[1 - turnIndex][0] == row && game.state.rightwing2[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 1) {
             return true;
         }
@@ -712,6 +780,8 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (turnIndex == -1)
+            return;
         if (game.state.rightwing2[1 - turnIndex][0] == row && game.state.rightwing2[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 2) {
             return true;
         }
@@ -726,6 +796,8 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (turnIndex == -1)
+            return;
         if (game.state.rightwing2[1 - turnIndex][0] == row && game.state.rightwing2[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 3) {
             return true;
         }
@@ -740,6 +812,8 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (turnIndex == -1)
+            return;
         if (game.state.rightwing2[1 - turnIndex][0] == row && game.state.rightwing2[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 4) {
             return true;
         }
@@ -754,6 +828,8 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (turnIndex == -1)
+            return;
         if (game.state.midtail[1 - turnIndex][0] == row && game.state.midtail[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 1) {
             return true;
         }
@@ -768,6 +844,8 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (turnIndex == -1)
+            return;
         if (game.state.midtail[1 - turnIndex][0] == row && game.state.midtail[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 2) {
             return true;
         }
@@ -782,6 +860,8 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (turnIndex == -1)
+            return;
         if (game.state.midtail[1 - turnIndex][0] == row && game.state.midtail[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 3) {
             return true;
         }
@@ -796,6 +876,8 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (turnIndex == -1)
+            return;
         if (game.state.midtail[1 - turnIndex][0] == row && game.state.midtail[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 4) {
             return true;
         }
@@ -810,6 +892,8 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (turnIndex == -1)
+            return;
         if (game.state.lefttail[1 - turnIndex][0] == row && game.state.lefttail[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 1) {
             return true;
         }
@@ -824,6 +908,8 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (turnIndex == -1)
+            return;
         if (game.state.lefttail[1 - turnIndex][0] == row && game.state.lefttail[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 2) {
             return true;
         }
@@ -838,6 +924,8 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (turnIndex == -1)
+            return;
         if (game.state.lefttail[1 - turnIndex][0] == row && game.state.lefttail[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 3) {
             return true;
         }
@@ -852,6 +940,8 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (turnIndex == -1)
+            return;
         if (game.state.lefttail[1 - turnIndex][0] == row && game.state.lefttail[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 4) {
             return true;
         }
@@ -866,6 +956,8 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (turnIndex == -1)
+            return;
         if (game.state.righttail[1 - turnIndex][0] == row && game.state.righttail[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 1) {
             return true;
         }
@@ -880,6 +972,8 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (turnIndex == -1)
+            return;
         if (game.state.righttail[1 - turnIndex][0] == row && game.state.righttail[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 2) {
             return true;
         }
@@ -894,6 +988,8 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (turnIndex == -1)
+            return;
         if (game.state.righttail[1 - turnIndex][0] == row && game.state.righttail[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 3) {
             return true;
         }
@@ -908,6 +1004,8 @@ var game;
         }
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (turnIndex == -1)
+            return;
         if (game.state.righttail[1 - turnIndex][0] == row && game.state.righttail[1 - turnIndex][1] == col && game.state.direction[1 - turnIndex] == 4) {
             return true;
         }
@@ -930,10 +1028,14 @@ var game;
     function shouldShowImage(row, col) {
         var turnIndex;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
+        if (turnIndex == -1)
+            return;
         return game.state.board[turnIndex][row][col] <= -1;
     }
     game.shouldShowImage = shouldShowImage;
     function shouldSlowlyAppear(row, col) {
+        if (game.state.delta == null)
+            return;
         return game.state.delta &&
             game.state.delta.row === row && game.state.delta.col === col;
     }

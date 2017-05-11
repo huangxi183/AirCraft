@@ -18,7 +18,6 @@ module game {
   export let state: IState = null;
   export let proposals: number[][] = null;
   export let remain_score : number[] = [10,10];
-  export let bomb: boolean = false;
   //export let yourPlayerInfo: IPlayerInfo = null;
 
   export function init($rootScope_: angular.IScope, $timeout_: angular.ITimeoutService) {
@@ -101,6 +100,7 @@ module game {
 
   function maybeSendComputerMove() {
     if (!isComputerTurn()) return;
+    if(isComputerTurn() && state.delta == null) return;
     let currentMove:IMove = {
       endMatchScores: currentUpdateUI.endMatchScores,
       state: currentUpdateUI.state,
@@ -117,6 +117,7 @@ module game {
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    // if(turnIndex == -2) return;
     didMakeMove = true;
     remain_score[turnIndex] = gameLogic.getPTW(move.state, turnIndex);
     //log.info(["let go",gameLogic.getPTW(move.state, turnIndex)]);
@@ -184,7 +185,8 @@ module game {
     let temp_pro: boolean;
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
-    log.info(state.board[turnIndex]);
+    if(turnIndex == -1) return;
+    //log.info(state.board[turnIndex]);
     if(state.board[turnIndex][row][col] < -1){
       return true;
     }
@@ -193,9 +195,11 @@ module game {
   }
 
   export function isPieceBlank(row: number, col:number): boolean{
+   
     let temp_pro: boolean;
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(turnIndex == -1) return;
     if(state.board[turnIndex][row][col] == -1){
       return true;
     }else
@@ -203,11 +207,13 @@ module game {
   }
 
   export function showCraft(row: number, col:number): boolean{
+    
     if(isFirstMove()){
       return false;
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(turnIndex == -1) return;
     //if(state.board[1-turnIndex][row][col] > 1 || state.board[1-turnIndex][row][col] < -1)
     if(state.board[1-turnIndex][row][col] >= 1)
       return true;
@@ -215,22 +221,26 @@ module game {
       return false;
   }
   export function showBlank(row: number, col:number): boolean{
+   
     if(isFirstMove()){
       return true;
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(turnIndex == -1) return;
     if(state.board[1-turnIndex][row][col] == 0)
       return true;
     else
       return false;
   }
   export function showDamagedCraft(row:number, col:number): boolean{
+    
     if(isFirstMove()){
       return false;
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(turnIndex == -1) return;
     if(state.board[1-turnIndex][row][col] < -1){
     
       return true;
@@ -241,8 +251,10 @@ module game {
       
   }
   export function showDamagedBlank(row:number, col:number): boolean{
+    
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(turnIndex == -1) return;
     if(state.board[1-turnIndex][row][col] == -1)
       return true;
     else
@@ -250,6 +262,9 @@ module game {
   }
 
   export function showHp(): number{
+    let turnIndex: number;
+    turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(turnIndex == -1) return;
     return currentUpdateUI.state ? currentUpdateUI.state.points_To_Win[1 - currentUpdateUI.yourPlayerIndex] : -1;
   }
   //--------->
@@ -375,11 +390,13 @@ module game {
   }
   */
   export function isHeadTop(row:number, col:number):boolean{
+    
     if(isFirstMove()){
       return false;
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(turnIndex == -1) return;
     if (state.headLoc[1-turnIndex][0] == row && state.headLoc[1-turnIndex][1] == col && state.direction[1-turnIndex] == 1) {
       return true;
     }
@@ -389,11 +406,13 @@ module game {
   }
 
   export function isHeadBottom(row:number, col:number):boolean{
+    
     if(isFirstMove()){
       return false;
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(turnIndex == -1) return;
     if (state.headLoc[1-turnIndex][0] == row && state.headLoc[1-turnIndex][1] == col && state.direction[1-turnIndex] == 2) {
       return true;
     }
@@ -403,11 +422,13 @@ module game {
   }
 
   export function isHeadLeft(row:number, col:number):boolean{
+    
     if(isFirstMove()){
       return false;
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(turnIndex == -1) return;
     if (state.headLoc[1-turnIndex][0] == row && state.headLoc[1-turnIndex][1] == col && state.direction[1-turnIndex] == 3) {
       return true;
     }
@@ -417,11 +438,13 @@ module game {
   }
 
   export function isHeadRight(row:number, col:number):boolean{
+    
     if(isFirstMove()){
       return false;
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(turnIndex == -1) return;
     if (state.headLoc[1-turnIndex][0] == row && state.headLoc[1-turnIndex][1] == col && state.direction[1-turnIndex] == 4) {
       return true;
     }
@@ -431,11 +454,13 @@ module game {
   }
 
   export function isBody1Top(row:number, col:number):boolean{
+    
     if(isFirstMove()){
       return false;
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(turnIndex == -1) return;
     if (state.body1[1-turnIndex][0] == row && state.body1[1-turnIndex][1] == col && state.direction[1-turnIndex] == 1) {
       return true;
     }
@@ -445,11 +470,13 @@ module game {
   }
 
   export function isBody1Bottom(row:number, col:number):boolean{
+    
     if(isFirstMove()){
       return false;
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(turnIndex == -1) return;
     if (state.body1[1-turnIndex][0] == row && state.body1[1-turnIndex][1] == col && state.direction[1-turnIndex] == 2) {
       return true;
     }
@@ -459,11 +486,13 @@ module game {
   }
 
   export function isBody1Left(row:number, col:number):boolean{
+    
     if(isFirstMove()){
       return false;
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(turnIndex == -1) return;
     if (state.body1[1-turnIndex][0] == row && state.body1[1-turnIndex][1] == col && state.direction[1-turnIndex] == 3) {
       return true;
     }
@@ -473,11 +502,13 @@ module game {
   }
 
   export function isBody1Right(row:number, col:number):boolean{
+    
     if(isFirstMove()){
       return false;
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(turnIndex == -1) return;
     if (state.body1[1-turnIndex][0] == row && state.body1[1-turnIndex][1] == col && state.direction[1-turnIndex] == 4) {
       return true;
     }
@@ -487,11 +518,13 @@ module game {
   }
 
   export function isBody2Top(row:number, col:number):boolean{
+    
     if(isFirstMove()){
       return false;
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(turnIndex == -1) return;
     if (state.body2[1-turnIndex][0] == row && state.body2[1-turnIndex][1] == col && state.direction[1-turnIndex] == 1) {
       return true;
     }
@@ -501,11 +534,13 @@ module game {
   }
 
   export function isBody2Bottom(row:number, col:number):boolean{
+    
     if(isFirstMove()){
       return false;
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(turnIndex == -1) return;
     if (state.body2[1-turnIndex][0] == row && state.body2[1-turnIndex][1] == col && state.direction[1-turnIndex] == 2) {
       return true;
     }
@@ -515,11 +550,13 @@ module game {
   }
 
   export function isBody2Left(row:number, col:number):boolean{
+   
     if(isFirstMove()){
       return false;
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(turnIndex == -1) return;
     if (state.body2[1-turnIndex][0] == row && state.body2[1-turnIndex][1] == col && state.direction[1-turnIndex] == 3) {
       return true;
     }
@@ -529,11 +566,13 @@ module game {
   }
 
   export function isBody2Right(row:number, col:number):boolean{
+    
     if(isFirstMove()){
       return false;
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(turnIndex == -1) return;
     if (state.body2[1-turnIndex][0] == row && state.body2[1-turnIndex][1] == col && state.direction[1-turnIndex] == 4) {
       return true;
     }
@@ -543,11 +582,13 @@ module game {
   }
 
   export function isLeftWing1Top(row:number, col:number):boolean{
+    
     if(isFirstMove()){
       return false;
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(turnIndex == -1) return;
     if (state.leftwing1[1-turnIndex][0] == row && state.leftwing1[1-turnIndex][1] == col && state.direction[1-turnIndex] == 1) {
       return true;
     }
@@ -557,11 +598,13 @@ module game {
   }
 
   export function isLeftWing1Bottom(row:number, col:number):boolean{
+    
     if(isFirstMove()){
       return false;
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(turnIndex == -1) return;
     if (state.leftwing1[1-turnIndex][0] == row && state.leftwing1[1-turnIndex][1] == col && state.direction[1-turnIndex] == 2) {
       return true;
     }
@@ -571,11 +614,13 @@ module game {
   }
 
   export function isLeftWing1Left(row:number, col:number):boolean{
+    
     if(isFirstMove()){
       return false;
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(turnIndex == -1) return;
     if (state.leftwing1[1-turnIndex][0] == row && state.leftwing1[1-turnIndex][1] == col && state.direction[1-turnIndex] == 3) {
       return true;
     }
@@ -585,11 +630,13 @@ module game {
   }
 
   export function isLeftWing1Right(row:number, col:number):boolean{
+    
     if(isFirstMove()){
       return false;
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(turnIndex == -1) return;
     if (state.leftwing1[1-turnIndex][0] == row && state.leftwing1[1-turnIndex][1] == col && state.direction[1-turnIndex] == 4) {
       return true;
     }
@@ -599,11 +646,13 @@ module game {
   }
 
   export function isLeftWing2Top(row:number, col:number):boolean{
+   
     if(isFirstMove()){
       return false;
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(turnIndex == -1) return;
     if (state.leftwing2[1-turnIndex][0] == row && state.leftwing2[1-turnIndex][1] == col && state.direction[1-turnIndex] == 1) {
       return true;
     }
@@ -613,11 +662,13 @@ module game {
   }
 
   export function isLeftWing2Bottom(row:number, col:number):boolean{
+    
     if(isFirstMove()){
       return false;
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(turnIndex == -1) return;
     if (state.leftwing2[1-turnIndex][0] == row && state.leftwing2[1-turnIndex][1] == col && state.direction[1-turnIndex] == 2) {
       return true;
     }
@@ -627,11 +678,13 @@ module game {
   }
 
   export function isLeftWing2Left(row:number, col:number):boolean{
+  
     if(isFirstMove()){
       return false;
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(turnIndex == -1) return;
     if (state.leftwing2[1-turnIndex][0] == row && state.leftwing2[1-turnIndex][1] == col && state.direction[1-turnIndex] == 3) {
       return true;
     }
@@ -641,11 +694,13 @@ module game {
   }
 
   export function isLeftWing2Right(row:number, col:number):boolean{
+    
     if(isFirstMove()){
       return false;
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(turnIndex == -1) return;
     if (state.leftwing2[1-turnIndex][0] == row && state.leftwing2[1-turnIndex][1] == col && state.direction[1-turnIndex] == 4) {
       return true;
     }
@@ -655,11 +710,13 @@ module game {
   }
 
   export function isRightWing1Top(row:number, col:number):boolean{
+   
     if(isFirstMove()){
       return false;
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(turnIndex == -1) return;
     if (state.rightwing1[1-turnIndex][0] == row && state.rightwing1[1-turnIndex][1] == col && state.direction[1-turnIndex] == 1) {
       return true;
     }
@@ -669,11 +726,13 @@ module game {
   }
 
   export function isRightWing1Bottom(row:number, col:number):boolean{
+    
     if(isFirstMove()){
       return false;
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(turnIndex == -1) return;
     if (state.rightwing1[1-turnIndex][0] == row && state.rightwing1[1-turnIndex][1] == col && state.direction[1-turnIndex] == 2) {
       return true;
     }
@@ -683,11 +742,13 @@ module game {
   }
 
   export function isRightWing1Left(row:number, col:number):boolean{
+    
     if(isFirstMove()){
       return false;
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(turnIndex == -1) return;
     if (state.rightwing1[1-turnIndex][0] == row && state.rightwing1[1-turnIndex][1] == col && state.direction[1-turnIndex] == 3) {
       return true;
     }
@@ -697,11 +758,13 @@ module game {
   }
 
   export function isRightWing1Right(row:number, col:number):boolean{
+    
     if(isFirstMove()){
       return false;
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(turnIndex == -1) return;
     if (state.rightwing1[1-turnIndex][0] == row && state.rightwing1[1-turnIndex][1] == col && state.direction[1-turnIndex] == 4) {
       return true;
     }
@@ -711,11 +774,13 @@ module game {
   }
 
   export function isRightWing2Top(row:number, col:number):boolean{
+    
     if(isFirstMove()){
       return false;
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(turnIndex == -1) return;
     if (state.rightwing2[1-turnIndex][0] == row && state.rightwing2[1-turnIndex][1] == col && state.direction[1-turnIndex] == 1) {
       return true;
     }
@@ -730,6 +795,7 @@ module game {
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(turnIndex == -1) return;
     if (state.rightwing2[1-turnIndex][0] == row && state.rightwing2[1-turnIndex][1] == col && state.direction[1-turnIndex] == 2) {
       return true;
     }
@@ -744,6 +810,7 @@ module game {
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(turnIndex == -1) return;
     if (state.rightwing2[1-turnIndex][0] == row && state.rightwing2[1-turnIndex][1] == col && state.direction[1-turnIndex] == 3) {
       return true;
     }
@@ -758,6 +825,7 @@ module game {
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(turnIndex == -1) return;
     if (state.rightwing2[1-turnIndex][0] == row && state.rightwing2[1-turnIndex][1] == col && state.direction[1-turnIndex] == 4) {
       return true;
     }
@@ -768,11 +836,13 @@ module game {
 
 
   export function isMidTailTop(row:number, col:number):boolean{
+   
     if(isFirstMove()){
       return false;
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(turnIndex == -1) return;
     if (state.midtail[1-turnIndex][0] == row && state.midtail[1-turnIndex][1] == col && state.direction[1-turnIndex] == 1) {
       return true;
     }
@@ -782,11 +852,13 @@ module game {
   }
 
   export function isMidTailBottom(row:number, col:number):boolean{
+     
     if(isFirstMove()){
       return false;
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(turnIndex == -1) return;
     if (state.midtail[1-turnIndex][0] == row && state.midtail[1-turnIndex][1] == col && state.direction[1-turnIndex] == 2) {
       return true;
     }
@@ -796,11 +868,13 @@ module game {
   }
 
   export function isMidTailLeft(row:number, col:number):boolean{
+     
     if(isFirstMove()){
       return false;
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(turnIndex == -1) return;
     if (state.midtail[1-turnIndex][0] == row && state.midtail[1-turnIndex][1] == col && state.direction[1-turnIndex] == 3) {
       return true;
     }
@@ -810,11 +884,13 @@ module game {
   }
 
   export function isMidTailRight(row:number, col:number):boolean{
+     
     if(isFirstMove()){
       return false;
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(turnIndex == -1) return;
     if (state.midtail[1-turnIndex][0] == row && state.midtail[1-turnIndex][1] == col && state.direction[1-turnIndex] == 4) {
       return true;
     }
@@ -824,11 +900,13 @@ module game {
   }
 
   export function isLeftTailTop(row:number, col:number):boolean{
+     
     if(isFirstMove()){
       return false;
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(turnIndex == -1) return;
     if (state.lefttail[1-turnIndex][0] == row && state.lefttail[1-turnIndex][1] == col && state.direction[1-turnIndex] == 1) {
       return true;
     }
@@ -838,11 +916,13 @@ module game {
   }
 
   export function isLeftTailBottom(row:number, col:number):boolean{
+     
     if(isFirstMove()){
       return false;
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(turnIndex == -1) return;
     if (state.lefttail[1-turnIndex][0] == row && state.lefttail[1-turnIndex][1] == col && state.direction[1-turnIndex] == 2) {
       return true;
     }
@@ -852,11 +932,13 @@ module game {
   }
 
   export function isLeftTailLeft(row:number, col:number):boolean{
+     
     if(isFirstMove()){
       return false;
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(turnIndex == -1) return;
     if (state.lefttail[1-turnIndex][0] == row && state.lefttail[1-turnIndex][1] == col && state.direction[1-turnIndex] == 3) {
       return true;
     }
@@ -866,11 +948,13 @@ module game {
   }
 
   export function isLeftTailRight(row:number, col:number):boolean{
+     
     if(isFirstMove()){
       return false;
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(turnIndex == -1) return;
     if (state.lefttail[1-turnIndex][0] == row && state.lefttail[1-turnIndex][1] == col && state.direction[1-turnIndex] == 4) {
       return true;
     }
@@ -880,11 +964,13 @@ module game {
   }
 
   export function isRightTailTop(row:number, col:number):boolean{
+     
     if(isFirstMove()){
       return false;
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(turnIndex == -1) return;
     if (state.righttail[1-turnIndex][0] == row && state.righttail[1-turnIndex][1] == col && state.direction[1-turnIndex] == 1) {
       return true;
     }
@@ -894,11 +980,13 @@ module game {
   }
 
   export function isRightTailBottom(row:number, col:number):boolean{
+     
     if(isFirstMove()){
       return false;
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(turnIndex == -1) return;
     if (state.righttail[1-turnIndex][0] == row && state.righttail[1-turnIndex][1] == col && state.direction[1-turnIndex] == 2) {
       return true;
     }
@@ -908,11 +996,13 @@ module game {
   }
 
   export function isRightTailLeft(row:number, col:number):boolean{
+     
     if(isFirstMove()){
       return false;
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(turnIndex == -1) return;
     if (state.righttail[1-turnIndex][0] == row && state.righttail[1-turnIndex][1] == col && state.direction[1-turnIndex] == 3) {
       return true;
     }
@@ -922,11 +1012,13 @@ module game {
   }
 
   export function isRightTailRight(row:number, col:number):boolean{
+     
     if(isFirstMove()){
       return false;
     }
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(turnIndex == -1) return;
     if (state.righttail[1-turnIndex][0] == row && state.righttail[1-turnIndex][1] == col && state.direction[1-turnIndex] == 4) {
       return true;
     }
@@ -949,12 +1041,15 @@ module game {
 
 
   export function shouldShowImage(row: number, col: number): boolean {
+     
     let turnIndex: number;
     turnIndex = currentUpdateUI.yourPlayerIndex;
+    if(turnIndex == -1) return;
     return state.board[turnIndex][row][col] <= -1;
   }
 
   export function shouldSlowlyAppear(row: number, col: number): boolean {
+    if(state.delta == null) return;
     return state.delta &&
         state.delta.row === row && state.delta.col === col;
   }

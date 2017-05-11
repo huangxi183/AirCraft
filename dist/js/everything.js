@@ -31665,7 +31665,7 @@ var gameLogic;
     //  HeadPosi = {index : Math.floor(Math.random() * 20) + 1, x :0, y :0, direct :0};
     /** Returns the initial AirCraft board, which is a ROWSxCOLS matrix containing ''. */
     function getInitialBoard(i) {
-        var board = [];
+        var board = [[]];
         var head = [];
         head[i] = getInitialHeadPosition();
         //head[1] = getInitialHeadPosition();
@@ -32178,7 +32178,6 @@ var game;
     game.proposals = null;
     game.remain_score = [10, 10];
     game.bomb = false;
-    game.a = [10, 10];
     //export let yourPlayerInfo: IPlayerInfo = null;
     function init($rootScope_, $timeout_) {
         game.$rootScope = $rootScope_;
@@ -32229,11 +32228,9 @@ var game;
         game.state = params.state;
         if (isFirstMove()) {
             game.state = gameLogic.getInitialState();
-            log.info(game.currentUpdateUI);
+            //log.info(currentUpdateUI);
             game.remain_score[0] = 10;
             game.remain_score[1] = 10;
-            game.a[0] = 10;
-            game.a[1] = 10;
             var move = {
                 turnIndex: 0,
                 state: game.state,
@@ -32248,12 +32245,25 @@ var game;
     game.updateUI = updateUI;
     function animationEndedCallback() {
         log.info("Animation ended");
+        maybeSendComputerMove();
     }
     function clearAnimationTimeout() {
         if (game.animationEndedTimeout) {
             game.$timeout.cancel(game.animationEndedTimeout);
             game.animationEndedTimeout = null;
         }
+    }
+    function maybeSendComputerMove() {
+        if (!isComputerTurn())
+            return;
+        var currentMove = {
+            endMatchScores: game.currentUpdateUI.endMatchScores,
+            state: game.currentUpdateUI.state,
+            turnIndex: game.currentUpdateUI.turnIndex,
+        };
+        var move = aiService.findComputerMove(currentMove);
+        log.info("Computer move: ", move);
+        makeMove(move);
     }
     function makeMove(move) {
         if (game.didMakeMove) {
@@ -32263,8 +32273,8 @@ var game;
         turnIndex = game.currentUpdateUI.yourPlayerIndex;
         game.didMakeMove = true;
         game.remain_score[turnIndex] = gameLogic.getPTW(move.state, turnIndex);
-        log.info(["let go", gameLogic.getPTW(move.state, turnIndex)]);
-        log.info(["lets go", game.remain_score[turnIndex]]);
+        //log.info(["let go",gameLogic.getPTW(move.state, turnIndex)]);
+        //log.info(["lets go",remain_score[turnIndex]]);
         gameService.makeMove(move, null, "Move Made");
     }
     function isFirstMove() {
@@ -32290,9 +32300,9 @@ var game;
             game.currentUpdateUI.yourPlayerIndex === game.currentUpdateUI.turnIndex; // it's my turn
     }
     function cellClicked(row, col) {
+        log.info("Clicked on cell:", row, col);
         if (!isMyTurn())
             return;
-        log.info("Clicked on cell:", row, col);
         var nextMove;
         try {
             nextMove = gameLogic.createMove(game.state, row, col, game.currentUpdateUI.turnIndex);
@@ -33070,18 +33080,16 @@ var game;
         }
     }
     game.isRightTailRight = isRightTailRight;
-    function shouldShowBomb() {
-        var turnIndex;
-        turnIndex = 1 - game.currentUpdateUI.yourPlayerIndex;
-        if (game.a[turnIndex] > game.remain_score[turnIndex]) {
-            //a[turnIndex] = remain_score[turnIndex];
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-    game.shouldShowBomb = shouldShowBomb;
+    // export function shouldShowBomb():boolean{
+    //   let turnIndex:number;
+    //   turnIndex = 1- currentUpdateUI.yourPlayerIndex;
+    //   if(a[turnIndex] > remain_score[turnIndex]){
+    //     //a[turnIndex] = remain_score[turnIndex];
+    //     return true;
+    //   }else{
+    //     return false;
+    //   }
+    // }
     //-----------------Check location.
     function shouldShowImage(row, col) {
         var turnIndex;
@@ -33129,7 +33137,6 @@ var aiService;
                     possibleMoves.push(gameLogic.createMove(state, i, j, turnIndexBeforeMove));
                 }
                 catch (e) {
-                    // The cell in that position was full.
                 }
             }
         }
@@ -33144,7 +33151,9 @@ var aiService;
      */
     function createComputerMove(move, alphaBetaLimits) {
         // We use alpha-beta search, where the search states are TicTacToe moves.
-        return alphaBetaService.alphaBetaDecision(move, move.turnIndex, getNextStates, getStateScoreForIndex0, null, alphaBetaLimits);
+        // return alphaBetaService.alphaBetaDecision(
+        //     move, move.turnIndex, getNextStates, getStateScoreForIndex0, null, alphaBetaLimits);
+        return getNextStates(move, move.turnIndex)[2];
     }
     aiService.createComputerMove = createComputerMove;
     function getStateScoreForIndex0(move, playerIndex) {

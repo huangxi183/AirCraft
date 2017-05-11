@@ -50,7 +50,7 @@ module gameLogic {
     //  HeadPosi = {index : Math.floor(Math.random() * 20) + 1, x :0, y :0, direct :0};
   /** Returns the initial AirCraft board, which is a ROWSxCOLS matrix containing ''. */
   export function getInitialBoard(i:number): Board {
-    let board: Board = [];
+    let board: Board = [[]];
     let head : HeadPosi[] = [];
     head[i] = getInitialHeadPosition();
     //head[1] = getInitialHeadPosition();

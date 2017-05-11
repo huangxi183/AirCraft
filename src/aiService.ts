@@ -14,11 +14,12 @@ module aiService {
     let possibleMoves: IMove[] = [];
     for (let i = 0; i < gameLogic.ROWS; i++) {
       for (let j = 0; j < gameLogic.COLS; j++) {
-        try {
-          possibleMoves.push(gameLogic.createMove(state, i, j, turnIndexBeforeMove));
-        } catch (e) {
-          // The cell in that position was full.
-        }
+          try {
+            possibleMoves.push(gameLogic.createMove(state, i, j, turnIndexBeforeMove));
+          } catch (e) {
+            // The cell in that position was full.
+          }
+        
       }
     }
     return possibleMoves;
@@ -33,8 +34,9 @@ module aiService {
   export function createComputerMove(
       move: IMove, alphaBetaLimits: IAlphaBetaLimits): IMove {
     // We use alpha-beta search, where the search states are TicTacToe moves.
-    return alphaBetaService.alphaBetaDecision(
-        move, move.turnIndex, getNextStates, getStateScoreForIndex0, null, alphaBetaLimits);
+    // return alphaBetaService.alphaBetaDecision(
+    //     move, move.turnIndex, getNextStates, getStateScoreForIndex0, null, alphaBetaLimits);
+    return getNextStates(move,  move.turnIndex)[2];
   }
 
   function getStateScoreForIndex0(move: IMove, playerIndex: number): number {

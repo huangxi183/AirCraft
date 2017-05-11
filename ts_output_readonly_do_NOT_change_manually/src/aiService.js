@@ -32,10 +32,13 @@ var aiService;
      * millisecondsLimit is a time limit, and maxDepth is a depth limit.
      */
     function createComputerMove(move, alphaBetaLimits) {
+        var temp_imove = [];
+        temp_imove = getNextStates(move, move.turnIndex);
+        var randomIndex = Math.floor(Math.random() * temp_imove.length);
         // We use alpha-beta search, where the search states are TicTacToe moves.
         // return alphaBetaService.alphaBetaDecision(
         //     move, move.turnIndex, getNextStates, getStateScoreForIndex0, null, alphaBetaLimits);
-        return getNextStates(move, move.turnIndex)[2];
+        return temp_imove[randomIndex];
     }
     aiService.createComputerMove = createComputerMove;
     function getStateScoreForIndex0(move, playerIndex) {

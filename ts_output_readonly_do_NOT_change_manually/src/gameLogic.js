@@ -423,6 +423,7 @@ var gameLogic;
                     _righttail[1] = [i + 1, j - 3];
                     _direction[1] = 4;
                 }
+                //---------For the second aircraft.
             }
         }
         return { board: [temp_board_0, temp_board_1], delta: null, points_To_Win: [10, 10], headLoc: _headLoc, body1: _body1, body2: _body2,
